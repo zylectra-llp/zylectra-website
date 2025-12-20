@@ -44,30 +44,30 @@ const Footer = () => {
                 <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
                   Zylectra
                 </h3>
-                <p className="text-emerald-400 text-sm font-medium">Charge your Vehicles, Not your Anxiety!</p>
+                <p className="text-emerald-400 text-sm font-medium">We see what your batteries won't tell you!</p>
               </div>
             </div>
             
             <div className="space-y-4">
               <p className="text-xl text-gray-300 font-semibold">
-                Driving the Intelligence Behind EV Infrastructure
+                Domain-Specific AI for Real-World Battery Intelligence
               </p>
               <p className="text-gray-400 leading-relaxed max-w-lg">
-                Building the intelligent operating system for the electric mobility revolution. 
-                From route optimization to energy intelligence, we're powering the future of 
-                sustainable transportation.
+                Helping EV and battery manufacturers predict failures, optimize second-life value, 
+                and reduce warranty costs. We bridge the critical gap between controlled lab testing 
+                and real-world battery performance.
               </p>
             </div>
 
             {/* Stats */}
             <div className="flex gap-8 mt-8 pt-6 border-t border-gray-800">
               <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-400">24/7</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Monitoring</div>
+                <div className="text-2xl font-bold text-emerald-400">Real-Time</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Battery Monitoring</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-400">99.9%</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Uptime</div>
+                <div className="text-2xl font-bold text-emerald-400">15-30%</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">Warranty Savings</div>
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@ const Footer = () => {
                   <MapPin className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Location</p>
+                  <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">HEADQUARTERS</p>
                   <div className="text-gray-300 text-sm leading-relaxed">
                     Thapar Innovate (Venture Lab), TIET<br />
                     Patiala, Punjab, India
@@ -170,7 +170,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center gap-2 text-xs text-gray-500">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                <span>Building the future of EV intelligence</span>
+                <span>Building Foundational AI-models for EV Battery Intelligence</span>
               </div>
             </div>
 

@@ -10,8 +10,9 @@ const CallToAction = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userTypes = [
+    { value: 'oem', label: 'EV/Battery Manufacturer', icon: '🏭' },
     { value: 'fleet', label: 'Fleet Operator', icon: '🚛' },
-    { value: 'cpo', label: 'CPO (Charge Point Operator)', icon: '⚡' }
+    { value: 'battery', label: 'Battery Maker', icon: '🔋' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -96,16 +97,15 @@ const CallToAction = () => {
               </svg>
             </div>
             
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               Get Early Access to 
-              <span className="block text-emerald-200 mt-2">Zylectra</span>
+              <span className="block text-emerald-200 mt-2">Zylectra Battery Intelligence</span>
             </h2>
             
             <div className="w-24 h-1 bg-emerald-300 mx-auto mb-6 rounded-full"></div>
             
             <p className="text-xl text-emerald-100 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Join the exclusive early access list and be among the first to experience
-              the future of intelligent EV operations.
+              Be among the first manufacturers and fleet operators to leverage AI-powered battery intelligence. Predict failures, optimize second-life value, and reduce warranty costs.
             </p>
           </div>
 
@@ -118,7 +118,7 @@ const CallToAction = () => {
                 <label className="block text-left text-emerald-100 font-semibold mb-3 text-lg">
                   I am a:
                 </label>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-3 gap-4">
                   {userTypes.map((type) => (
                     <label
                       key={type.value}
