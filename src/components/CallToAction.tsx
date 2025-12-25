@@ -10,9 +10,9 @@ const CallToAction = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userTypes = [
-    { value: 'oem', label: 'EV/Battery Manufacturer', icon: '🏭' },
-    { value: 'fleet', label: 'Fleet Operator', icon: '🚛' },
-    { value: 'battery', label: 'Battery Maker', icon: '🔋' }
+    { value: 'fleet_ops', label: 'Fleet Operator', icon: '🚛' },
+    { value: 'fleet_manager', label: 'Fleet Manager', icon: '📊' },
+    { value: 'logistics', label: 'Logistics Company', icon: '📦' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,13 +99,13 @@ const CallToAction = () => {
             
             <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               Get Early Access to 
-              <span className="block text-emerald-200 mt-2">Zylectra Battery Intelligence</span>
+              <span className="block text-emerald-200 mt-2">Zylectra</span>
             </h2>
             
             <div className="w-24 h-1 bg-emerald-300 mx-auto mb-6 rounded-full"></div>
             
             <p className="text-xl text-emerald-100 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Be among the first manufacturers and fleet operators to leverage AI-powered battery intelligence. Predict failures, optimize second-life value, and reduce warranty costs.
+              Join the first fleet operators to predict battery failures weeks in advance. Know why they fail. Act today. Save thousands.
             </p>
           </div>
 
@@ -193,7 +193,7 @@ const CallToAction = () => {
                   </>
                 ) : (
                   <>
-                    <span>Join Early Access List</span>
+                    <span>Request Early Access</span>
                     <ArrowRight className="w-6 h-6" />
                   </>
                 )}

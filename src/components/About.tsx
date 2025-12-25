@@ -16,11 +16,6 @@ const About = () => {
             </h2>
           </div>
           <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 mx-auto mb-6 rounded-full"></div>
-          <div className="max-w-4xl mx-auto">
-            <p className="text-lg text-gray-600 mt-3">
-              Zylectra is an AI-powered battery intelligence platform designed to help EV and battery manufacturers predict battery failures, optimize second-life value, and reduce warranty costs by 15-30%. We bridge the critical gap between controlled lab testing and real-world battery performance.
-            </p>
-          </div>
         </div>
 
         {/* Recognition Cards */}

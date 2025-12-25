@@ -6,18 +6,18 @@ const SectionFive = () => {
       <div className="max-w-4xl mx-auto text-center">
         {/* Main Headline */}
         <h2 id="problem-solution-heading" className="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-          More data collection alone
+          Predicting battery failures 
           <span className="relative inline-block mx-2 mb-2">
-            <span className="text-red-500 line-through decoration-4 decoration-red-500">won't prevent battery failures</span>
+            <span className="text-red-500 line-through decoration-4 decoration-red-500">is useless</span>
           </span>
-          or warranty losses.
+          without action.
         </h2>
 
         {/* Problem vs Solution */}
         <div className="mb-12 space-y-6">
           <p className="text-xl md:text-2xl text-gray-700">
             The real problem isn't 
-            <span className="font-semibold text-gray-500 mx-2">monitoring</span>.
+            <span className="font-semibold text-gray-500 mx-2">knowing it will fail</span>.
           </p>
           
           <div className="flex items-center justify-center space-x-4 my-8">
@@ -31,14 +31,14 @@ const SectionFive = () => {
           </div>
           
           <p className="text-xl md:text-2xl text-gray-900">
-            It's 
-            <span className="font-bold text-emerald-600 mx-2">prediction and prevention</span>.
+            It's knowing 
+            <span className="font-bold text-emerald-600 mx-2">why and what to do today</span>.
           </p>
         </div>
 
         {/* Visual Equation */}
         <div className="flex justify-center items-center space-x-6 mb-12 flex-wrap gap-4">
-          {/* Raw Battery Data */}
+          {/* Fleet Battery Data */}
           <div className="text-center">
             <div className="w-20 h-14 bg-gray-300 rounded-xl border-2 border-gray-400 flex items-center justify-center mb-2">
               <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
@@ -47,11 +47,11 @@ const SectionFive = () => {
                 </svg>
               </div>
             </div>
-            <p className="text-sm text-gray-600 font-medium">Raw Battery Data</p>
+            <p className="text-sm text-gray-600 font-medium">Fleet Data</p>
           </div>
 
           <p className="text-xl md:text-2xl text-gray-900">+</p>
-          {/* Domain-Specific AI */}
+          {/* Root Cause AI */}
           <div className="text-center">
             <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-2 relative">
               <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -71,11 +71,11 @@ const SectionFive = () => {
                 ></div>
               ))}
             </div>
-            <p className="text-sm text-emerald-600 font-semibold">Domain-Specific AI</p>
+            <p className="text-sm text-emerald-600 font-semibold">Root Cause AI</p>
           </div>
 
-					<div className="text-2xl text-gray-400">+</div>
-          {/* Predictive Battery Intelligence */}
+					<div className="text-2xl text-gray-400"> = </div>
+          {/* Action Plan */}
           <div className="text-center">
             <div className="w-20 h-14 bg-emerald-600 rounded-xl border-2 border-emerald-500 flex items-center justify-center mb-2">
               <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
@@ -84,38 +84,38 @@ const SectionFive = () => {
                 </svg>
               </div>
             </div>
-            <p className="text-sm text-emerald-600 font-semibold">Predictive Intelligence</p>
+            <p className="text-sm text-emerald-600 font-semibold">Action Plan</p>
           </div>
         </div>
 
         {/* Zylectra Statement */}
         <article className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
           <p className="text-xl text-gray-900 mb-4">
-            Without predictive intelligence, battery monitoring is just expensive data collection. Manufacturers stay reactive, discovering failures after they happen, defending warranty claims, missing second-life value.
+            Without a clear action plan, battery prediction is just expensive news. Fleet managers stay stuck: they know a battery will fail, but not why or what to change. Costs keep rising. Downtime keeps happening.
           </p>
           <div className="flex items-center justify-center space-x-2 mb-4">
             <span className="text-2xl font-bold text-emerald-600">Zylectra</span>
-            <span className="text-xl text-gray-900">predicts and prevents.</span>
+            <span className="text-xl text-gray-900">shows why and tells you what to fix.</span>
           </div>
           
           {/* Three Key Points */}
           <div className="grid md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200">
             <div className="text-center">
-              <div className="text-emerald-600 font-bold text-sm mb-2">Predict Failures</div>
-              <p className="text-gray-600 text-xs">Identify at-risk batteries weeks before failure</p>
+              <div className="text-emerald-600 font-bold text-sm mb-2">See It Coming</div>
+              <p className="text-gray-600 text-sm">Know which battery will fail weeks before it dies.</p>
             </div>
             <div className="text-center">
               <div className="text-emerald-600 font-bold text-sm mb-2">Understand Why</div>
-              <p className="text-gray-600 text-xs">Root cause analysis for every degradation pattern</p>
+              <p className="text-gray-600 text-sm">Your driver, your charging, your heat — we show you what's killing it.</p>
             </div>
             <div className="text-center">
-              <div className="text-emerald-600 font-bold text-sm mb-2">Maximize Value</div>
-              <p className="text-gray-600 text-xs">Optimize second-life decisions with precision</p>
+              <div className="text-emerald-600 font-bold text-sm mb-2">Act Today</div>
+              <p className="text-gray-600 text-sm">Fix the one thing that saves you the most money right now.</p>
             </div>
           </div>
           
           <p className="text-gray-600 italic mt-6">
-            From battery health to warranty risk to second-life optimization — intelligence at every stage of the battery lifecycle.
+            From prevention to action to savings — intelligence at every decision point in your fleet.
           </p>
         </article>
 
@@ -127,26 +127,26 @@ const SectionFive = () => {
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "Why is battery data monitoring alone not enough?",
+                "name": "Why is battery prediction alone not enough?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Raw battery data collection is just the first step. Without domain-specific AI analysis, manufacturers cannot predict failures, understand root causes, or optimize battery value. Zylectra transforms raw data into actionable intelligence."
+                  "text": "Knowing a battery will fail is only the first step. Fleet managers need to understand why it's failing and what action to take. Zylectra explains the root cause and prescribes the exact intervention that saves the most money."
                 }
               },
               {
                 "@type": "Question",
-                "name": "What makes Zylectra different from generic analytics?",
+                "name": "What makes Zylectra different?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Zylectra uses domain-specific AI models trained on real-world battery behavior and electrochemical principles. This allows us to predict failures weeks in advance, identify root causes, and optimize second-life value—capabilities that generic analytics cannot match."
+                  "text": "Zylectra combines prediction with explanation and action. We show you which battery fails, why it fails (driver behavior, charging patterns, heat), and what to do today to prevent it and save money."
                 }
               },
               {
                 "@type": "Question",
-                "name": "How does Zylectra help reduce warranty costs?",
+                "name": "How does Zylectra help fleet managers save money?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Zylectra predicts warranty claims before they occur, enabling manufacturers to forecast costs accurately and identify high-risk cohorts. This can reduce warranty reserves by 10-25% and improve pricing accuracy."
+                  "text": "Zylectra predicts failures before they happen and tells you the exact action to take to prevent them. This prevents costly downtime, extends battery life, and reduces unexpected replacement costs."
                 }
               }
             ]
@@ -158,4 +158,3 @@ const SectionFive = () => {
 };
 
 export default SectionFive;
-

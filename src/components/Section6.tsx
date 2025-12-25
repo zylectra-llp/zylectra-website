@@ -12,13 +12,13 @@ const Section6 = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-10">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-            Be the manufacturer{" "}
+            Be the fleet manager{" "}
             <span className="relative inline-block">
-              <span className="text-emerald-600">that controls battery risk</span>
+              <span className="text-emerald-600">that prevents failures</span>
               <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full"></div>
             </span>
           </h2>
-          <p className="text-gray-600 text-lg mt-4">Compare the impact of real-world battery intelligence on your business</p>
+          <p className="text-gray-600 text-lg mt-4">See what Zylectra means for your fleet's uptime and profit</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -34,7 +34,7 @@ const Section6 = () => {
                   With Zylectra
                 </h3>
                 <div className="px-3 py-1 bg-emerald-600 text-white text-xs font-bold rounded-full">
-                  CONTROLLED & PROFITABLE
+                  PREVENTIVE & PROFITABLE
                 </div>
               </div>
 
@@ -44,8 +44,8 @@ const Section6 = () => {
                     <Shield className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">15-30% reduction in warranty claims</p>
-                    <p className="text-sm text-gray-600 mt-1">Predict failures weeks in advance</p>
+                    <p className="text-gray-800 font-semibold">Know battery failures weeks ahead</p>
+                    <p className="text-sm text-gray-600 mt-1">No more surprise breakdowns on the road</p>
                   </div>
                 </div>
 
@@ -54,8 +54,8 @@ const Section6 = () => {
                     <DollarSign className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">20-40% higher second-life value</p>
-                    <p className="text-sm text-gray-600 mt-1">Maximize battery resale & repurposing</p>
+                    <p className="text-gray-800 font-semibold">Save thousands per prevented failure</p>
+                    <p className="text-sm text-gray-600 mt-1">Action plan with dollar savings attached</p>
                   </div>
                 </div>
 
@@ -64,8 +64,8 @@ const Section6 = () => {
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">Understand exactly why batteries degrade</p>
-                    <p className="text-sm text-gray-600 mt-1">Root cause analysis for every issue</p>
+                    <p className="text-gray-800 font-semibold">Understand exactly why it's failing</p>
+                    <p className="text-sm text-gray-600 mt-1">Driver habits, charging times, heat stress — all clear</p>
                   </div>
                 </div>
 
@@ -74,8 +74,8 @@ const Section6 = () => {
                     <Zap className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-800 font-semibold">10-25% reduction in warranty reserves</p>
-                    <p className="text-sm text-gray-600 mt-1">Better forecasting, smarter pricing</p>
+                    <p className="text-gray-800 font-semibold">Keep your fleet moving, not broken</p>
+                    <p className="text-sm text-gray-600 mt-1">More uptime. Less downtime. More deliveries.</p>
                   </div>
                 </div>
               </div>
@@ -83,7 +83,7 @@ const Section6 = () => {
               <div className="mt-6 flex items-center justify-center">
                 <div className="flex items-center gap-2 px-4 py-3 bg-emerald-600 text-white rounded-full text-sm font-semibold">
                   <div className="w-2 h-2 bg-emerald-200 rounded-full animate-pulse"></div>
-                  <span>Data-Driven Decision Mode</span>
+                  <span>Proactive Prevention Mode</span>
                 </div>
               </div>
             </article>
@@ -111,8 +111,8 @@ const Section6 = () => {
                     <TrendingDown className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-700 font-semibold">Unexpected warranty claim spike</p>
-                    <p className="text-sm text-gray-600 mt-1">Discover failures only after they occur</p>
+                    <p className="text-gray-700 font-semibold">Battery fails without warning</p>
+                    <p className="text-sm text-gray-600 mt-1">Discover problems only after roadside breakdown</p>
                   </div>
                 </div>
 
@@ -121,8 +121,8 @@ const Section6 = () => {
                     <AlertTriangle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-700 font-semibold">Miss second-life battery value</p>
-                    <p className="text-sm text-gray-600 mt-1">No data to optimize resale timing</p>
+                    <p className="text-gray-700 font-semibold">Thousands lost per failure</p>
+                    <p className="text-sm text-gray-600 mt-1">Towing, repairs, lost deliveries, unhappy customers</p>
                   </div>
                 </div>
 
@@ -131,8 +131,8 @@ const Section6 = () => {
                     <AlertTriangle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-700 font-semibold">Can't understand degradation patterns</p>
-                    <p className="text-sm text-gray-600 mt-1">No insights for product improvements</p>
+                    <p className="text-gray-700 font-semibold">No idea why batteries are failing</p>
+                    <p className="text-sm text-gray-600 mt-1">Can't fix driver habits or charging patterns</p>
                   </div>
                 </div>
 
@@ -141,8 +141,8 @@ const Section6 = () => {
                     <DollarSign className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-gray-700 font-semibold">Warranty reserves drain profitability</p>
-                    <p className="text-sm text-gray-600 mt-1">Inefficient capital allocation</p>
+                    <p className="text-gray-700 font-semibold">Fleet margin bleeds away</p>
+                    <p className="text-sm text-gray-600 mt-1">Unexpected costs destroy profitability</p>
                   </div>
                 </div>
               </div>
@@ -160,10 +160,10 @@ const Section6 = () => {
         {/* CTA Text */}
         <div className="text-center mt-12">
           <p className="text-gray-700 text-lg font-semibold">
-            Which manufacturer strategy will you choose?
+            Which fleet manager mindset will you choose?
           </p>
           <p className="text-gray-600 text-base mt-2">
-            Zylectra transforms battery management from reactive problem-solving to predictive profit optimization.
+            Zylectra transforms fleet management from fighting fires to preventing them. From losing money to keeping it.
           </p>
         </div>
       </div>
@@ -173,36 +173,36 @@ const Section6 = () => {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ComparisonChart",
-          "name": "Battery Intelligence Platform Comparison",
-          "description": "Comparison of OEM/battery manufacturer outcomes with and without Zylectra battery intelligence",
+          "name": "Fleet Battery Management Comparison",
+          "description": "Comparison of last-mile logistics fleet outcomes with and without Zylectra battery intelligence",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
-              "name": "Warranty Cost Reduction",
-              "with": "15-30% reduction in warranty claims",
-              "without": "Unexpected warranty claim spikes"
+              "name": "Battery Failure Warning",
+              "with": "Know failures weeks in advance",
+              "without": "Discover failures only after breakdown"
             },
             {
               "@type": "ListItem",
               "position": 2,
-              "name": "Second-Life Revenue",
-              "with": "20-40% higher second-life battery value",
-              "without": "Miss battery resale opportunity"
+              "name": "Cost Per Failure",
+              "with": "Save thousands with prevention",
+              "without": "Lose thousands per failure"
             },
             {
               "@type": "ListItem",
               "position": 3,
-              "name": "Degradation Understanding",
-              "with": "Root cause analysis for every issue",
-              "without": "No insights for improvements"
+              "name": "Root Cause Understanding",
+              "with": "Know exactly why it's failing",
+              "without": "No visibility into degradation"
             },
             {
               "@type": "ListItem",
               "position": 4,
-              "name": "Financial Management",
-              "with": "10-25% reduction in warranty reserves",
-              "without": "Warranty reserves drain profitability"
+              "name": "Fleet Profitability",
+              "with": "Keep margin, reduce surprises",
+              "without": "Unexpected costs drain profit"
             }
           ]
         })}
@@ -212,4 +212,3 @@ const Section6 = () => {
 };
 
 export default Section6;
-

@@ -50,25 +50,11 @@ const Footer = () => {
             
             <div className="space-y-4">
               <p className="text-xl text-gray-300 font-semibold">
-                Domain-Specific AI for Real-World Battery Intelligence
+                AI-Powered Battery Intelligence for Last-Mile Logistics
               </p>
               <p className="text-gray-400 leading-relaxed max-w-lg">
-                Helping EV and battery manufacturers predict failures, optimize second-life value, 
-                and reduce warranty costs. We bridge the critical gap between controlled lab testing 
-                and real-world battery performance.
+                We help fleet operators predict battery failures weeks in advance, understand exactly why they fail, and take action that saves thousands per prevented failure. Smart fleets keep moving. Ours make money.
               </p>
-            </div>
-
-            {/* Stats */}
-            <div className="flex gap-8 mt-8 pt-6 border-t border-gray-800">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-400">Real-Time</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Battery Monitoring</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-400">15-30%</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Warranty Savings</div>
-              </div>
             </div>
           </div>
 

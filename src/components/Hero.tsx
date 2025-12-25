@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Zap, TrendingUp, Shield, Sparkles, Brain, BarChart3 } from 'lucide-react';
+import { ArrowRight, Lightbulb, DollarSign, Shield, Sparkles, Eye, Brain,BarChart3 } from 'lucide-react';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,21 +26,21 @@ const Hero = () => {
 
   const features = [
     {
-      title: "Predictive Battery Health",
-      description: "Real-time monitoring of state-of-health with failure prediction weeks in advance.",
-      icon: Brain,
+      title: "See It Coming",
+      description: "Know which battery will fail weeks before it dies. No surprises. No roadside breakdowns. Just time to act.",
+      icon: Eye,
       color: "from-green-400 to-emerald-400",
     },
     {
-      title: "Root Cause Intelligence",
-      description: "AI explains exactly why degradation occurs—temperature, charging patterns, or design flaws.",
-      icon: Zap,
+      title: "Understand Why",
+      description: "Your driver pushed too hard. You charged wrong. The heat won. We show you exactly what killed the battery, so you can stop it next time.",
+      icon: Lightbulb,
       color: "from-emerald-400 to-green-500",
     },
     {
-      title: "Second-Life Optimization",
-      description: "Unlock 20-40% additional revenue by maximizing residual value and repurposing potential.",
-      icon: TrendingUp,
+      title: "Save Money Today",
+      description: "Fix the problem before it costs you thousands. We tell you exactly what to do today that saves you the most money.",
+      icon: DollarSign,
       color: "from-green-500 to-emerald-400",
     },
   ];
@@ -67,7 +67,7 @@ const Hero = () => {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-32 right-20 animate-float">
           <div className="relative p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-green-200/30 shadow-lg">
-            <Zap className="w-8 h-8 text-green-500" />
+            <Lightbulb className="w-8 h-8 text-green-500" />
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
           </div>
         </div>
@@ -87,7 +87,7 @@ const Hero = () => {
 
         <div className="absolute top-1/4 left-32 animate-float">
           <div className="p-2 bg-white/10 backdrop-blur-sm rounded-lg border border-emerald-200/30">
-            <Brain className="w-4 h-4 text-emerald-500" />
+            <Eye className="w-4 h-4 text-emerald-500" />
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@ const Hero = () => {
               <Sparkles className="w-5 h-5 text-green-600 animate-spin" />
               <div className="absolute inset-0 bg-green-400 rounded-full opacity-20 animate-ping"></div>
             </div>
-            <span className="text-green-700 font-semibold text-lg">Domain-Specific AI for Battery Intelligence</span>
+            <span className="text-green-700 font-semibold text-lg"> We Explain. You Prevent.</span>
           </div>
         </div>
 
@@ -110,7 +110,9 @@ const Hero = () => {
         <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="relative mb-8">
             <p className="text-3xl sm:text-4xl md:text-6xl font-bold text-gray-700 mt-2">
-              From labs to roads, real-world intelligence.
+              Your Battery Isn't Dying. 
+              <br />
+              It's Being Killed.
             </p>
             
             {/* Decorative underline */}
@@ -121,7 +123,7 @@ const Hero = () => {
         {/* Description */}
         <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} mb-12`}>
           <p className="sm:text-[18px] md:text-[20px] lg:text-[24px] text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed font-light">
-            AI-powered battery intelligence that predicts failures, optimizes second-life value, and reduces warranty costs by 15-30% for EV and battery manufacturers.
+            Most tools say "battery bad." We show you why: hard driving, wrong charging time, heat stress. Then we tell you what to fix first to save the most.
           </p>
         </div>
 

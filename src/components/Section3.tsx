@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TrendingUp, Zap, ArrowRight, Sparkles, Brain } from "lucide-react";
+import { ArrowRight, Sparkles, Eye, Lightbulb, CheckCircle } from "lucide-react";
 
 const SectionThree = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -34,23 +34,23 @@ const SectionThree = () => {
           <div className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <div className="inline-flex items-center gap-2 px-6 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium mb-6 shadow-sm">
               <Sparkles className="w-4 h-4" />
-              AI-Powered Battery Intelligence
+              Why Zylectra
             </div>
 
-            <h2 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-8 leading-snug">
-              Real-world battery insights
+            <h2 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-8 leading-relaxed">
+              Stop reacting to battery failures.
               <br />
-              <span className="block mt-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent animate-pulse">
-                manufacturers can trust and act on.
+              <span className="block mt-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 bg-clip-text text-transparent pb-2">
+                Start preventing them.
               </span>
             </h2>
 
             <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
-              Zylectra is the{" "}
+              Fleet managers know batteries fail. The question isn't if, it's{" "}
               <span className="font-bold text-gray-900 bg-gradient-to-r from-emerald-100 to-teal-100 px-2 py-1 rounded-lg">
-                intelligent platform
+                when and what to do about it
               </span>
-              {" "}for OEMs and battery makers to predict failures, optimize second-life value, and reduce warranty costs:
+              . Zylectra answers both.
             </p>
           </div>
         </div>
@@ -58,9 +58,9 @@ const SectionThree = () => {
         {/* Connection Cards */}
         <div className={`flex flex-col lg:flex-row justify-center items-center gap-6 mb-16 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           {[
-            { icon: Brain, text: "Battery Health Prediction", color: "from-emerald-500 to-teal-500" },
-            { icon: Zap, text: "Root Cause Analysis", color: "from-teal-500 to-emerald-600" },
-            { icon: TrendingUp, text: "Warranty Intelligence", color: "from-emerald-600 to-green-500" },
+            { icon: Eye, text: "See It Coming", color: "from-emerald-500 to-teal-500" },
+            { icon: Lightbulb, text: "Understand Why", color: "from-teal-500 to-emerald-600" },
+            { icon: CheckCircle, text: "Save Money Today", color: "from-emerald-600 to-green-500" },
           ].map((item, index) => (
             <React.Fragment key={index}>
               <div className="group relative">
@@ -86,7 +86,7 @@ const SectionThree = () => {
             <button
               onClick={() => scrollToSection("cta")}
               className="relative px-12 py-5 text-xl font-bold text-white rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 shadow-2xl hover:shadow-emerald-500/50 transform hover:-translate-y-2 hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
-              aria-label="Request early access to Zylectra battery intelligence platform"
+              aria-label="Request early access to Zylectra"
             >
               <Sparkles className="w-5 h-5 animate-spin" />
               Request Early Access
@@ -99,33 +99,30 @@ const SectionThree = () => {
         <div className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-1000 delay-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           {[
             {
-              title: "Predictive Battery Health Monitoring",
-              description: "Monitor state-of-health (SoH) across entire fleets in real-time. Identify batteries at risk of failure weeks or months before they fail, enabling proactive warranty management and customer satisfaction.",
-              image: "/battery.png",
+              title: "Weeks of Warning",
+              description: "Know which battery will fail before your driver hits the road. No surprises. No breakdowns. Just time to act.",
+              icon: Eye,
               gradient: "from-emerald-500/10 to-teal-500/10",
-              iconColor: "text-emerald-600",
-              keyFeatures: "Real-time SoH assessment, Early failure detection, Predictive alerts",
+              keyFeatures: "Early prediction, Roadside prevention, Uptime guarantee",
             },
             {
-              title: "Root Cause Discovery for Degradation",
-              description: "AI-powered analysis reveals exactly why each battery degrades. Understand if issues stem from extreme temperatures, aggressive fast-charging patterns, manufacturing defects, or specific driving behaviors.",
-              image: "/degradation.png",
+              title: "Why It's Really Failing",
+              description: "Your driver pushes too hard. You charge at the wrong time. The heat does the rest. We show you exactly what's killing your battery.",
+              icon: Lightbulb,
               gradient: "from-teal-500/10 to-emerald-600/10",
-              iconColor: "text-teal-600",
-              keyFeatures: "Temperature analysis, Charging pattern detection, Design improvement insights",
+              keyFeatures: "Driver behavior analysis, Charging pattern insights, Temperature tracking",
             },
             {
-              title: "Second-Life Value Optimization",
-              description: "Predict optimal timing for battery transition from vehicles to energy storage. Maximize residual value and unlock 20-40% additional revenue per battery through data-driven second-life applications.",
-              image: "/value.png",
+              title: "Exactly What to Fix First",
+              description: "Coach the driver. Change charging times. Adjust routes. We tell you the one action that saves you the most money right now.",
+              icon: CheckCircle,
               gradient: "from-emerald-600/10 to-green-500/10",
-              iconColor: "text-emerald-700",
-              keyFeatures: "Second-life readiness assessment, Residual value prediction, Market timing intelligence",
+              keyFeatures: "Action-focused recommendations, Cost-benefit analysis, Real-time guidance",
             },
           ].map((feature, index) => (
             <div
               key={index}
-              className={`group relative transition-all duration-500 delay-${(index + 1) * 100}`}
+              className={`group relative transition-all duration-500`}
               style={{ animationDelay: `${(index + 1) * 100}ms` }}
             >
               {/* Hover Glow Effect */}
@@ -133,13 +130,8 @@ const SectionThree = () => {
               
               <article className="relative bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 border border-gray-100/50 h-full flex flex-col">
                 {/* Icon Container */}
-                <div className="relative w-full h-48 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden border border-gray-200/50 mb-6 group">
-                  <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <img
-                    src={feature.image}
-                    alt={`${feature.title} Screenshot`}
-                    className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
-                  />
+                <div className="relative mb-6 p-4 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl w-fit">
+                  <feature.icon className="w-8 h-8 text-emerald-600" />
                 </div>
 
                 {/* Content */}
@@ -153,7 +145,7 @@ const SectionThree = () => {
                   
                   {/* Key Features */}
                   <div className="pt-4 border-t border-gray-200/50">
-                    <p className="text-sm font-semibold text-emerald-700 mb-2">Key Capabilities:</p>
+                    <p className="text-sm font-semibold text-emerald-700 mb-2">What You Get:</p>
                     <ul className="text-sm text-gray-600 space-y-1">
                       {feature.keyFeatures.split(", ").map((item, i) => (
                         <li key={i} className="flex items-start gap-2">
@@ -166,7 +158,7 @@ const SectionThree = () => {
                 </div>
 
                 {/* Corner Decoration */}
-                <div className="absolute top-6 left-6 w-12 h-12 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute top-6 right-6 w-12 h-12 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </article>
             </div>
           ))}
@@ -195,4 +187,3 @@ const SectionThree = () => {
 };
 
 export default SectionThree;
-
