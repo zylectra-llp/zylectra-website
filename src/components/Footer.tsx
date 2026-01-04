@@ -152,7 +152,7 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <div className="text-gray-400 text-sm">
-                © 2025 Zylectra. All rights reserved.
+                © 2026 Zylectra. All rights reserved.
               </div>
               <div className="flex items-center gap-2 text-xs text-gray-500">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>

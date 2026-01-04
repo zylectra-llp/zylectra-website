@@ -69,7 +69,7 @@ const Navbar = () => {
 							onClick={() => scrollToSection("cta")}
 							className="ml-4 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
 						>
-							Early Access
+							Request a demo
 						</button>
 					</div>
 

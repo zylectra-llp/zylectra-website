@@ -136,7 +136,7 @@ const Hero = () => {
               className="relative bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 hover:from-green-700 hover:via-emerald-700 hover:to-green-800 text-white px-10 py-5 rounded-full text-lg md:text-xl font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-green-500/50 flex items-center gap-4 mx-auto"
             >
               <Brain className="w-6 h-6 animate-pulse" />
-              REQUEST EARLY ACCESS
+              REQUEST A DEMO
               <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </button>
           </div>

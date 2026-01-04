@@ -89,7 +89,7 @@ const SectionThree = () => {
               aria-label="Request early access to Zylectra"
             >
               <Sparkles className="w-5 h-5 animate-spin" />
-              Request Early Access
+                Request a Demo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

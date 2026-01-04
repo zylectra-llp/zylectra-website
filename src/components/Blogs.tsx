@@ -73,7 +73,7 @@ const ComingSoonPopup: React.FC<ComingSoonPopupProps> = ({ isOpen, onClose }) =>
           {/* Launch Date */}
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-2 border-emerald-200 rounded-2xl">
             <Clock className="w-5 h-5 text-emerald-600" />
-            <span className="font-semibold text-gray-800">Launching In Jan 2026</span>
+            <span className="font-semibold text-gray-800">Launching In Feb 2026</span>
           </div>
         </div>
       </div>

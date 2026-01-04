@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, ArrowRight, Check, Loader2 } from 'lucide-react';
+import { Mail, ArrowRight, Check, Loader2, Calendar } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import { ENV_CONFIG } from '../config/env';
 
@@ -92,26 +92,23 @@ const CallToAction = () => {
           {/* Header */}
           <div className="mb-12">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6 backdrop-blur-sm">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+              <Calendar className="w-10 h-10 text-white" />
             </div>
             
             <h2 id="cta-heading" className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-              Get Early Access to 
-              <span className="block text-emerald-200 mt-2">Zylectra</span>
+              Request a Demo
             </h2>
             
             <div className="w-24 h-1 bg-emerald-300 mx-auto mb-6 rounded-full"></div>
             
             <p className="text-xl text-emerald-100 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Join the first fleet operators to predict battery failures weeks in advance. Know why they fail. Act today. Save thousands.
+              See how Zylectra predicts battery failures weeks in advance. Watch which batteries will fail, why they fail, and exactly what to do today to prevent it with clear cost savings attached to every decision.
             </p>
           </div>
 
           {/* Form */}
           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-2xl mx-auto border border-white/20 shadow-2xl">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-6" onSubmit={handleSubmit}>
               
               {/* User Type Selection */}
               <div>
@@ -174,70 +171,70 @@ const CallToAction = () => {
               </div>
 
               {/* Submit Button */}
-               <button
-                type="submit"
+              <button
+                onClick={handleSubmit}
                 disabled={isSubmitted || isLoading}
                 className="w-full bg-white text-emerald-600 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 transform hover:scale-105 shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:transform-none"
               >
                 {isLoading ? (
                   <>
                     <Loader2 className="w-6 h-6 animate-spin" />
-                    <span>Processing...</span>
+                    <span>Scheduling Demo...</span>
                   </>
                 ) : isSubmitted ? (
                   <>
                     <div className="w-6 h-6 bg-emerald-600 rounded-full flex items-center justify-center">
                       <Check className="w-4 h-4 text-white" />
                     </div>
-                    <span>Successfully Added!</span>
+                    <span>Demo Request Received!</span>
                   </>
                 ) : (
                   <>
-                    <span>Request Early Access</span>
+                    <span>Request a Demo</span>
                     <ArrowRight className="w-6 h-6" />
                   </>
                 )}
               </button>
-            </form>
+            </div>
           </div>
 
           {/* Benefits */}
           <div className="mt-12">
-            <p className="text-emerald-200 mb-6 text-lg">What you'll get:</p>
+            <p className="text-emerald-200 mb-6 text-lg">What you'll see in the demo:</p>
             <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <div className="flex flex-col items-center space-y-3 p-6 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
                 <div className="w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center">
                   <svg className="w-6 h-6 text-emerald-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
                 <div className="text-center">
-                  <h4 className="font-semibold text-white mb-1">No Spam Policy</h4>
-                  <p className="text-emerald-200 text-sm">Only important updates</p>
+                  <h4 className="font-semibold text-white mb-1">Failure Predictions</h4>
+                  <p className="text-emerald-200 text-sm">See which batteries will fail weeks in advance</p>
                 </div>
               </div>
               
               <div className="flex flex-col items-center space-y-3 p-6 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
                 <div className="w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center">
                   <svg className="w-6 h-6 text-emerald-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="text-center">
-                  <h4 className="font-semibold text-white mb-1">Exclusive Updates</h4>
-                  <p className="text-emerald-200 text-sm">Behind-the-scenes insights</p>
+                  <h4 className="font-semibold text-white mb-1">Root Cause Analysis</h4>
+                  <p className="text-emerald-200 text-sm">Understand exactly why each failure will occur</p>
                 </div>
               </div>
               
               <div className="flex flex-col items-center space-y-3 p-6 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20">
                 <div className="w-12 h-12 bg-emerald-400 rounded-full flex items-center justify-center">
                   <svg className="w-6 h-6 text-emerald-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="text-center">
-                  <h4 className="font-semibold text-white mb-1">Early Access Perks</h4>
-                  <p className="text-emerald-200 text-sm">First to experience Zylectra</p>
+                  <h4 className="font-semibold text-white mb-1">Cost Savings Breakdown</h4>
+                  <p className="text-emerald-200 text-sm">See exactly how much you'll save with each action</p>
                 </div>
               </div>
             </div>
