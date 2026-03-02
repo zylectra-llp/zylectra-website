@@ -69,7 +69,7 @@ const Hero = () => {
           <p className="text-gray-400 mb-4 max-w-3xl mx-auto leading-relaxed text-xl">
             Zylectra combines physics with AI for multi-modal root cause analysis, so you know {" "}
             <em className='text-white'>
-              which battery fails, why it failed, and who is responsible
+              which battery fails, why it failed, & who is responsible
             </em>.
           </p>
         </div>
