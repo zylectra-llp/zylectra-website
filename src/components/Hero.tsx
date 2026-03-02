@@ -1,13 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+  
+      const scrollToHash = () => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      };
+  
+      // small delay ensures DOM fully rendered
+      setTimeout(scrollToHash, 100);
+    }
+  }, [location]);
 
   const scrollToSection = (sectionId: string) => {
 		const element = document.getElementById(sectionId);
@@ -57,25 +76,24 @@ const Hero = () => {
 
         {/* Enhanced CTA Button */}
         <div className={`transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} mb-16`}>
-          <div className="relative flex justify-center gap-6 group">
-            {/* Primary Button: See Live Demo */}
-            <div className="relative group">
-              <button
-                onClick={() => scrollToSection("demo")}
-                className="relative z-10 bg-green-200 text-black px-10 py-5 rounded-xl text-lg md:text-xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-4"
-              >
-                See Live Demo
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
-              </button>
-            </div>
-            {/* Secondary Button: How it Works */}
+          <div className="relative flex flex-row flex-wrap justify-center gap-3 sm:gap-6 w-full max-w-2xl mx-auto">
+            {/* Primary Button: Demo */}
             <button
-              onClick={() => scrollToSection("how-it-works")}
-              className="relative text-white px-10 py-5 rounded-xl text-lg md:text-xl font-bold transition-all duration-300 transform border border-white flex items-center gap-3
-                        hover:border-[#00ff40]"
+              onClick={() => scrollToSection("demo")}
+              className="flex items-center whitespace-nowrap justify-center bg-green-200 text-black px-7 md:px-12 py-4 md:py-5 rounded-xl text-base md:text-xl font-bold transition-all duration-300 transform hover:scale-105 gap-2 md:gap-4 shadow group"
+              style={{ minWidth: 200 }}
             >
-              <span>How it Works</span>
+              Run Simulation
+              <ArrowRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </button>
+            {/* Secondary Button: How it Works */}
+            <Link
+              to="/pilot"
+              className="flex items-center whitespace-nowrap justify-center text-white px-7 md:px-12 py-4 md:py-5 rounded-xl text-base md:text-xl font-bold transition-all duration-300 border border-white hover:border-emerald-400 gap-2 md:gap-3"
+              style={{ minWidth: 220 }}
+            >
+              Request Enterprise Pilot
+            </Link>
           </div>
         </div>
 

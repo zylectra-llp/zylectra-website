@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CTA: React.FC = () => {
   return (
@@ -31,16 +32,16 @@ const CTA: React.FC = () => {
             href="#demo"
             className="px-8 py-3 rounded-lg bg-emerald-500 text-black font-medium transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
           >
-            Try the Live Demo
+            Run Simulation
           </a>
 
           {/* Secondary CTA */}
-          <a
-            href="mailto:info@zylectra.com"
+          <Link
+            to="/pilot"
             className="px-8 py-3 rounded-lg border border-emerald-500/60 text-emerald-500 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500"
           >
-            Request Pilot Program
-          </a>
+            Request Enterprise Pilot
+          </Link>
         </div>
       </div>
     </section>

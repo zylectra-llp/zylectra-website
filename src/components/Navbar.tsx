@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const location = useLocation();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -14,10 +17,15 @@ const Navbar = () => {
 	}, []);
 
 	const scrollToSection = (sectionId: string) => {
+		if (location.pathname !== "/") {
+		  navigate(`/#${sectionId}`);
+		  return;
+		}
+	  
 		const element = document.getElementById(sectionId);
 		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
-			setIsMobileMenuOpen(false);
+		  element.scrollIntoView({ behavior: "smooth" });
+		  setIsMobileMenuOpen(false);
 		}
 	};
 
@@ -37,7 +45,7 @@ const Navbar = () => {
 						<img
 							src="\image.jpg"
 							alt="Zylectra Logo"
-							className="w-10 h-10 object-contain mix-blend-multiply"
+							className="w-10 h-10 object-contain"
 						/>
 						<span className="text-2xl font-poppins font-bold text-white">
 							Zylectra
@@ -73,7 +81,7 @@ const Navbar = () => {
 							onClick={() => scrollToSection("demo")}
 							className="group flex items-center gap-2 bg-green-400 text-black px-5 py-2 rounded-md font-semibold text-sm"
 							>
-							<span>Try demo</span>
+							<span>Run Simulation</span>
 							<ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
 						</button>
 					</div>
