@@ -4,11 +4,11 @@ import Hero from './components/Hero';
 import About from './components/About';
 import CallToAction from './components/CallToAction';
 import Footer from './components/Footer';
-import SectionTwo from './components/Section2';
-import SectionThree from './components/Section3';
-import SectionFive from './components/Section5';
-import SectionSix from './components/Section6';
-import Section8 from './components/Section7';
+import SectionTwo from './components/Problem';
+import SectionThree from './components/Product';
+import SectionFour from './components/HowItWorks';
+import SectionFive from './components/Demo';
+import SectionSix from './components/WhoIsItFor';
 import { validateEnvConfig } from './config/env';
 
 function MainContent() {
@@ -25,10 +25,10 @@ function MainContent() {
       <Hero />
       <SectionTwo />
       <SectionThree/>
+      <SectionFour />
       <About />
       <SectionFive/>
       <SectionSix/>
-      <Section8/>
       <CallToAction />
       <Footer />
     </>

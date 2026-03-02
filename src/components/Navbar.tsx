@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import ComingSoonPopup from "./Blogs";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 const Navbar = () => {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const [showBlogPopup, setShowBlogPopup] = useState(false);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -26,7 +24,7 @@ const Navbar = () => {
 	return (
 		<nav
 			className={`fixed top-4 left-4 right-4 z-50 transition-all duration-300 ${isScrolled
-					? "bg-white/95 backdrop-blur-md shadow-lg border border-emerald-100/50"
+					? "bg-black backdrop-blur-md shadow-lg border border-emerald-100/50"
 					: "bg-transparent"
 				} rounded-2xl`}
 		>
@@ -41,35 +39,42 @@ const Navbar = () => {
 							alt="Zylectra Logo"
 							className="w-10 h-10 object-contain mix-blend-multiply"
 						/>
-						<span className="text-xl font-poppins font-bold text-gray-900">
+						<span className="text-2xl font-poppins font-bold text-white">
 							Zylectra
 						</span>
 					</div>
 
 					<div className="hidden md:flex items-center space-x-6 font-inter text-sm">
 						<button
+							onClick={() => scrollToSection("product")}
+							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
+						>
+							Product
+						</button>
+						<button
+							onClick={() => scrollToSection("demo")}
+							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
+						>
+							Demo
+						</button>
+						<button
+							onClick={() => scrollToSection("how-it-works")}
+							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
+						>
+							How it Works
+						</button>
+						<button
 							onClick={() => scrollToSection("about")}
-							className="text-gray-700 hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
+							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
 						>
-							About
+							About Zylectra
 						</button>
 						<button
-							onClick={() => scrollToSection("features")}
-							className="text-gray-700 hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
-						>
-							Features
-						</button>
-						<button
-							onClick={() => setShowBlogPopup(true)}
-							className="text-gray-700 hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
-						>
-							Blogs
-						</button>
-						<button
-							onClick={() => scrollToSection("cta")}
-							className="ml-4 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-						>
-							Request a demo
+							onClick={() => scrollToSection("demo")}
+							className="group flex items-center gap-2 bg-green-400 text-black px-5 py-2 rounded-md font-semibold text-sm"
+							>
+							<span>Try demo</span>
+							<ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
 						</button>
 					</div>
 
@@ -89,37 +94,39 @@ const Navbar = () => {
 					<div className="md:hidden bg-white/95 backdrop-blur-md border-t border-emerald-100/50 py-4 mt-3 rounded-xl shadow-md">
 						<div className="flex flex-col space-y-3 font-inter text-sm">
 							<button
+								onClick={() => scrollToSection("product")}
+								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
+							>
+								Product
+							</button>
+							<button
+								onClick={() => scrollToSection("demo")}
+								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
+							>
+								Demo
+							</button>
+							<button
+								onClick={() => scrollToSection("how-it-works")}
+								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
+							>
+								How it Works
+							</button>
+							<button
 								onClick={() => scrollToSection("about")}
 								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
 							>
-								About
+								About Zylectra
 							</button>
 							<button
-								onClick={() => scrollToSection("features")}
-								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
-							>
-								Features
-							</button>
-							<button
-								onClick={() => setShowBlogPopup(true)}
-								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
-							>
-								Blogs
-							</button>
-							<button
-								onClick={() => scrollToSection("cta")}
+								onClick={() => scrollToSection("demo")}
 								className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-full font-semibold shadow-md transition-all transform hover:scale-105 hover:shadow-lg mx-4 mt-2"
 							>
-								Early Access
+								Try demo
 							</button>
 						</div>
 					</div>
 				)}
 			</div>
-			<ComingSoonPopup
-				isOpen={showBlogPopup}
-				onClose={() => setShowBlogPopup(false)}
-			/>
 		</nav>
 	);
 };
