@@ -14,6 +14,7 @@ import SectionSix from "./components/WhoIsItFor";
 import PilotPage from "./pages/Pilot";
 
 import { validateEnvConfig } from "./config/env";
+import ScrollToTop from "./utils/scrollToTop";
 
 /* --------------------------
    LANDING PAGE COMPONENT
@@ -47,6 +48,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />

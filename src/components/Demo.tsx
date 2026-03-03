@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 type PredictInputs = {
   soh: number;
@@ -54,6 +55,7 @@ type RcaResult = {
 
 const Section5: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"predict" | "rca">("predict");
+  
   const [predictInputs, setPredictInputs] = useState<PredictInputs>({
     soh: 79,
     cycles: 820,
@@ -62,6 +64,7 @@ const Section5: React.FC = () => {
     resistance: 185,
     chemistry: "nmc",
   });
+
   const [rcaInputs, setRcaInputs] = useState<RcaInputs>({
     failType: "capacity",
     chargePattern: "fast",
@@ -70,48 +73,67 @@ const Section5: React.FC = () => {
     acoustic: "low",
     leak: "no",
   });
+
   const [predictResult, setPredictResult] = useState<PredictResult | null>(
     null
   );
+  
   const [rcaResult, setRcaResult] = useState<RcaResult | null>(null);
   const [predictLoading, setPredictLoading] = useState(false);
   const [rcaLoading, setRcaLoading] = useState(false);
+  const [loadingStage, setLoadingStage] = useState("");
 
   const runPrediction = () => {
     setPredictLoading(true);
+    setPredictResult(null);
+  
+    // Phase 1
     setTimeout(() => {
+      setLoadingStage("Parsing Telemetry...");
+    }, 400);
+  
+    // Phase 2
+    setTimeout(() => {
+      setLoadingStage("Running Physics-Informed Models...");
+    }, 1200);
+  
+    // Phase 3
+    setTimeout(() => {
+      setLoadingStage("Computing Failure Probabilities...");
+    }, 2000);
+  
+    // Final Result
+    setTimeout(() => {
+      // existing prediction logic here
       const { soh, cycles, temp, crate, resistance } = predictInputs;
-
+  
       const sohScore = soh < 80 ? (80 - soh) * 1.5 : 0;
       const tempScore = temp > 40 ? (temp - 40) * 1.2 : 0;
       const crateScore = crate > 2 ? (crate - 2) * 8 : 0;
       const cycleScore = cycles > 700 ? (cycles - 700) * 0.03 : 0;
       const resistanceScore = resistance > 150 ? (resistance - 150) * 0.15 : 0;
-
+  
       const totalRisk = Math.min(
         95,
         sohScore + tempScore + crateScore + cycleScore + resistanceScore
       );
-
+  
       const isFailing = totalRisk > 28;
       const confidence = Math.min(97, 62 + totalRisk * 0.38);
-      const rul = Math.max(
-        30,
-        Math.round(520 - cycles * 0.4 - totalRisk * 3)
-      );
+      const rul = Math.max(30, Math.round(520 - cycles * 0.4 - totalRisk * 3));
       const seiGrowth = Math.min(95, 18 + cycles * 0.05 + tempScore * 2);
       const liPlating = Math.min(95, crateScore * 3 + (temp < 12 ? 30 : 0));
       const thermalRisk = Math.min(95, tempScore * 3 + crateScore * 2);
       const capFade = 100 - soh;
-
-      const factors: PredictFactor[] = [
+  
+      const factors = [
         { label: "SOH Degradation", val: sohScore, color: "#f97373" },
         { label: "Thermal Stress", val: tempScore, color: "#facc15" },
         { label: "C-Rate Abuse", val: crateScore, color: "#fb923c" },
         { label: "Cycle Aging", val: cycleScore, color: "#22d3ee" },
         { label: "Impedance Rise", val: resistanceScore, color: "#a855f7" },
       ];
-
+  
       setPredictResult({
         isFailing,
         confidence,
@@ -123,8 +145,10 @@ const Section5: React.FC = () => {
         factors,
         soh,
       });
+  
       setPredictLoading(false);
-    }, 900);
+      setLoadingStage("");
+    }, 3000);
   };
 
   const runRCA = () => {
@@ -202,30 +226,63 @@ const Section5: React.FC = () => {
       setRcaLoading(false);
     }, 900);
   };
-  // Trajectory generator for degradation curve
-  const generateTrajectory = () => {
-    if (!predictResult) return "";
 
-    const riskFactor = predictResult.seiGrowth / 100;
-    const kneeFactor = predictResult.liPlating / 100;
-
-    const points: string[] = [];
-
-    for (let i = 0; i <= 100; i += 10) {
-      const lifeFraction = i / 100;
-
-      const degradation =
-        lifeFraction * 8 +
-        lifeFraction * lifeFraction * 20 * riskFactor +
-        Math.pow(lifeFraction, 3) * 40 * kneeFactor;
-
-      const y = 8 + degradation;
-
-      points.push(`${i},${Math.min(38, y)}`);
+  const generateTrajectoryData = () => {
+    if (!predictResult) return null;
+  
+    const { seiGrowth, liPlating, thermalRisk } = predictResult;
+  
+    const riskFactor = seiGrowth / 100;
+    const platingFactor = liPlating / 100;
+    const thermalFactor = thermalRisk / 100;
+  
+    // Knee onset determined by plating + SEI
+    const kneePoint = 0.55 - platingFactor * 0.25 - riskFactor * 0.15;
+    const clampedKnee = Math.max(0.35, Math.min(0.75, kneePoint));
+  
+    const main: string[] = [];
+    const upper: string[] = [];
+    const lower: string[] = [];
+  
+    for (let i = 0; i <= 100; i += 2) {
+      const x = i;
+      const life = i / 100;
+  
+      let degradation;
+  
+      if (life < clampedKnee) {
+        // Early-life slow fade
+        degradation = life * 6;
+      } else {
+        // Accelerated post-knee fade
+        const post = (life - clampedKnee) / (1 - clampedKnee);
+        degradation =
+          clampedKnee * 6 +
+          post * 10 +
+          Math.pow(post, 2) * 35 * (platingFactor + thermalFactor);
+      }
+  
+      // Add thermal amplification
+      degradation += life * 8 * thermalFactor;
+  
+      const y = Math.min(38, 6 + degradation);
+  
+      // Confidence band width grows over time
+      const uncertainty = 1 + life * 4 * (riskFactor + platingFactor);
+  
+      main.push(`${x},${y}`);
+      upper.push(`${x},${Math.max(0, y - uncertainty)}`);
+      lower.push(`${x},${Math.min(40, y + uncertainty)}`);
     }
-
-    return points.join(" ");
+  
+    return {
+      main: main.join(" "),
+      upper: upper.join(" "),
+      lower: lower.join(" "),
+      kneeX: clampedKnee * 100,
+    };
   };
+
   return (
     <section
       id="demo"
@@ -234,16 +291,27 @@ const Section5: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <p className="text-xs tracking-[0.25em] uppercase text-emerald-400 font-mono mb-3">
-            Interactive Demo
+            Interactive Sandbox
           </p>
+
           <h2 className="text-3xl md:text-4xl font-bold mb-3">
-            Zylectra Prediction Engine
+            Zylectra Physics-AI Preview
           </h2>
-          <p className="text-sm md:text-base text-gray-400 max-w-xl leading-relaxed">
-            Input representative battery telemetry to simulate Zylectra&apos;s
-            physics-informed failure analysis. This demo mirrors how the model
-            reasons about risk, degradation, and root cause.
+
+          <p className="text-sm md:text-base text-gray-400 max-w-2xl leading-relaxed mb-4">
+            This interactive sandbox demonstrates how Zylectra’s physics-informed AI
+            engine evaluates degradation risk, failure probability, and root cause
+            attribution using structured battery telemetry inputs.
           </p>
+
+          <div className="border border-amber-500/30 bg-amber-500/5 rounded-lg px-4 py-3 max-w-2xl">
+            <p className="text-[0.75rem] md:text-sm text-amber-200 leading-relaxed">
+              Note: This is a controlled preview environment designed for public
+              exploration. The full enterprise platform integrates directly with live
+              BMS streams, fleet databases, production records, and multimodal sensor
+              data to generate production-grade predictions at scale.
+            </p>
+          </div>
         </div>
 
         <div className="bg-[#0B0F15] border border-white/5 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(16,185,129,0.15)]">
@@ -377,6 +445,15 @@ const Section5: React.FC = () => {
                 <span>{predictLoading ? "Analyzing…" : "Run Physics Analysis"}</span>
               </button>
 
+              {predictLoading && (
+                <div className="mt-4 text-sm text-gray-300">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>{loadingStage}</span>
+                  </div>
+                </div>
+              )}
+
               {predictResult && (
                 <div className="mt-8 space-y-6">
                   {/* Header */}
@@ -490,32 +567,109 @@ const Section5: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Simple trajectory visualization */}
+                  {/* Enhanced trajectory visualization */}
                   <div className="bg-[#05070B] border border-white/10 rounded-xl p-4 space-y-3">
                     <p className="text-[0.65rem] tracking-[0.18em] uppercase text-gray-400 font-mono">
                       Voltage / SOH Trajectory (Simulated)
                     </p>
-                    <div className="relative h-24 overflow-hidden rounded-lg bg-gradient-to-r from-emerald-500/10 via-sky-500/10 to-transparent">
-                      <svg
-                        viewBox="0 0 100 40"
-                        preserveAspectRatio="none"
-                        className="absolute inset-0 w-full h-full text-emerald-400/80"
-                      >
-                        <polyline
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinejoin="round"
-                          points={generateTrajectory()}
-                        />
-                      </svg>
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.25),transparent_60%)]" />
-                    </div>
+
+                    {(() => {
+                      const data = generateTrajectoryData();
+                      if (!data) return null;
+
+                      return (
+                        <div className="relative h-28 overflow-hidden rounded-lg bg-gradient-to-r from-emerald-500/10 via-sky-500/10 to-transparent">
+                          <svg
+                            viewBox="0 0 100 40"
+                            preserveAspectRatio="none"
+                            className="absolute inset-0 w-full h-full"
+                          >
+                            {/* Subtle grid lines */}
+                            {[10, 20, 30].map((y) => (
+                              <line
+                                key={y}
+                                x1="0"
+                                x2="100"
+                                y1={y}
+                                y2={y}
+                                stroke="rgba(255,255,255,0.05)"
+                                strokeWidth="0.5"
+                              />
+                            ))}
+
+                            {/* Confidence band */}
+                            <polygon
+                              points={`${data.upper} ${data.lower
+                                .split(" ")
+                                .reverse()
+                                .join(" ")}`}
+                              fill="rgba(16,185,129,0.15)"
+                            />
+
+                            {/* Main trajectory */}
+                            <polyline
+                              fill="none"
+                              stroke="rgba(16,185,129,0.9)"
+                              strokeWidth="1.8"
+                              strokeLinejoin="round"
+                              points={data.main}
+                            />
+
+                            {/* Knee marker */}
+                            <line
+                              x1={data.kneeX}
+                              x2={data.kneeX}
+                              y1="0"
+                              y2="40"
+                              stroke="rgba(251,191,36,0.7)"
+                              strokeDasharray="3 3"
+                              strokeWidth="1"
+                            />
+                          </svg>
+
+                          {/* Knee label */}
+                          <div
+                            className="absolute text-[0.6rem] text-amber-300 font-mono"
+                            style={{
+                              left: `${data.kneeX}%`,
+                              top: "4px",
+                              transform: "translateX(-50%)",
+                            }}
+                          >
+                            Knee Onset
+                          </div>
+
+                          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.25),transparent_60%)]" />
+                        </div>
+                      );
+                    })()}
+
                     <p className="text-[0.7rem] text-gray-400">
-                      Curve illustrates projected degradation pattern for a cell
-                      at ~{predictResult.soh.toFixed(0)}% SOH and{" "}
-                      {predictResult.rul} estimated remaining cycles.
+                      Curve illustrates projected degradation pattern for a cell at ~
+                      {predictResult?.soh.toFixed(0)}% SOH and{" "}
+                      {predictResult?.rul} estimated remaining cycles. Shaded region represents
+                      model uncertainty envelope.
                     </p>
+                  </div>
+
+                  {/* CTA after simulation */}
+                  <div className="mt-6 border border-emerald-500/30 bg-emerald-500/5 rounded-xl px-4 py-4 md:px-5 md:py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div>
+                      <p className="text-sm md:text-base font-semibold text-white">
+                        Impressed by the simulation?
+                      </p>
+                      <p className="text-xs md:text-sm text-emerald-100/90">
+                        Deploy Zylectra inside your battery stack and get
+                        production-grade failure prediction and root-cause
+                        attribution.
+                      </p>
+                    </div>
+                    <Link
+                      to="/pilot"
+                      className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-emerald-400 text-black text-xs md:text-sm font-semibold shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 transition"
+                    >
+                      Request Enterprise Pilot
+                    </Link>
                   </div>
                 </div>
               )}
@@ -744,6 +898,26 @@ const Section5: React.FC = () => {
                         </span>
                       ))}
                     </div>
+                  </div>
+
+                  {/* CTA after RCA simulation */}
+                  <div className="mt-6 border border-emerald-500/30 bg-emerald-500/5 rounded-xl px-4 py-4 md:px-5 md:py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div>
+                      <p className="text-sm md:text-base font-semibold text-white">
+                        Impressed by the simulation?
+                      </p>
+                      <p className="text-xs md:text-sm text-emerald-100/90">
+                        Deploy Zylectra inside your battery stack and give your
+                        team the same level of forensic visibility across your
+                        fleet.
+                      </p>
+                    </div>
+                    <Link
+                      to="/pilot"
+                      className="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-emerald-400 text-black text-xs md:text-sm font-semibold shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 transition"
+                    >
+                      Request Enterprise Pilot
+                    </Link>
                   </div>
                 </div>
               )}

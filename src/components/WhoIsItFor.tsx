@@ -5,6 +5,7 @@ import {
   FlaskConical,
   Scale,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 type CustomerCard = {
   title: string;
@@ -56,6 +57,13 @@ const customers: CustomerCard[] = [
 ];
 
 const Customers: React.FC = () => {
+  const scrollToDemo = () => {
+    const el = document.getElementById("demo");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       id="customers"
@@ -109,6 +117,23 @@ const Customers: React.FC = () => {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* CTAs */}
+        <div className="mt-16 flex flex-col sm:flex-row sm:items-center gap-4">
+          <Link
+            to="/pilot"
+            className="inline-flex justify-center items-center px-6 py-3 rounded-lg bg-emerald-400 text-black font-semibold text-sm shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 transition"
+          >
+            Request Enterprise Pilot
+          </Link>
+          <button
+            type="button"
+            onClick={scrollToDemo}
+            className="inline-flex justify-center items-center px-6 py-3 rounded-lg border border-white/30 text-sm font-semibold text-white hover:border-emerald-400 hover:text-emerald-300 transition"
+          >
+            Run Simulation
+          </button>
         </div>
       </div>
     </section>

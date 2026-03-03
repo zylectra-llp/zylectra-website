@@ -41,16 +41,11 @@ const Hero = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
         
         {/* Badge */}
-        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="inline-flex mt-14 items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200/50 rounded-full shadow-lg mb-8">
-            <div className="relative">
-              <Sparkles className="w-5 h-5 text-green-600 animate-spin" />
-              <div className="absolute inset-0 bg-green-400 rounded-full opacity-20 animate-ping"></div>
-            </div>
-            <span className="w-7, h-7, border-radius: 50%, background: #00e5ff, animation: pulse 2s infinite, display: inline-block"> 
-              Physics-Informed AI for Battery Systems 
-            </span>
-          </div>
+        <div className="inline-flex mt-14 items-center gap-3 px-6 py-3 bg-emerald-500/10 border border-emerald-400/30 rounded-full mb-8">
+          <Sparkles className="w-4 h-4 text-emerald-400" />
+          <span className="text-sm font-medium text-emerald-300 tracking-wide">
+            Physics-Informed AI for Battery Infrastructure
+          </span>
         </div>
 
         {/* Main Headlines */}
@@ -69,7 +64,7 @@ const Hero = () => {
           <p className="text-gray-400 mb-4 max-w-3xl mx-auto leading-relaxed text-xl">
             Zylectra combines physics with AI for multi-modal root cause analysis, so you know {" "}
             <em className='text-white'>
-              which battery fails, why it failed, & who is responsible
+              which battery fails, why it failed, and who owns the risk.
             </em>.
           </p>
         </div>
@@ -80,7 +75,7 @@ const Hero = () => {
             {/* Primary Button: Demo */}
             <button
               onClick={() => scrollToSection("demo")}
-              className="flex items-center whitespace-nowrap justify-center bg-green-200 text-black px-7 md:px-12 py-4 md:py-5 rounded-xl text-base md:text-xl font-bold transition-all duration-300 transform hover:scale-105 gap-2 md:gap-4 shadow group"
+              className="flex items-center justify-center bg-emerald-500 text-black px-8 md:px-14 py-4 md:py-5 rounded-xl text-base md:text-xl font-semibold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] gap-3"
               style={{ minWidth: 200 }}
             >
               Run Simulation
@@ -102,8 +97,8 @@ const Hero = () => {
           className="fade-up-delay-4 flex flex-wrap justify-center gap-[3.5rem] mt-20 pt-12 pb-5 border-t border-emerald-500/25"
         >
           {[
-            ["3–7×", "Earlier Failure Detection vs BMS Alerts"],
-            ["94%", "Root Cause Precision (Cell-Level Attribution)"],
+            ["3–7×", "Earlier Detection vs Conventional BMS Thresholds"],
+            ["94%", "Cell-Level Root Cause Attribution Accuracy"],
             ["Multi-Modal", "Physics + Telemetry + Degradation Modeling"],
           ].map(([val, label]) => (
             <div key={label} className="text-center max-w-[250px]">

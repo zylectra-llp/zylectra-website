@@ -3,19 +3,19 @@ import { XCircle, CheckCircle } from "lucide-react";
 
 const SectionTwo = () => {
   const problems = [
-    "Detects failures after damage is done",
-    "Pure statistics, no physics understanding",
-    "Single data source (voltage/temp only)",
-    "Can't attribute fault to root cause",
-    "High false positive rates",
+    "Threshold alerts after degradation onset",
+    "Voltage/temperature-only observability",
+    "No modeling of failure propagation",
+    "Limited cell-level attribution",
+    "Escalating warranty exposure from late detection",
   ];
 
   const solutions = [
-    "3–7× earlier failure prediction",
-    "Physics constraints embedded in model",
-    "Multi-modal: electrical, thermal, acoustic, usage",
-    "Attribution: OEM defect vs user vs environment",
-    "Explainable outputs for engineering teams",
+    "3–7× earlier detection vs BMS thresholds",
+    "Electrochemical & thermal constraints embedded in model",
+    "Multi-modal signal ingestion",
+    "Cell-level root cause attribution",
+    "Explainable outputs for engineering & warranty teams",
   ];
 
   return (
@@ -36,13 +36,13 @@ const SectionTwo = () => {
           </div>
 
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-            Current Tools Are Flying Blind
+          Battery Monitoring Detects Failures Too Late
           </h2>
 
           <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Battery failures cost OEMs billions in recalls and warranties,
-            yet existing systems react too late and cannot explain the physics
-            behind degradation.
+            Conventional BMS and anomaly detection systems rely on voltage and
+            temperature thresholds, triggering alerts only after degradation
+            has progressed beyond <br/> early-stage failure dynamics.
           </p>
         </div>
 
@@ -62,8 +62,9 @@ const SectionTwo = () => {
             </h3>
 
             <p className="text-gray-400 mb-8 leading-relaxed">
-              Threshold alerts and pattern libraries that react after damage
-              occurs offering no insight into underlying electrochemical failure.
+              Alerts activate when observable metrics cross predefined limits.
+              By that point, underlying electrochemical degradation is already
+              underway, reducing intervention options.
             </p>
 
             <ul className="space-y-4">
@@ -89,7 +90,7 @@ const SectionTwo = () => {
             </h3>
 
             <p className="text-gray-400 mb-8 leading-relaxed">
-              AI constrained by electrochemical dynamics, thermal behavior,
+              Physics-informed AI constrained by electrochemical dynamics, thermal behavior,
               and degradation pathways predicting and explaining failures
               at the physics level.
             </p>

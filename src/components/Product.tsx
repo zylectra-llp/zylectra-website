@@ -186,7 +186,7 @@ const SectionThree = () => {
             {/* Module 1 */}
             <div>
               <div className="text-xs font-mono tracking-widest text-cyan-400 mb-3">
-                MODULE 01 —
+                PREDICTION LAYER —
               </div>
 
               <h3 className="text-2xl font-semibold mb-4 flex items-center gap-3">
@@ -201,10 +201,10 @@ const SectionThree = () => {
 
               <div className="flex flex-wrap gap-3">
                 {[
-                  "Early Failure Alerts",
-                  "Mechanism-Level Modeling",
-                  "SOH Forecasting",
-                  "Thermal Event Prevention",
+                  "Degradation Trajectory Modeling",
+                  "Failure Window Forecasting",
+                  "SOH & RUL Estimation",
+                  "Thermal Runaway Risk Signals",
                 ].map((pill) => (
                   <span
                     key={pill}
@@ -219,7 +219,7 @@ const SectionThree = () => {
             {/* Module 2 */}
             <div>
               <div className="text-xs font-mono tracking-widest text-amber-400 mb-3">
-                MODULE 02 —
+                ATTRIBUTION LAYER —
               </div>
 
               <h3 className="text-2xl font-semibold mb-4 flex items-center gap-3">
@@ -229,15 +229,16 @@ const SectionThree = () => {
 
               <p className="text-gray-300 leading-relaxed mb-6">
                 Multi-signal intelligence that pinpoints why a battery is failing
-                separating manufacturing defects from usage-driven damage and guiding the right action.
+                separating manufacturing defects, operational stress, and environmental exposure,
+                enabling defensible warrant and engineering decisions.
               </p>
 
               <div className="flex flex-wrap gap-3">
                 {[
-                  "Failure Attribution",
-                  "Usage Pattern Insights",
-                  "Warranty Clarity",
-                  "Actionable Recommendations",
+                  "Cell-Level Causal Attribution",
+                  "Manufacturing vs Usage Separation",
+                  "Warranty Risk Quantification",
+                  "Engineering-Grade Explainability",
                 ].map((pill) => (
                   <span
                     key={pill}
@@ -254,7 +255,7 @@ const SectionThree = () => {
           <div className="sticky top-20 bg-[#0f172a] border border-white/10 rounded-xl p-6">
             {/* Header */}
             <div className="font-mono text-[0.68rem] tracking-[0.12em] text-gray-500 uppercase mb-4">
-              Live Cell Health Monitor Output
+              Sample Model Output : Cell-Level Degradation Profile
             </div>
 
             <BatteryViz />

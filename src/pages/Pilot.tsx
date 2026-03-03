@@ -562,7 +562,7 @@ const Pilot: React.FC = () => {
         <div className="max-w-5xl mx-auto">
           <div className="section-label">Data Requirements</div>
           <h2 className="font-syne font-700 mb-4" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2rem)", letterSpacing: "-0.01em" }}>
-            What You Bring to the Pilot
+            Minimum Data Requirements for Statistical Validity
           </h2>
           <p className="mb-10" style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", maxWidth: 520 }}>
             Minimum requirements to generate statistically meaningful predictions within the 4-week window.
@@ -595,7 +595,7 @@ const Pilot: React.FC = () => {
 
         <div className="relative max-w-2xl mx-auto">
           <div className="mb-6 flex justify-center">
-            <span className="pill"><span className="pill-dot" />4 Spots Available Q2 2026</span>
+            <span className="pill"><span className="pill-dot" />Limited Engineering Capacity · Q2 2026</span>
           </div>
           <h2 className="font-syne font-800 mb-6"
             style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>

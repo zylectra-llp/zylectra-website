@@ -10,34 +10,41 @@ const steps = [
   {
     num: "01",
     icon: Database,
-    title: "Unified Battery Data Layer",
-    desc: "Aggregate electrochemical, thermal, acoustic, and BMS telemetry into a synchronized operational model, no hardware changes required.",
+    title: "Unified Battery Data Integration",
+    desc: "Continuously ingest electrochemical, thermal, acoustic, and BMS telemetry into a synchronized digital battery model, no hardware changes required.",
   },
   {
     num: "02",
     icon: Atom,
-    title: "Physics-Constrained Modeling Engine",
-    desc: "Embed electrochemical laws directly into training to eliminate physically invalid predictions and improve reliability under edge cases.",
+    title: "Physics-Informed AI Modeling",
+    desc: "Embed electrochemical constraints directly into the AI engine to eliminate unrealistic predictions and improve reliability under extreme operating conditions.",
   },
   {
     num: "03",
     icon: Target,
-    title: "Probabilistic Failure Forecasting",
-    desc: "Deliver calibrated SOH, RUL, and failure risk probabilities with quantified uncertainty for proactive intervention.",
+    title: "Failure & RUL Prediction",
+    desc: "Forecast state of health (SOH), remaining useful life (RUL), and probability of failure before critical thresholds are reached.",
   },
   {
     num: "04",
     icon: Search,
-    title: "Forensic Root Cause Attribution",
-    desc: "Isolate degradation origin and distinguish manufacturing defects from operational misuse with audit-ready traceability.",
+    title: "Root Cause Intelligence",
+    desc: "Identify degradation drivers and distinguish manufacturing defects from operational stress with audit-ready traceability.",
   },
 ];
 
 const Section4: React.FC = () => {
+  const scrollToDemo = () => {
+    const el = document.getElementById("demo");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       id="how-it-works"
-      aria-labelledby="architecture-heading"
+      aria-labelledby="how-it-works-heading"
       style={{
         padding: "6rem 1.5rem",
         backgroundColor: "#0E1117",
@@ -61,19 +68,19 @@ const Section4: React.FC = () => {
               marginBottom: "1rem",
             }}
           >
-            Zylectra Battery Intelligence Platform
+            Predictive Battery Analytics Architecture
           </div>
 
           <h2
-            id="architecture-heading"
+            id="how-it-works-heading"
             style={{
               fontSize: "2.5rem",
               fontWeight: 700,
               lineHeight: 1.2,
-              maxWidth: "800px",
+              maxWidth: "850px",
             }}
           >
-            Physics-Constrained AI for Predictive Battery Reliability
+            Detect Battery Failure Before It Happens
           </h2>
 
           <p
@@ -81,13 +88,13 @@ const Section4: React.FC = () => {
               fontSize: "1rem",
               lineHeight: 1.6,
               color: "#A0A6B2",
-              maxWidth: "700px",
+              maxWidth: "750px",
               marginTop: "1rem",
             }}
           >
-            Zylectra combines physics-informed modeling, probabilistic forecasting,
-            and forensic attribution into a unified battery analytics engine
-            purpose-built for enterprise risk reduction and predictive maintenance.
+            Zylectra replaces reactive battery monitoring with physics-informed
+            AI that predicts degradation, forecasts failure risk, and identifies
+            root causes, enabling proactive maintenance and enterprise risk reduction.
           </p>
         </header>
 
@@ -122,7 +129,7 @@ const Section4: React.FC = () => {
                   marginBottom: "1rem",
                 }}
               >
-                LAYER {num}
+                STEP {num}
               </div>
 
               <Icon
@@ -153,9 +160,44 @@ const Section4: React.FC = () => {
             </div>
           ))}
         </div>
+
+        <div
+          style={{
+            marginTop: "3rem",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            type="button"
+            onClick={scrollToDemo}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              padding: "0.9rem 1.25rem",
+              borderRadius: "12px",
+              background: "rgba(0, 229, 255, 0.10)",
+              border: "1px solid rgba(0, 229, 255, 0.30)",
+              color: "#00E5FF",
+              fontWeight: 700,
+              cursor: "pointer",
+              transition: "transform 0.2s ease, background 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(0, 229, 255, 0.14)";
+              e.currentTarget.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(0, 229, 255, 0.10)";
+              e.currentTarget.style.transform = "translateY(0px)";
+            }}
+          >
+            Explore the Interactive Demo <span aria-hidden>→</span>
+          </button>
+        </div>
       </div>
 
-      {/* Simple animation keyframes */}
       <style>
         {`
           @keyframes fadeInUp {

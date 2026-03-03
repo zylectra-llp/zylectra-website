@@ -35,9 +35,9 @@ const Footer: React.FC = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 py-20">
         {/* Top Grid */}
-        <div className="grid md:grid-cols-3 gap-12 mb-16">
+        <div className="grid md:grid-cols-4 gap-12 mb-16">
           
-          {/* Brand Section */}
+          {/* Brand */}
           <div>
             <div className="flex items-center gap-4 mb-6">
               <img
@@ -51,10 +51,27 @@ const Footer: React.FC = () => {
             </div>
 
             <p className="text-white/60 leading-relaxed max-w-md">
-              Physics-informed AI models for battery failure prediction,
-              degradation intelligence, and defensible warranty attribution.
-              Built for OEM-scale deployment.
+              We see what your batteries won't tell you.
             </p>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="text-sm uppercase tracking-widest text-emerald-500 mb-6">
+              Company
+            </h4>
+
+            <div className="space-y-3 text-sm text-white/70">
+              <a href="#how-it-works" className="block hover:text-emerald-400 transition-colors">
+                How It Works
+              </a>
+              <a href="#demo" className="block hover:text-emerald-400 transition-colors">
+                Demo Simulation
+              </a>
+              <a href="/pilot" className="block hover:text-emerald-400 transition-colors">
+                Enterprise Pilot
+              </a>
+            </div>
           </div>
 
           {/* Contact */}
@@ -85,10 +102,10 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Connect */}
+          {/* Social */}
           <div>
             <h4 className="text-sm uppercase tracking-widest text-emerald-500 mb-6">
-              Connect
+              Social
             </h4>
 
             <a
@@ -106,16 +123,18 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
           <div className="text-white/50">
-            © 2026 Zylectra. All rights reserved.
+            © {new Date().getFullYear()} Zylectra. All rights reserved.
           </div>
 
-          <button
-            onClick={scrollToTop}
-            className="flex items-center gap-2 text-white/60 hover:text-emerald-400 transition-colors"
-          >
-            Back to top
-            <ArrowUp className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-6 text-white/50">
+            <button
+              onClick={scrollToTop}
+              className="flex items-center gap-2 hover:text-emerald-400 transition-colors"
+            >
+              Back to top
+              <ArrowUp className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </footer>

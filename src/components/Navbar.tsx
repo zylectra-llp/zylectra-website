@@ -44,7 +44,7 @@ const Navbar = () => {
 					>
 						<img
 							src="\image.jpg"
-							alt="Zylectra Logo"
+							alt="Zylectra AI Battery Failure Prediction Platform Logo"
 							className="w-10 h-10 object-contain"
 						/>
 						<span className="text-2xl font-poppins font-bold text-white">
@@ -57,25 +57,25 @@ const Navbar = () => {
 							onClick={() => scrollToSection("product")}
 							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
 						>
-							Product
+							Platform
 						</button>
 						<button
 							onClick={() => scrollToSection("demo")}
 							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
 						>
-							Demo
+							Simulation
 						</button>
 						<button
 							onClick={() => scrollToSection("how-it-works")}
 							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
 						>
-							How it Works
+							Prediction Engine
 						</button>
 						<button
 							onClick={() => scrollToSection("about")}
 							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
 						>
-							About Zylectra
+							Company
 						</button>
 						<button
 							onClick={() => scrollToSection("demo")}
@@ -105,31 +105,31 @@ const Navbar = () => {
 								onClick={() => scrollToSection("product")}
 								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
 							>
-								Product
+								Platform
 							</button>
 							<button
 								onClick={() => scrollToSection("demo")}
 								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
 							>
-								Demo
+								Simulation
 							</button>
 							<button
 								onClick={() => scrollToSection("how-it-works")}
 								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
 							>
-								How it Works
+								Prediction Engine
 							</button>
 							<button
 								onClick={() => scrollToSection("about")}
 								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
 							>
-								About Zylectra
+								Company
 							</button>
 							<button
 								onClick={() => scrollToSection("demo")}
 								className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-full font-semibold shadow-md transition-all transform hover:scale-105 hover:shadow-lg mx-4 mt-2"
 							>
-								Try demo
+								Run Simulation
 							</button>
 						</div>
 					</div>
