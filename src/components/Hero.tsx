@@ -78,7 +78,7 @@ const Hero = () => {
               className="flex items-center justify-center bg-emerald-500 text-black px-8 md:px-14 py-4 md:py-5 rounded-xl text-base md:text-xl font-semibold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] gap-3"
               style={{ minWidth: 200 }}
             >
-              Run Simulation
+              Try for free
               <ArrowRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-2 transition-transform duration-300" />
             </button>
             {/* Secondary Button: How it Works */}

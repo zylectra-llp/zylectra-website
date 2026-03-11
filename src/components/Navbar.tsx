@@ -63,7 +63,7 @@ const Navbar = () => {
 							onClick={() => scrollToSection("demo")}
 							className="text-white hover:text-emerald-600 transition-all duration-300 px-3 py-2 rounded-lg hover:bg-emerald-50"
 						>
-							Simulation
+							Demo
 						</button>
 						<button
 							onClick={() => scrollToSection("how-it-works")}
@@ -81,7 +81,7 @@ const Navbar = () => {
 							onClick={() => scrollToSection("demo")}
 							className="group flex items-center gap-2 bg-green-400 text-black px-5 py-2 rounded-md font-semibold text-sm"
 							>
-							<span>Run Simulation</span>
+							<span>Try for free</span>
 							<ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
 						</button>
 					</div>
@@ -111,7 +111,7 @@ const Navbar = () => {
 								onClick={() => scrollToSection("demo")}
 								className="text-gray-700 hover:text-emerald-600 transition-all px-4 py-2 rounded-lg hover:bg-emerald-50"
 							>
-								Simulation
+								Demo
 							</button>
 							<button
 								onClick={() => scrollToSection("how-it-works")}
@@ -129,7 +129,7 @@ const Navbar = () => {
 								onClick={() => scrollToSection("demo")}
 								className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-full font-semibold shadow-md transition-all transform hover:scale-105 hover:shadow-lg mx-4 mt-2"
 							>
-								Run Simulation
+								Try for free
 							</button>
 						</div>
 					</div>

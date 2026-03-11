@@ -41,7 +41,7 @@ const CTA: React.FC = () => {
             href="#demo"
             className="px-8 py-3 rounded-lg border border-emerald-500/60 text-emerald-500 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500"
           >
-            Explore Demo Simulation
+            Try for free
           </a>
         </div>
       </div>

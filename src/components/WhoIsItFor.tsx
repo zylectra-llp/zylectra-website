@@ -132,7 +132,7 @@ const Customers: React.FC = () => {
             onClick={scrollToDemo}
             className="inline-flex justify-center items-center px-6 py-3 rounded-lg border border-white/30 text-sm font-semibold text-white hover:border-emerald-400 hover:text-emerald-300 transition"
           >
-            Run Simulation
+            Try for free
           </button>
         </div>
       </div>
