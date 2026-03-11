@@ -430,12 +430,12 @@ const Section5: React.FC = () => {
     setLoading(true);
     setLoadStep(0);
     setActiveTab("prediction");
-    STEPS.forEach((_, i) => setTimeout(() => setLoadStep(i), i * 430));
+    STEPS.forEach((_, i) => setTimeout(() => setLoadStep(i), i * 950));
     setTimeout(() => {
       setLoading(false);
       setShowResult(true);
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 80);
-    }, STEPS.length * 430 + 150);
+    }, STEPS.length * 950 + 400);
   };
 
   const ss = active ? STATUS_STYLE[active.result.status] : null;
