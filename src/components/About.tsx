@@ -28,7 +28,7 @@ const About = () => {
           </div>
           <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 to-teal-500 mx-auto mb-6 rounded-full"></div>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed hidden sm:block">
-            Driving the next leap in battery reliability with AI built for physics, trust, and industry impact.
+            Bridging the gap between electrochemical physics and artificial intelligence to secure the world's energy transition.
           </p>
         </div>
 

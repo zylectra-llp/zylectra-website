@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -12,8 +12,6 @@ import SectionFour from "./components/HowItWorks";
 import SectionFive from "./components/Demo";
 import SectionSix from "./components/WhoIsItFor";
 import PilotPage from "./pages/Pilot";
-
-import { validateEnvConfig } from "./config/env";
 import ScrollToTop from "./utils/scrollToTop";
 
 /* --------------------------
@@ -40,12 +38,6 @@ function LandingPage() {
 --------------------------- */
 
 function App() {
-  useEffect(() => {
-    if (import.meta.env.DEV) {
-      validateEnvConfig();
-    }
-  }, []);
-
   return (
     <Router>
       <ScrollToTop />

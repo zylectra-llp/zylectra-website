@@ -1,57 +1,62 @@
 import React from "react";
-import {
-  Factory,
-  Car,
-  FlaskConical,
-  Scale,
-} from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Server,
+  Zap,
+  ShieldAlert,
+  BarChart3,
+} from "lucide-react";
 
 type CustomerCard = {
   title: string;
+  subtitle: string;
   Icon: React.ComponentType<{ className?: string }>;
   items: string[];
 };
 
 const customers: CustomerCard[] = [
   {
+    title: "Data Center Operators",
+    subtitle: "Uptime & Critical Infrastructure",
+    Icon: Server,
+    items: [
+      "Eliminate 'blind spots' in standard UPS/BMS monitoring",
+      "Predict thermal runaway events weeks in advance",
+      "Optimize cooling costs via cell-level thermal correlation",
+      "Ensure 24/7 reliability for Tier 4 power requirements",
+    ],
+  },
+  {
+    title: "BESS Asset Owners",
+    subtitle: "ROI & Revenue Protection",
+    Icon: Zap,
+    items: [
+      "Maximize project IRR by slowing capacity fade",
+      "Audit-ready data for defensible warranty claims",
+      "Monitor multi-vendor rack performance in one view",
+      "Reduce insurance premiums via proven safety monitoring",
+    ],
+  },
+  {
+    title: "EPC & O&M Teams",
+    subtitle: "Operational Efficiency",
+    Icon: ShieldAlert,
+    items: [
+      "Shift from reactive to predictive maintenance cycles",
+      "Identify underperforming strings before they drop",
+      "Remote diagnostics: Reduce site visits and truck rolls",
+      "Automated safety reporting for grid compliance",
+    ],
+  },
+  {
     title: "Battery OEMs",
-    Icon: Factory,
+    subtitle: "R&D & Quality Assurance",
+    Icon: BarChart3,
     items: [
-      "Catch manufacturing defects before packs ship",
-      "Reduce warranty claims with data-driven fault attribution",
-      "Accelerate degradation studies from years to weeks",
-      "Feed prediction insights back into cell design",
-    ],
-  },
-  {
-    title: "EV Manufacturers",
-    Icon: Car,
-    items: [
-      "Real-time fleet health monitoring at scale",
-      "Proactive recall prevention with early anomaly detection",
-      "Distinguish driver misuse from OEM defect in warranty disputes",
-      "Optimize BMS charging via degradation models",
-    ],
-  },
-  {
-    title: "R&D & Validation Teams",
-    Icon: FlaskConical,
-    items: [
-      "Physics-grounded degradation path visualization",
-      "Automated failure mode classification in testing",
-      "Correlate formation protocol variations with SOH",
-      "Reduce cycle testing time with predictive RUL modeling",
-    ],
-  },
-  {
-    title: "Legal & Warranty Teams",
-    Icon: Scale,
-    items: [
-      "Objective multi-modal evidence for fault attribution",
-      "Timestamped failure event reconstruction",
-      "Distinguish OEM vs. environmental vs. user-caused failures",
-      "Defensible reports for insurance & regulatory proceedings",
+      "Validate cell chemistry under real-world cycling",
+      "Accelerate degradation studies via Physics-AI Digital Twins",
+      "Improve fleet-wide design based on field failure data",
+      "Provide 'Battery-as-a-Service' with guaranteed RUL",
     ],
   },
 ];
@@ -77,13 +82,13 @@ const Customers: React.FC = () => {
 
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-semibold text-white mb-6">
-          Built for Battery & EV OEMs
+          Intelligence for <span className="text-emerald-400">High-Stakes</span> Assets.
         </h2>
 
         {/* Description */}
         <p className="text-white/60 max-w-xl leading-relaxed mb-16">
-          Designed specifically for teams who design, manufacture, and support
-          battery-powered systems at scale.
+          Whether you are managing a 100MW grid-scale site or a mission-critical data center, 
+          Zylectra provides the physics-informed layer required to secure your investment.
         </p>
 
         {/* Grid */}
@@ -132,7 +137,7 @@ const Customers: React.FC = () => {
             onClick={scrollToDemo}
             className="inline-flex justify-center items-center px-6 py-3 rounded-lg border border-white/30 text-sm font-semibold text-white hover:border-emerald-400 hover:text-emerald-300 transition"
           >
-            Try for free
+            See it in action
           </button>
         </div>
       </div>

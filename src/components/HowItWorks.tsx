@@ -1,213 +1,100 @@
 import React from "react";
-import {
-  Database,
-  Atom,
-  Target,
-  Search,
-} from "lucide-react";
+import { Database, Atom, Target, Search, ArrowRight } from "lucide-react";
 
 const steps = [
   {
     num: "01",
     icon: Database,
-    title: "Unified Battery Data Integration",
-    desc: "Continuously ingest electrochemical, thermal, acoustic, and BMS telemetry into a synchronized digital battery model, no hardware changes required.",
+    title: "Non-Invasive Data Integration",
+    desc: "Seamlessly ingest existing BMS telemetry, thermal logs, and ambient sensor data. Zero hardware modifications or downtime required for deployment.",
   },
   {
     num: "02",
     icon: Atom,
-    title: "Physics-Informed AI Modeling",
-    desc: "Embed electrochemical constraints directly into the AI engine to eliminate unrealistic predictions and improve reliability under extreme operating conditions.",
+    title: "Physics-Informed Processing",
+    desc: "Our 'Digital Twin' models embed electrochemical laws directly into the neural network, ensuring predictions stay physically grounded, even in extreme climates.",
   },
   {
     num: "03",
     icon: Target,
-    title: "Failure & RUL Prediction",
-    desc: "Forecast state of health (SOH), remaining useful life (RUL), and probability of failure before critical thresholds are reached.",
+    title: "Predictive Failure Window",
+    desc: "Move beyond real-time alerts. Forecast remaining useful life (RUL) and identify specific racks trending toward thermal instability months in advance.",
   },
   {
     num: "04",
     icon: Search,
     title: "Root Cause Intelligence",
-    desc: "Identify degradation drivers and distinguish manufacturing defects from operational stress with audit-ready traceability.",
+    desc: "Automatically isolate degradation drivers. Distinguish between manufacturing defects and operational stress for audit-ready warranty defensibility.",
   },
 ];
 
-const Section4: React.FC = () => {
-  const scrollToDemo = () => {
-    const el = document.getElementById("demo");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+const Section4 = () => {
   return (
-    <section
-      id="how-it-works"
-      aria-labelledby="how-it-works-heading"
-      style={{
-        padding: "6rem 1.5rem",
-        backgroundColor: "#0E1117",
-        color: "#FFFFFF",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-        }}
-      >
-        <header>
-          <div
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.75rem",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: "#00E5FF",
-              marginBottom: "1rem",
-            }}
-          >
-            Predictive Battery Analytics Architecture
+    <section id="how-it-works" className="relative py-24 md:py-32 bg-[#050508] overflow-hidden">
+      {/* Background Decorative Element */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-20 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 blur-[120px] rounded-full" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        <header className="mb-16 md:mb-24">
+          <div className="inline-block px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-[10px] tracking-[0.3em] uppercase text-emerald-400 rounded-full mb-6 font-bold">
+            The Zylectra Architecture
           </div>
 
-          <h2
-            id="how-it-works-heading"
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: 700,
-              lineHeight: 1.2,
-              maxWidth: "850px",
-            }}
-          >
-            Detect Battery Failure Before It Happens
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 tracking-tight max-w-4xl">
+            From Raw Telemetry to <span className="text-emerald-400">Actionable Intelligence.</span>
           </h2>
 
-          <p
-            style={{
-              fontSize: "1rem",
-              lineHeight: 1.6,
-              color: "#A0A6B2",
-              maxWidth: "750px",
-              marginTop: "1rem",
-            }}
-          >
-            Zylectra replaces reactive battery monitoring with physics-informed
-            AI that predicts degradation, forecasts failure risk, and identifies
-            root causes, enabling proactive maintenance and enterprise risk reduction.
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl leading-relaxed">
+            Standard monitoring is reactive. Zylectra integrates physics-informed AI into your existing stack to predict failures before they disrupt your infrastructure.
           </p>
         </header>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "1.5rem",
-            marginTop: "3.5rem",
-          }}
-        >
+        {/* Steps Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map(({ num, icon: Icon, title, desc }) => (
             <div
               key={num}
-              style={{
-                backgroundColor: "#161B22",
-                border: "1px solid #22262E",
-                borderRadius: "14px",
-                padding: "2rem 1.75rem",
-                transition: "all 0.4s ease",
-                transform: "translateY(20px)",
-                opacity: 0,
-                animation: "fadeInUp 0.6s ease forwards",
-              }}
+              className="group relative bg-white/[0.03] border border-white/10 rounded-2xl p-8 transition-all hover:bg-white/[0.05] hover:border-emerald-500/30"
             >
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.1em",
-                  color: "#00E5FF",
-                  marginBottom: "1rem",
-                }}
-              >
-                STEP {num}
+              <div className="font-mono text-[10px] tracking-widest text-emerald-500 mb-6 flex justify-between items-center">
+                <span>PHASE {num}</span>
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowRight className="w-4 h-4" />
+                </span>
               </div>
 
-              <Icon
-                size={28}
-                strokeWidth={1.5}
-                style={{ marginBottom: "1rem", color: "#00E5FF" }}
-              />
+              <div className="mb-6 p-3 bg-emerald-500/10 rounded-xl w-fit group-hover:scale-110 transition-transform">
+                <Icon size={24} className="text-emerald-400" />
+              </div>
 
-              <h3
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 600,
-                  marginBottom: "0.75rem",
-                }}
-              >
+              <h3 className="text-lg font-bold text-white mb-4 leading-snug">
                 {title}
               </h3>
 
-              <p
-                style={{
-                  fontSize: "0.9rem",
-                  lineHeight: 1.6,
-                  color: "#A0A6B2",
-                }}
-              >
+              <p className="text-sm leading-relaxed text-gray-400 group-hover:text-gray-300 transition-colors">
                 {desc}
               </p>
             </div>
           ))}
         </div>
 
-        <div
-          style={{
-            marginTop: "3rem",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        {/* CTA Section */}
+        <div className="mt-20 flex flex-col items-center justify-center text-center">
+          <p className="text-gray-500 text-sm mb-6 font-medium italic">
+            Compatible with all major BMS protocols and SCADA systems.
+          </p>
+          
           <button
-            type="button"
-            onClick={scrollToDemo}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              padding: "0.9rem 1.25rem",
-              borderRadius: "12px",
-              background: "rgba(0, 229, 255, 0.10)",
-              border: "1px solid rgba(0, 229, 255, 0.30)",
-              color: "#00E5FF",
-              fontWeight: 700,
-              cursor: "pointer",
-              transition: "transform 0.2s ease, background 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(0, 229, 255, 0.14)";
-              e.currentTarget.style.transform = "translateY(-1px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(0, 229, 255, 0.10)";
-              e.currentTarget.style.transform = "translateY(0px)";
-            }}
+            onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex items-center gap-3 px-8 py-4 bg-emerald-500 text-black font-bold rounded-full hover:bg-emerald-400 transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
           >
-            Explore the Interactive Demo <span aria-hidden>→</span>
+            Explore the Interactive Demo
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
-
-      <style>
-        {`
-          @keyframes fadeInUp {
-            to {
-              transform: translateY(0);
-              opacity: 1;
-            }
-          }
-        `}
-      </style>
     </section>
   );
 };

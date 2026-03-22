@@ -5,6 +5,7 @@ const CTA: React.FC = () => {
   return (
     <section
       id="cta"
+      aria-labelledby="cta-heading"
       className="bg-gradient-to-br from-[#0a0a0f] via-[#0b0b12] to-[#050508] border-y border-white/10 px-6 md:px-16 py-28 text-center"
     >
       <div className="max-w-3xl mx-auto">
@@ -14,34 +15,38 @@ const CTA: React.FC = () => {
         </div>
 
         {/* Heading */}
-        <h2 className="text-3xl md:text-4xl font-semibold text-white mb-6 leading-tight">
-          Reduce Battery Failure Risk Before It Becomes Warranty Cost.
+        <h2
+          id="cta-heading"
+          className="text-3xl md:text-4xl font-semibold text-white mb-6 leading-tight"
+        >
+          Prevent BESS Downtime Before It Costs You Uptime.
         </h2>
 
         {/* Description */}
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed mb-12">
-          Launch a structured pilot to model degradation trajectories,
-          forecast failure windows, and quantify root-cause risk across
-          your battery fleet. Built for OEMs and EV operators ready to
-          move beyond reactive monitoring.
+          Forecast BESS failure months in advance, pinpoint whether it's your
+          thermal management, PCS, or cells, and back every decision with
+          physics-grade evidence. Built for operators done with reactive monitoring.
         </p>
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          {/* Primary CTA - Enterprise */}
+          {/* Primary CTA */}
           <Link
             to="/pilot"
+            aria-label="Request an enterprise pilot for Zylectra BESS intelligence platform"
             className="px-8 py-3 rounded-lg bg-emerald-500 text-black font-medium transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
           >
             Request Enterprise Pilot
           </Link>
 
-          {/* Secondary CTA - Simulation */}
+          {/* Secondary CTA */}
           <a
             href="#demo"
+            aria-label="Try the Zylectra BESS analysis demo for free"
             className="px-8 py-3 rounded-lg border border-emerald-500/60 text-emerald-500 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500"
           >
-            Try for free
+            Try the Demo Free
           </a>
         </div>
       </div>
