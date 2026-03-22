@@ -442,7 +442,7 @@ const Pilot: React.FC = () => {
 
           <div className="animate-fadeUp delay-300 pilot-hero-btns flex flex-wrap justify-center gap-4">
             <a
-              href="https://calendly.com/prabhsingh-zylectra/enterprise-pilot-zylectra"
+              href="https://calendly.com/prabhsingh-zylectra/enterprise-pilot-zylectra-1"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Book an enterprise call with Zylectra"
