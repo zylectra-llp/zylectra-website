@@ -354,23 +354,23 @@ const Pilot: React.FC = () => {
   const included = [
     {
       icon: "⚡",
-      title: "Failure Risk Prediction",
-      desc: "Physics-informed probabilistic models trained on your BESS chemistry and operating profile, not generic open datasets.",
+      title: "Failure Risk & SLA Forecasting",
+      desc: "Physics-informed probabilistic models trained on your BESS chemistry and operating profile. Know which rack threatens uptime SLAs — months before any BMS threshold is reached.",
     },
     {
       icon: "📈",
-      title: "SOH Trajectory Modeling",
-      desc: "Rack-level capacity fade and impedance growth curves anchored to electrochemical first principles, accounting for calendar aging and cycle stress.",
+      title: "Asset Life & ROI Modelling",
+      desc: "Rack-level capacity fade and impedance growth curves anchored to electrochemical first principles. Every month of life added or protected is quantified directly against your project IRR.",
     },
     {
       icon: "🌡️",
-      title: "Thermal & HVAC Correlation",
-      desc: "Arrhenius-calibrated thermal aging models that quantify how every degree above setpoint accelerates degradation, and what it costs in RUL.",
+      title: "HVAC / OpEx Optimisation",
+      desc: "Arrhenius-calibrated thermal aging models that show exactly how many months of asset life each degree above setpoint is costing you — and the ROI of restoring it. Often the fastest-payback action that costs nothing to implement.",
     },
     {
       icon: "⚖️",
-      title: "PCS vs Battery Attribution",
-      desc: "Multimodal causal chains that separate PCS overcharge events, HVAC management failures, and cell manufacturing variance, with audit-ready evidence.",
+      title: "4-Party Warranty Attribution",
+      desc: "Multimodal causal chains that separate cell manufacturer defects, PCS overcharge events, HVAC management failures, and EPC/integrator variance — with audit-ready evidence chains for each party.",
     },
     {
       icon: "📡",
@@ -387,19 +387,19 @@ const Pilot: React.FC = () => {
   const idealFor = [
     {
       tag: "Data Center Operators",
-      text: "Protecting uptime SLAs by predicting BESS failure before it cascades into critical backup load exposure",
+      text: "Protecting contractual uptime SLAs by predicting BESS failure before it cascades into critical backup load exposure — where the cost of downtime dwarfs the cost of the battery.",
     },
     {
       tag: "C&I BESS Asset Owners",
-      text: "Extending asset life and maximising ROI by identifying the specific interventions; HVAC tuning, charge protocol adjustment that reduce degradation fastest",
+      text: "Maximising IRR on a $500K–$5M, 10–15 year capital asset by identifying the specific interventions — HVAC setpoint tuning, charge protocol adjustment — that reduce degradation fastest.",
     },
     {
       tag: "Warranty & Finance Teams",
-      text: "Building defensible attribution chains to reduce warranty claim leakage and resolve PCS vs. battery vendor disputes with engineering-grade evidence",
+      text: "Building defensible attribution chains across all four parties — cell OEM, PCS vendor, EPC/integrator, and facilities team — to reduce warranty claim leakage and resolve disputes with engineering-grade evidence.",
     },
     {
       tag: "EPC & System Integrators",
-      text: "Commissioning BESS deployments with a physics baseline from day one, so degradation trajectories are tracked against spec from installation",
+      text: "Commissioning BESS deployments with a physics baseline from day one, so degradation trajectories are tracked against spec from installation — and you have evidence when field performance diverges.",
     },
   ];
 

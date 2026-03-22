@@ -17,24 +17,24 @@ type CustomerCard = {
 const customers: CustomerCard[] = [
   {
     title: "Data Center Operators",
-    subtitle: "Uptime & Critical Infrastructure",
+    subtitle: "Uptime & SLA Protection",
     Icon: Server,
     items: [
-      "Eliminate 'blind spots' in standard UPS/BMS monitoring",
-      "Predict thermal runaway events weeks in advance",
-      "Optimize cooling costs via cell-level thermal correlation",
-      "Ensure 24/7 reliability for Tier 4 power requirements",
+      "Prevent SLA breaches before a BESS failure cascades into a critical backup load event",
+      "Get 4-8 months lead time on thermal runaway risk, not a 30-second BMS alarm",
+      "Quantify exactly how much your HVAC setpoint drift is shortening battery life",
+      "Physics-grade evidence for every safety and regulatory audit trail",
     ],
   },
   {
-    title: "BESS Asset Owners",
-    subtitle: "ROI & Revenue Protection",
+    title: "C&I BESS Asset Owners",
+    subtitle: "ROI & Capital Protection",
     Icon: Zap,
     items: [
-      "Maximize project IRR by slowing capacity fade",
-      "Audit-ready data for defensible warranty claims",
-      "Monitor multi-vendor rack performance in one view",
-      "Reduce insurance premiums via proven safety monitoring",
+      "Protect the ROI on a $500K-$5M asset with 10-15 year project horizons",
+      "Every month of life you add or protect is directly quantifiable in project IRR",
+      "Identify the fastest-payback interventions: cooling setpoint, charge protocol, string rebalancing",
+      "Audit-ready attribution data for defensible warranty and insurance claims",
     ],
   },
   {
@@ -42,21 +42,21 @@ const customers: CustomerCard[] = [
     subtitle: "Operational Efficiency",
     Icon: ShieldAlert,
     items: [
-      "Shift from reactive to predictive maintenance cycles",
-      "Identify underperforming strings before they drop",
-      "Remote diagnostics: Reduce site visits and truck rolls",
-      "Automated safety reporting for grid compliance",
+      "Shift from reactive to predictive maintenance, stop replacing what isn't broken",
+      "Identify underperforming strings before they drag down the entire rack",
+      "Remote diagnostics: reduce expensive site visits and emergency truck rolls",
+      "Automated safety reporting mapped to IEC 62933 and UL 9540A compliance",
     ],
   },
   {
-    title: "Battery OEMs",
+    title: "Battery OEMs & Integrators",
     subtitle: "R&D & Quality Assurance",
     Icon: BarChart3,
     items: [
-      "Validate cell chemistry under real-world cycling",
-      "Accelerate degradation studies via Physics-AI Digital Twins",
-      "Improve fleet-wide design based on field failure data",
-      "Provide 'Battery-as-a-Service' with guaranteed RUL",
+      "Validate cell chemistry degradation under real C&I cycling profiles",
+      "Separate manufacturing variance from field operating conditions in warranty claims",
+      "Accelerate degradation studies via physics-informed digital twins",
+      "Offer 'Battery-as-a-Service' SLAs backed by guaranteed RUL forecasts",
     ],
   },
 ];
@@ -87,8 +87,8 @@ const Customers: React.FC = () => {
 
         {/* Description */}
         <p className="text-white/60 max-w-xl leading-relaxed mb-16">
-          Whether you are managing a 100MW grid-scale site or a mission-critical data center, 
-          Zylectra provides the physics-informed layer required to secure your investment.
+          Whether you're protecting uptime SLAs at a mission-critical data center or maximizing IRR on a multi-million dollar BESS project, 
+          Zylectra gives you the physics-informed layer your BMS was never designed to provide.
         </p>
 
         {/* Grid */}

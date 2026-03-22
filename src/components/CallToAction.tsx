@@ -24,9 +24,8 @@ const CTA: React.FC = () => {
 
         {/* Description */}
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed mb-12">
-          Forecast BESS failure months in advance, pinpoint whether it's your
-          thermal management, PCS, or cells, and back every decision with
-          physics-grade evidence. Built for operators done with reactive monitoring.
+          Prevent costly downtime and SLA breaches with Zylectra, get 4-8 months early warning and evidence-based root cause analysis 
+          for your BESS.
         </p>
 
         {/* Buttons */}

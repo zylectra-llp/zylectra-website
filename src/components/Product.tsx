@@ -33,7 +33,7 @@ const RackViz = () => {
 
       {/* Rack Chassis */}
       <rect x={rackX} y={rackY} width={rackW} height={rackH} rx="6" fill="url(#rackBodyGrad)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-      
+
       <text x={rackX + rackW / 2} y={rackY + 10} fill="rgba(255,255,255,0.22)" fontFamily="Space Mono, monospace" fontSize="7" fontWeight="600" letterSpacing="0.15em" textAnchor="middle">
         BESS RACK #04 — SYSTEM STATUS: LIVE
       </text>
@@ -82,8 +82,8 @@ const SectionThree = () => {
   return (
     <section id="product" className="relative py-24 md:py-32 bg-[#050508] text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        
-        {/* Header - SEO Optimized */}
+
+        {/* Header */}
         <div className={`text-center mb-16 md:mb-24 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
           <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-4">
             Industrial Asset Performance Management
@@ -92,15 +92,15 @@ const SectionThree = () => {
             Two Engines. <span className="text-emerald-400">Zero Downtime.</span>
           </h2>
           <p className="text-gray-500 text-sm md:text-base font-medium max-w-2xl mx-auto">
-            The first physics-informed BESS Intelligence Platform designed to eliminate the blind spots in standard battery management systems.
+            The first physics-informed BESS intelligence platform designed to protect SLAs, extend asset life, and eliminate blind spots in standard battery management systems.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          
-          {/* LEFT SIDE — SEO REFINED COPY */}
+
+          {/* LEFT SIDE */}
           <div className="space-y-12 md:space-y-16">
-            
+
             {/* Module 1: Prediction */}
             <div className="group">
               <div className="flex items-center gap-3 mb-4">
@@ -110,10 +110,15 @@ const SectionThree = () => {
                 <h3 className="text-2xl font-bold">Predictive BESS Health Monitoring</h3>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6 text-lg">
-                Identify <span className="text-white">Capacity Fade</span> and Thermal Runaway risks months before they impact grid stability. We model the electrochemical physics of stationary storage to prevent catastrophic failure.
+                Predict <span className="text-white">BESS Remaining Useful Life</span> and thermal runaway risk months in advance using 
+                physics-informed battery analytics, outperforming standard BMS algorithms.
+              </p>
+              <p className="text-gray-500 leading-relaxed mb-6 text-sm">
+                Identify how HVAC setpoint drift accelerates battery aging, with precise quantification of lost asset life and 
+                actionable cost-saving recommendations.
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Calendar Aging Analysis", "HVAC-Correlated Risk", "String-Level Imbalance", "Fire Propagation Safety"].map((pill) => (
+                {["Calendar Aging Analysis", "HVAC-Correlated RUL Loss", "Thermal Runaway Risk", "String-Level Imbalance"].map((pill) => (
                   <span key={pill} className="px-3 py-1.5 text-[10px] font-bold bg-white/5 border border-white/10 text-gray-400 rounded-md uppercase tracking-wider">
                     {pill}
                   </span>
@@ -127,13 +132,14 @@ const SectionThree = () => {
                 <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
                   <Activity className="w-6 h-6 text-emerald-400" />
                 </div>
-                <h3 className="text-2xl font-bold">Automated Root Cause Analysis (RCA)</h3>
+                <h3 className="text-2xl font-bold">Automated Root Cause Analysis</h3>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6 text-lg">
-                Multi-signal diagnostics that separate manufacturing defects from operational stress. Secure <span className="text-white">defensible warranty claims</span> with engineering-grade explainability.
+                Zylectra delivers fast, automated BESS root cause and warranty analysis, instantly attributing battery degradation to
+                the right party with engineering-grade, audit-ready evidence.
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Cell-Level Attribution", "Warranty Risk Scoring", "Auxiliary System Correlation", "Explainable AI Outputs"].map((pill) => (
+                {["Cell OEM vs PCS Attribution", "HVAC Liability Scoring", "EPC/Integrator Variance", "Audit-Ready Evidence"].map((pill) => (
                   <span key={pill} className="px-3 py-1.5 text-[10px] font-bold bg-white/5 border border-white/10 text-gray-400 rounded-md uppercase tracking-wider">
                     {pill}
                   </span>
@@ -147,8 +153,8 @@ const SectionThree = () => {
             <div className="font-mono text-[10px] tracking-widest text-gray-500 uppercase mb-6 flex justify-between items-center">
               <span>Rack-Level Degradation Profile</span>
               <div className="flex items-center gap-2">
-                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                 <span className="text-emerald-500">SYSTEM: ONLINE</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-emerald-500">SYSTEM: ONLINE</span>
               </div>
             </div>
 

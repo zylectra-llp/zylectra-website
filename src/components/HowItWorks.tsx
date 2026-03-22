@@ -6,25 +6,25 @@ const steps = [
     num: "01",
     icon: Database,
     title: "Non-Invasive Data Integration",
-    desc: "Seamlessly ingest existing BMS telemetry, thermal logs, and ambient sensor data. Zero hardware modifications or downtime required for deployment.",
+    desc: "Ingest BMS, HVAC, PCS, and sensor data—no hardware changes, no downtime.",
   },
   {
     num: "02",
     icon: Atom,
     title: "Physics-Informed Processing",
-    desc: "Our 'Digital Twin' models embed electrochemical laws directly into the neural network, ensuring predictions stay physically grounded, even in extreme climates.",
+    desc: "Digital twin models use physics-based laws for reliable, grounded predictions.",
   },
   {
     num: "03",
     icon: Target,
-    title: "Predictive Failure Window",
-    desc: "Move beyond real-time alerts. Forecast remaining useful life (RUL) and identify specific racks trending toward thermal instability months in advance.",
+    title: "Asset Life & Uptime Forecasting",
+    desc: "Forecast asset life and quantify HVAC drift impact in dollar terms.",
   },
   {
     num: "04",
     icon: Search,
-    title: "Root Cause Intelligence",
-    desc: "Automatically isolate degradation drivers. Distinguish between manufacturing defects and operational stress for audit-ready warranty defensibility.",
+    title: "4-Party Root Cause Attribution",
+    desc: "Pinpoint degradation causes for audit-ready warranty evidence across all parties.",
   },
 ];
 

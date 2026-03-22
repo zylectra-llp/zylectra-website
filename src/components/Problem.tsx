@@ -3,19 +3,19 @@ import { XCircle, CheckCircle } from "lucide-react";
 
 const SectionTwo = () => {
   const problems = [
-    "Alerts trigger after damage is done",
-    "Hidden 'blind spots' in telemetry",
-    "No insight into internal cell chemistry",
-    "Vague alerts with no root cause data",
-    "High risk of unplanned downtime",
+    "Alerts fire after the damage is already done",
+    "No visibility into internal electrochemical state",
+    "HVAC drift silently accelerates calendar aging",
+    "Can't tell if it's the cells, PCS, HVAC, or EPC",
+    "Unplanned downtime breaches SLAs, not just budgets",
   ];
 
   const solutions = [
-    "4–8 months lead time on failure risk",
-    "Physics-AI that 'sees' inside the cell",
-    "Automated Multi-Modal Root Cause Analysis",
-    "Clear risk scores (Low to Critical)",
-    "Actionable steps for maintenance",
+    "4–8 months lead time before any BMS alert",
+    "Physics models that see inside the cell chemistry",
+    "Quantify exactly how much life each degree costs you",
+    "4-party attribution: cell OEM vs PCS vs HVAC vs EPC",
+    "Protect uptime SLAs on a $500K–$5M capital asset",
   ];
 
   return (
@@ -31,19 +31,19 @@ const SectionTwo = () => {
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-            Your BMS has a <span className="text-emerald-400">Blind Spot.</span>
+            Your BMS Has a <span className="text-emerald-400">Blind Spot.</span>
           </h2>
 
           <p className="text-base md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Standard monitoring relies on voltage and temperature metrics that only spike 
-            <span className="text-white block sm:inline"> after degradation is irreversible.</span> Zylectra monitors the physics, not just the patterns.
+            Standard monitoring watches voltage and temperature, metrics that only spike
+            <span className="text-white block sm:inline"> after degradation is irreversible.</span> Zylectra models the physics, not just the symptoms.
           </p>
         </div>
 
-        {/* Comparison Grid - Stacked on mobile, 2-col on lg */}
+        {/* Comparison Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-          
-          {/* Status Quo - Reactive */}
+
+          {/* Status Quo — Reactive */}
           <div className="group relative bg-white/[0.02] border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-12 transition-all hover:border-red-500/30">
             <div className="flex items-center gap-3 mb-6 md:mb-8">
               <div className="p-2 bg-red-500/10 rounded-lg">
@@ -53,7 +53,7 @@ const SectionTwo = () => {
             </div>
 
             <p className="text-gray-400 mb-8 md:mb-10 text-base md:text-lg leading-relaxed">
-              Standard systems wait for a "threshold breach." By the time your alarm sounds, the cell is already a liability.
+              Standard systems wait for a threshold breach. By the time the alarm sounds, the cell is already a liability, and your SLA window may already be closing.
             </p>
 
             <ul className="space-y-4 md:space-y-5">
@@ -66,7 +66,7 @@ const SectionTwo = () => {
             </ul>
           </div>
 
-          {/* Zylectra - Proactive */}
+          {/* Zylectra — Proactive */}
           <div className="group relative bg-emerald-500/[0.02] border border-emerald-500/20 rounded-2xl md:rounded-3xl p-6 md:p-12 transition-all hover:border-emerald-500/40">
             <div className="flex items-center gap-3 mb-6 md:mb-8">
               <div className="p-2 bg-emerald-500/10 rounded-lg">
@@ -76,7 +76,7 @@ const SectionTwo = () => {
             </div>
 
             <p className="text-gray-300 mb-8 md:mb-10 text-base md:text-lg leading-relaxed">
-              Zylectra models the internal chemical state. We detect the <span className="text-emerald-400 italic">cause</span> before the <span className="text-emerald-400 italic">symptom</span> appears.
+              Zylectra models the internal chemical state. We detect the <span className="text-emerald-400 italic">cause</span> before the <span className="text-emerald-400 italic">symptom</span> appears, and tell you exactly which party is responsible.
             </p>
 
             <ul className="space-y-4 md:space-y-5">

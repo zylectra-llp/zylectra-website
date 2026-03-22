@@ -15,45 +15,36 @@ const Hero = () => {
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.replace("#", "");
-  
       const scrollToHash = () => {
         const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
+        if (element) element.scrollIntoView({ behavior: "smooth" });
       };
-  
-      // small delay ensures DOM fully rendered
       setTimeout(scrollToHash, 100);
     }
   }, [location]);
 
   const scrollToSection = (sectionId: string) => {
-		const element = document.getElementById(sectionId);
-		if (element) {
-			element.scrollIntoView({ behavior: "smooth" });
-		}
-	};
+    const element = document.getElementById(sectionId);
+    if (element) element.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center pt-16 bg-[#050508] pb-4">
-      {/* Hidden SEO Context for Crawlers */}
       <span className="sr-only">
-        Zylectra provides physics-informed AI for BESS failure prediction and data center battery health monitoring.
+        Zylectra provides physics-informed AI for BESS failure prediction, SLA protection, and root cause attribution for data center battery systems.
       </span>
 
-      {/* Main Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        
+
         {/* Badge */}
         <div className="inline-flex mt-14 items-center gap-3 px-6 py-3 bg-emerald-500/10 border border-emerald-400/30 rounded-full mb-8">
           <Sparkles className="w-4 h-4 text-emerald-400" aria-hidden="true" />
           <span className="text-sm font-medium text-emerald-300 tracking-wide uppercase">
-            Physics-Informed AI for BESS Reliability
+            Your $2M Battery is Failing. BMS still says OK.
           </span>
         </div>
 
-        {/* Main Headlines */}
+        {/* Hook Headline */}
         <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="relative mb-8">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-8 leading-tight tracking-tight">
@@ -66,18 +57,16 @@ const Hero = () => {
 
         {/* Description */}
         <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} mb-12`}>
-          <p className="text-gray-400 mb-4 max-w-3xl mx-auto leading-relaxed text-xl">
-            Zylectra is an early warning system for data center batteries. 
-            We use physics-informed AI to predict failure risk and identify root causes {" "}
-            <em className='text-white not-italic font-semibold'> 
-              4-8 months before your standard BMS triggers an alert.
-            </em>
+          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed text-lg">
+            Standard BMS alerts after the damage is done. Zylectra's physics-informed AI spots failure{' '}
+            <span className='text-white font-semibold'>4–8 months earlier</span>
+            {' '}, and tells you whether to blame the cells, the PCS, or your HVAC.
           </p>
         </div>
 
-        {/* Enhanced CTA Button */}
+        {/* CTAs */}
         <div className={`transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} mb-16`}>
-          <div className="relative flex flex-row flex-wrap justify-center gap-3 sm:gap-6 w-full max-w-2xl mx-auto">
+          <div className="flex flex-row flex-wrap justify-center gap-3 sm:gap-6 w-full max-w-2xl mx-auto">
             <button
               onClick={() => scrollToSection("demo")}
               title="View Battery Intelligence Demo"
@@ -96,62 +85,53 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Features */}
-        <div
-          className="fade-up-delay-4 flex flex-wrap justify-center gap-[3.5rem] mt-20 pt-12 pb-5 border-t border-emerald-500/25"
-        >
+        {/* Feature cards — one stat, one line each */}
+        <div className="flex flex-wrap justify-center gap-[3.5rem] mt-20 pt-12 pb-5 border-t border-emerald-500/25">
           {[
-            ["Physics-First", "Predictive Accuracy: Models that understand electrochemical limits, not black-box pattern matching."],
-            ["Award-Winning", "Proven Progress: Recognized by MeitY and TiE Global for breakthroughs in battery safety."],
-            ["Native BESS", "Built for your stack: Purpose-built for high-stakes C&I storage, not retrofitted from other tools."],
-          ].map(([val, label]) => {
-            // Split label into Title and Description for better SEO and hierarchy
-            const [title, description] = label.split(": ");
-            return (
-              <div key={title} className="text-center max-w-[280px]">
-                <div
-                  className="font-extrabold text-[1.8rem] md:text-[2.2rem] leading-none bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent font-poppins"
-                >
-                  {val}
-                </div>
-                <div className="mt-3">
-                  <span className="block text-[10px] uppercase tracking-[0.2em] text-emerald-400 font-bold mb-1">
-                    {title}
-                  </span>
-                  <p
-                    className="text-xs text-gray-400 leading-relaxed normal-case"
-                    style={{
-                      letterSpacing: "0.02em"
-                    }}
-                  >
-                    {description}
-                  </p>
-                </div>
+            {
+              stat: "4–8 Months",
+              label: "Earlier than your BMS",
+              detail: "Physics models that see inside cell chemistry, not threshold breaches.",
+            },
+            {
+              stat: "10°C = 2×",
+              label: "Faster aging",
+              detail: "We quantify the exact RUL cost of your HVAC drift before it's irreversible.",
+            },
+            {
+              stat: "4-Party RCA",
+              label: "Cells. PCS. HVAC. EPC.",
+              detail: "Instant attribution across every party that can cause, or claim a failure.",
+            },
+          ].map(({ stat, label, detail }) => (
+            <div key={stat} className="text-center max-w-[240px]">
+              <div className="font-extrabold text-[1.8rem] md:text-[2.2rem] leading-none bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent">
+                {stat}
               </div>
-            );
-          })}
+              <div className="mt-2">
+                <span className="block text-[10px] uppercase tracking-[0.2em] text-emerald-400 font-bold mb-1">
+                  {label}
+                </span>
+                <p className="text-xs text-gray-400 leading-relaxed">
+                  {detail}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-      {/* Custom animations */}
+
       <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(5deg); }
         }
-        
         @keyframes float-delayed {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-15px) rotate(-3deg); }
         }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-          animation-delay: 2s;
-        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-delayed { animation: float-delayed 8s ease-in-out infinite; animation-delay: 2s; }
       `}</style>
     </section>
   );
