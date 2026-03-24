@@ -267,10 +267,16 @@ const Counter: React.FC<{ end: number; suffix?: string; duration?: number }> = (
 
 // ── Ticker ────────────────────────────────────────────────────────────────────
 const tickerItems = [
-  "Physics-Informed BESS Models", "Calendar Aging Forecasting", "Rack-Level SOH Trajectories",
-  "Thermal Runaway Risk Scoring", "PCS vs Battery Attribution", "String-Level Diagnostics",
-  "HVAC-Correlated Degradation", "Warranty Evidence Chains", "IEC 62933 Compliance Insights",
-  "Data Center Uptime Protection",
+  "Physics-Informed Battery Models",
+  "Calendar Aging Forecasting",
+  "Pack-Level SOH Trajectories",
+  "Thermal Runaway Risk Scoring",
+  "Charge Protocol Attribution",
+  "Cell-Level Diagnostics",
+  "Thermal-Correlated Degradation",
+  "Warranty Evidence Chains",
+  "Root Cause Analysis",
+  "Li-ion Health Intelligence",
 ];
 
 const Ticker = () => (
@@ -294,10 +300,10 @@ const Pilot: React.FC = () => {
       week: "Week 1",
       phase: "Discovery & Data Ingestion",
       tasks: [
-        "BMS telemetry schema audit: MODBUS, CAN, MQTT, or REST log mapping",
-        "Define BESS failure taxonomy: calendar aging, thermal runaway, string imbalance, electrolyte depletion",
+        "Telemetry schema audit; voltage, current, temperature, SoC log mapping across your data stack",
+        "Define battery failure taxonomy relevant to your chemistry, use case, and operating profile",
         "Secure data pipeline setup on-prem enclave or cloud VPC, NDA before any data moves",
-        "Commissioning-baseline SOH benchmarking against OEM rack and module specs",
+        "Commissioning-baseline SOH benchmarking against OEM pack and cell specs",
       ],
       deliverable: "Data Integration Report + Scoping Sign-off",
       color: "#3b82f6",
@@ -309,8 +315,8 @@ const Pilot: React.FC = () => {
       tasks: [
         "Calibrate electrochemical degradation models to your LFP / NMC / LTO chemistry",
         "Layer deep learning over physics priors for failure probability curves, no black-box predictions",
-        "Identify high-risk racks via anomaly trajectories: capacity fade, impedance rise, RTE decline",
-        "Multimodal fusion: BMS voltage/current, HVAC telemetry, PCS event logs, thermal sensors",
+        "Identify high-risk assets via anomaly trajectories: capacity fade, impedance rise, RTE decline",
+        "Multimodal fusion: pack voltage/current, thermal telemetry, charge system logs, sensor data",
       ],
       deliverable: "Live Model Inference Dashboard (read-only preview)",
       color: "#8b5cf6",
@@ -320,9 +326,9 @@ const Pilot: React.FC = () => {
       week: "Week 3",
       phase: "Root Cause & Attribution",
       tasks: [
-        "FMEA-aligned failure mode classification per IEC 62933 / UL 9540A",
-        "Causal graph: HVAC/thermal management fault vs. PCS overcharge vs. cell manufacturing variance",
-        "Warranty attribution scoring; identify which party bears liability with defensible evidence chains",
+        "Failure mode classification aligned to your asset's degradation mechanisms",
+        "Causal graph: thermal management fault vs. charge protocol variance vs. cell manufacturing variance",
+        "Attribution scoring identify which party bears liability with defensible evidence chains",
         "Sensitivity analysis: which variables are driving degradation fastest in your specific pack?",
       ],
       deliverable: "Root Cause Attribution Report (sample 5 failure events)",
@@ -333,9 +339,9 @@ const Pilot: React.FC = () => {
       week: "Week 4",
       phase: "Readout & Deployment Roadmap",
       tasks: [
-        "Executive findings presentation with quantified uptime risk and $ replacement cost at stake",
-        "Technical integration blueprint: REST API / MQTT / gRPC specs for production BMS stack",
-        "Pilot-to-production scaling plan: from single site to multi-site monitoring",
+        "Findings presentation with quantified asset risk and replacement cost at stake",
+        "Technical integration blueprint: REST API / MQTT / gRPC specs for your data stack",
+        "Pilot-to-production scaling plan: from single asset to full fleet monitoring",
         "Commercial proposal and IP/data governance framework",
       ],
       deliverable: "Full Pilot Report + Production Deployment Proposal",
@@ -345,61 +351,61 @@ const Pilot: React.FC = () => {
   ];
 
   const metrics = [
-    { value: 91, suffix: "%", label: "Failure Detection Accuracy", sub: "Before thermal event onset" },
-    { value: 4,  suffix: "–8M", label: "Advance Warning", sub: "Months Ahead of BESS field failure" },
-    { value: 40, suffix: "%+", label: "Warranty Cost Reduction", sub: "Via causal attribution" },
-    { value: 2,  suffix: "–4wk", label: "Pilot to Production", sub: "Average integration time" },
+    { value: 91, suffix: "%",    label: "Failure Detection Accuracy", sub: "Before thermal event onset" },
+    { value: 4,  suffix: "–8M",  label: "Advance Warning",            sub: "Months ahead of field failure" },
+    { value: 40, suffix: "%+",   label: "Warranty Cost Reduction",    sub: "Via causal attribution" },
+    { value: 2,  suffix: "–4wk", label: "Pilot to Production",        sub: "Average integration time" },
   ];
 
   const included = [
     {
       icon: "⚡",
-      title: "Failure Risk & SLA Forecasting",
-      desc: "Physics-informed probabilistic models trained on your BESS chemistry and operating profile. Know which rack threatens uptime SLAs — months before any BMS threshold is reached.",
+      title: "Health & Failure Risk Forecasting",
+      desc: "Physics-informed probabilistic models trained on your battery chemistry and operating profile. Know which assets are at risk, months before any threshold alarm fires.",
     },
     {
       icon: "📈",
-      title: "Asset Life & ROI Modelling",
-      desc: "Rack-level capacity fade and impedance growth curves anchored to electrochemical first principles. Every month of life added or protected is quantified directly against your project IRR.",
+      title: "Asset Life & Degradation Modelling",
+      desc: "Pack-level capacity fade and impedance growth curves anchored to electrochemical first principles. Every month of life added or protected translates directly to asset ROI.",
     },
     {
       icon: "🌡️",
-      title: "HVAC / OpEx Optimisation",
-      desc: "Arrhenius-calibrated thermal aging models that show exactly how many months of asset life each degree above setpoint is costing you — and the ROI of restoring it. Often the fastest-payback action that costs nothing to implement.",
+      title: "Thermal & Operating Condition Analysis",
+      desc: "Arrhenius-calibrated thermal aging models that show exactly how many months of asset life each degree above setpoint is costing you, and the ROI of fixing it. Often the fastest-payback action available.",
     },
     {
       icon: "⚖️",
-      title: "4-Party Warranty Attribution",
-      desc: "Multimodal causal chains that separate cell manufacturer defects, PCS overcharge events, HVAC management failures, and EPC/integrator variance — with audit-ready evidence chains for each party.",
+      title: "Multi-Party Warranty Attribution",
+      desc: "Multimodal causal chains that separate cell manufacturer defects, charge protocol events, thermal management failures, and integrator variance with audit-ready evidence chains for each party.",
     },
     {
       icon: "📡",
       title: "Integration Architecture",
-      desc: "Production-ready API specs (REST / MQTT / gRPC) compatible with existing SCADA, DCIM, and BMS stacks. No hardware changes required.",
+      desc: "Production-ready API specs (REST / MQTT / gRPC) compatible with existing data stacks, SCADA, and BMS. No hardware changes required.",
     },
     {
       icon: "📋",
-      title: "Compliance Readiness",
-      desc: "Findings mapped to IEC 62933, UL 9540A, and NFPA 855 for regulatory audit trails and insurance documentation.",
+      title: "Compliance & Audit Readiness",
+      desc: "Findings mapped to relevant safety and regulatory frameworks for audit trails, insurance documentation, and warranty dispute resolution.",
     },
   ];
 
   const idealFor = [
     {
-      tag: "Data Center Operators",
-      text: "Protecting contractual uptime SLAs by predicting BESS failure before it cascades into critical backup load exposure — where the cost of downtime dwarfs the cost of the battery.",
+      tag: "Fleet & Mobility Operators",
+      text: "Operators who need to predict pack failure before it takes a vehicle offline where the cost of downtime, roadside assistance, or warranty replacement far exceeds the cost of early intelligence.",
     },
     {
-      tag: "C&I BESS Asset Owners",
-      text: "Maximising IRR on a $500K–$5M, 10–15 year capital asset by identifying the specific interventions — HVAC setpoint tuning, charge protocol adjustment — that reduce degradation fastest.",
+      tag: "Energy Storage Asset Owners",
+      text: "Owners protecting the ROI on a long-horizon capital asset by identifying the specific interventions, thermal setpoint tuning, charge protocol adjustment that reduce degradation fastest.",
     },
     {
       tag: "Warranty & Finance Teams",
-      text: "Building defensible attribution chains across all four parties — cell OEM, PCS vendor, EPC/integrator, and facilities team — to reduce warranty claim leakage and resolve disputes with engineering-grade evidence.",
+      text: "Teams building defensible attribution chains across all responsible parties; cell OEM, charge system, thermal management, integrator to reduce warranty claim leakage with engineering-grade evidence.",
     },
     {
-      tag: "EPC & System Integrators",
-      text: "Commissioning BESS deployments with a physics baseline from day one, so degradation trajectories are tracked against spec from installation — and you have evidence when field performance diverges.",
+      tag: "OEMs & System Integrators",
+      text: "Manufacturers and integrators commissioning assets with a physics baseline from day one, so degradation trajectories are tracked against spec from installation, and you have evidence when field performance diverges.",
     },
   ];
 
@@ -420,7 +426,7 @@ const Pilot: React.FC = () => {
 
         <div className="relative max-w-5xl mx-auto text-center">
           <div className="animate-fadeUp mb-6 flex justify-center">
-            <span className="pill"><span className="pill-dot" />Enterprise Pilot Program</span>
+            <span className="pill"><span className="pill-dot" />Battery Intelligence Pilot</span>
           </div>
 
           <h1
@@ -428,16 +434,18 @@ const Pilot: React.FC = () => {
             className="animate-fadeUp delay-100 font-syne mb-6"
             style={{ fontSize: "clamp(2rem, 5vw, 3.8rem)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.12 }}
           >
-            <span style={{ display: "block" }}>BESS Intelligence.</span>
-            <span className="shimmer-text" style={{ display: "block", lineHeight: 1.12 }}>Live in Your Stack in 4 Weeks.</span>
+            <span style={{ display: "block" }}>Battery Intelligence.</span>
+            <span className="shimmer-text" style={{ display: "block", lineHeight: 1.12 }}>
+              Live in Your Stack in 4 Weeks.
+            </span>
           </h1>
 
           <p
             className="animate-fadeUp delay-200 mx-auto leading-relaxed mb-10"
             style={{ maxWidth: 600, color: "rgba(255,255,255,0.55)", fontSize: "clamp(14px, 2vw, 16px)" }}
           >
-            Physics-informed failure prediction and warranty attribution,
-            integrating directly with your BMS and SCADA, no hardware changes required.
+            Physics-informed health monitoring, failure prediction, and root cause attribution
+            integrating directly with your existing data stack. No hardware changes required.
           </p>
 
           <div className="animate-fadeUp delay-300 pilot-hero-btns flex flex-wrap justify-center gap-4">
@@ -445,10 +453,10 @@ const Pilot: React.FC = () => {
               href="https://calendly.com/prabhsingh-zylectra/enterprise-pilot-zylectra-1"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Book an enterprise call with Zylectra"
+              aria-label="Book a pilot call with Zylectra"
             >
               <button type="button" className="cta-btn inline-flex items-center justify-center gap-2">
-                Book Enterprise Call
+                Book a Pilot Call
                 <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
               </button>
             </a>
@@ -456,7 +464,7 @@ const Pilot: React.FC = () => {
               href="https://docs.google.com/document/d/1HZDhLWVd4D51JAzrpMZF4nhIH5RctNipeTLWq1fNO8A/edit?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Download the Zylectra BESS pilot brief"
+              aria-label="Download the Zylectra pilot brief"
               className="font-syne rounded-lg px-8 py-4 transition-all"
               style={{
                 border: "1px solid rgba(255,255,255,0.12)",
@@ -599,9 +607,48 @@ const Pilot: React.FC = () => {
           >
             4-Week Pilot Timeline
           </h2>
-          <p className="mb-12 md:mb-16" style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", maxWidth: 480 }}>
-            Structured around BESS engineering workflows — from raw BMS telemetry to boardroom-ready findings.
+          <p className="mb-6" style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", maxWidth: 520 }}>
+            Structured around your battery data from raw telemetry to boardroom-ready findings.
           </p>
+
+          {/* Two-phase callout */}
+          <div
+            className="flex flex-col sm:flex-row gap-4 mb-12 md:mb-16"
+          >
+            {[
+              {
+                phase: "Phase 1 · Weeks 1–4",
+                title: "Technical Fit & Retrospective Analysis",
+                desc: "Data integration, model calibration, and retrospective RCA on historical failures. Deliverable: proof of technical fit and an LOI.",
+                color: "#00e87a",
+              },
+              {
+                phase: "Phase 2 · Weeks 5–12",
+                title: "Live Monitoring & Commercial Conversion",
+                desc: "Model runs on live data. When it catches something real that standard monitoring missed, that's the moment pilots convert to paid contracts.",
+                color: "#818cf8",
+              },
+            ].map((p) => (
+              <div
+                key={p.phase}
+                className="flex-1 rounded-xl p-4 md:p-5"
+                style={{
+                  border: `1px solid ${p.color}30`,
+                  background: `${p.color}08`,
+                }}
+              >
+                <p className="font-mono-jb mb-1" style={{ fontSize: 10, color: p.color, letterSpacing: "0.14em" }}>
+                  {p.phase}
+                </p>
+                <p className="font-syne mb-1.5" style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
+                  {p.title}
+                </p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}>
+                  {p.desc}
+                </p>
+              </div>
+            ))}
+          </div>
 
           <div className="space-y-4">
             {timelineSteps.map((step, i) => (
@@ -736,19 +783,19 @@ const Pilot: React.FC = () => {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[
               {
-                label: "Telemetry Coverage",
-                req: "≥ 90 days of rack-level V, I, T data at ≥ 1-min resolution",
-                note: "BMS logs, SCADA historian, MODBUS/MQTT, or telematics API",
-              },
-              {
-                label: "Fleet / Site Size",
-                req: "≥ 1 site (lab) or ≥ 3 sites (field deployment)",
-                note: "Per-rack granularity preferred; string-level accepted as minimum",
+                label: "Telemetry Volume",
+                req: "≥ 90 days of V, I, T data at ≥ 1-min resolution",
+                note: "BMS logs, SCADA historian, MODBUS/MQTT, telematics API, or CSV export; any format works",
               },
               {
                 label: "Incident Records",
                 req: "≥ 3 labeled degradation or fault events",
-                note: "Any format: CMMS tickets, field inspection notes, OEM warranty claims",
+                note: "Maintenance tickets, field inspection notes, OEM warranty claims; any documentation of a known issue",
+              },
+              {
+                label: "Chemistry Info",
+                req: "Cell chemistry + OEM datasheet or spec sheet",
+                note: "LFP, NMC, LTO, or other Li-ion chemistries. Required to calibrate the electrochemical degradation model to your cells",
               },
             ].map((r, i) => (
               <div
@@ -789,13 +836,13 @@ const Pilot: React.FC = () => {
             className="font-syne mb-6"
             style={{ fontSize: "clamp(1.7rem, 4vw, 3rem)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.1 }}
           >
-            Start Your BESS Technical<br />
+            Start Your Battery Intelligence<br />
             <span style={{ color: "var(--green)" }}>Evaluation This Week</span>
           </h2>
 
           <p className="mb-10" style={{ fontSize: "clamp(13px, 2vw, 15px)", color: "rgba(255,255,255,0.5)", lineHeight: 1.8 }}>
-            Our engineering team reviews your BESS architecture, telemetry coverage,
-            and failure history before the pilot begins — no sales handoff, direct access
+            Our engineering team reviews your battery architecture, telemetry coverage,
+            and failure history before the pilot begins; no sales handoff, direct access
             to the team building the models.
           </p>
 
@@ -804,9 +851,9 @@ const Pilot: React.FC = () => {
               href="https://calendly.com/prabhsingh-zylectra/enterprise-pilot-zylectra-1"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Book an enterprise call with Zylectra BESS team"
+              aria-label="Book a pilot call with the Zylectra team"
             >
-              <button className="cta-btn">Book Enterprise Call</button>
+              <button className="cta-btn">Book a Pilot Call</button>
             </a>
           </div>
 

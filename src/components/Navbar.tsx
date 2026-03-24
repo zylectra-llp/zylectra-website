@@ -43,7 +43,7 @@ const Navbar = () => {
                         className="flex items-center gap-3 cursor-pointer group"
                         onClick={() => scrollToSection("hero")}
                     >
-						<img src="\image.jpg" alt="Zylectra Logo" className="w-10 h-10 object-contain"/>
+                        <img src="\image.jpg" alt="Zylectra Logo" className="w-10 h-10 object-contain"/>
                         <span className="text-xl font-bold text-white tracking-tight">
                             Zylectra
                         </span>
@@ -52,9 +52,9 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-2 font-medium text-[13px] tracking-wider">
                         {[
-                            ["Solutions", "product"],
+                            ["Product",    "product"],
                             ["Physics-AI", "how-it-works"],
-                            ["Company", "about"],
+                            ["About",      "about"],
                         ].map(([label, id]) => (
                             <button
                                 key={id}
@@ -66,10 +66,10 @@ const Navbar = () => {
                         ))}
                         
                         <Link
-							to="/pilot"
+                            to="/pilot"
                             className="group flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold ml-4 transition-all"
-                            >
-                            <span>Request a pilot</span>
+                        >
+                            <span>Request a Pilot</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </Link>
                     </div>
@@ -78,6 +78,7 @@ const Navbar = () => {
                     <button
                         className="md:hidden p-2 text-white"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                     >
                         {isMobileMenuOpen ? <X /> : <Menu />}
                     </button>
@@ -87,15 +88,16 @@ const Navbar = () => {
                 {isMobileMenuOpen && (
                     <div className="md:hidden bg-black border border-white/10 p-6 mt-3 rounded-2xl shadow-2xl animate-in slide-in-from-top-5">
                         <div className="flex flex-col space-y-4 text-center">
-                            <button onClick={() => scrollToSection("product")} className="text-gray-300 py-2">Solutions</button>
+                            <button onClick={() => scrollToSection("product")}      className="text-gray-300 py-2">Product</button>
                             <button onClick={() => scrollToSection("how-it-works")} className="text-gray-300 py-2">Physics-AI</button>
-                            <button onClick={() => scrollToSection("about")} className="text-gray-300 py-2">Company</button>
-                            <button
-                                onClick={() => scrollToSection("demo")}
-                                className="bg-emerald-500 text-black py-4 rounded-xl font-bold"
+                            <button onClick={() => scrollToSection("about")}        className="text-gray-300 py-2">About</button>
+                            <Link
+                                to="/pilot"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="bg-emerald-500 text-black py-4 rounded-xl font-bold text-center"
                             >
-                                Book a Demo
-                            </button>
+                                Request a Pilot
+                            </Link>
                         </div>
                     </div>
                 )}

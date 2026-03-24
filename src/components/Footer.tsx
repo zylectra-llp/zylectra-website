@@ -6,6 +6,11 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const scrollToSection = (id: string): void => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <footer className="relative bg-[#050508] text-white border-t border-white/10">
       {/* Subtle Grid Background */}
@@ -36,7 +41,7 @@ const Footer: React.FC = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 py-20">
         {/* Top Grid */}
         <div className="grid md:grid-cols-4 gap-12 mb-16">
-          
+
           {/* Brand */}
           <div>
             <div className="flex items-center gap-4 mb-6">
@@ -49,27 +54,37 @@ const Footer: React.FC = () => {
                 Zylectra
               </span>
             </div>
-
             <p className="text-white/60 leading-relaxed max-w-md">
               We see what your batteries won't tell you.
             </p>
           </div>
 
-          {/* Company */}
+          {/* Product */}
           <div>
             <h4 className="text-sm uppercase tracking-widest text-emerald-500 mb-6">
-              Company
+              Product
             </h4>
-
             <div className="space-y-3 text-sm text-white/70">
-              <a href="#how-it-works" className="block hover:text-emerald-400 transition-colors">
-                How It Works
-              </a>
-              <a href="#demo" className="block hover:text-emerald-400 transition-colors">
-                Demo Simulation
-              </a>
+              <button
+                onClick={() => scrollToSection("product")}
+                className="block hover:text-emerald-400 transition-colors text-left"
+              >
+                Product
+              </button>
+              <button
+                onClick={() => scrollToSection("how-it-works")}
+                className="block hover:text-emerald-400 transition-colors text-left"
+              >
+                Physics-AI
+              </button>
+              <button
+                onClick={() => scrollToSection("demo")}
+                className="block hover:text-emerald-400 transition-colors text-left"
+              >
+                Live Demo
+              </button>
               <a href="/pilot" className="block hover:text-emerald-400 transition-colors">
-                Enterprise Pilot
+                Request a Pilot
               </a>
             </div>
           </div>
@@ -79,7 +94,6 @@ const Footer: React.FC = () => {
             <h4 className="text-sm uppercase tracking-widest text-emerald-500 mb-6">
               Contact
             </h4>
-
             <div className="space-y-4 text-sm">
               <div className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-emerald-500 mt-1" />
@@ -90,7 +104,6 @@ const Footer: React.FC = () => {
                   info@zylectra.com
                 </a>
               </div>
-
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-emerald-500 mt-1" />
                 <div className="text-white/70 leading-relaxed">
@@ -107,7 +120,6 @@ const Footer: React.FC = () => {
             <h4 className="text-sm uppercase tracking-widest text-emerald-500 mb-6">
               Social
             </h4>
-
             <a
               href="https://www.linkedin.com/company/zylectra"
               target="_blank"
@@ -125,7 +137,6 @@ const Footer: React.FC = () => {
           <div className="text-white/50">
             © {new Date().getFullYear()} Zylectra. All rights reserved.
           </div>
-
           <div className="flex items-center gap-6 text-white/50">
             <button
               onClick={scrollToTop}

@@ -11,7 +11,7 @@ const CTA: React.FC = () => {
       <div className="max-w-3xl mx-auto">
         {/* Section Label */}
         <div className="text-sm tracking-widest uppercase text-emerald-500 mb-4">
-          Enterprise Deployment
+          Get Started
         </div>
 
         {/* Heading */}
@@ -19,13 +19,14 @@ const CTA: React.FC = () => {
           id="cta-heading"
           className="text-3xl md:text-4xl font-semibold text-white mb-6 leading-tight"
         >
-          Prevent BESS Downtime Before It Costs You Uptime.
+          Your Batteries Are Degrading.<br />
+          <span className="text-emerald-400">Now You Can See It Coming.</span>
         </h2>
 
         {/* Description */}
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed mb-12">
-          Prevent costly downtime and SLA breaches with Zylectra, get 4-8 months early warning and evidence-based root cause analysis 
-          for your BESS.
+          Get 4-8 months of early warning and evidence-based root cause analysis
+          for your Li-ion assets, before failure costs you more than a pilot ever would.
         </p>
 
         {/* Buttons */}
@@ -33,16 +34,16 @@ const CTA: React.FC = () => {
           {/* Primary CTA */}
           <Link
             to="/pilot"
-            aria-label="Request an enterprise pilot for Zylectra BESS intelligence platform"
+            aria-label="Request a battery intelligence pilot with Zylectra"
             className="px-8 py-3 rounded-lg bg-emerald-500 text-black font-medium transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
           >
-            Request Enterprise Pilot
+            Request a Pilot
           </Link>
 
           {/* Secondary CTA */}
           <a
             href="#demo"
-            aria-label="Try the Zylectra BESS analysis demo for free"
+            aria-label="Try the Zylectra battery intelligence demo"
             className="px-8 py-3 rounded-lg border border-emerald-500/60 text-emerald-500 font-medium transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500"
           >
             Try the Demo Free

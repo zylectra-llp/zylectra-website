@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Cpu, Activity } from "lucide-react";
 
-// BESS Rack Visualization — High-fidelity Infrastructure Monitoring UI
+// Battery Asset Rack Visualization — Health Monitoring UI
 const RackViz = () => {
   const modules = [
-    { id: "M-01", health: 94, color: "rgba(16,185,129,0.9)", bgFill: "rgba(16,185,129,0.08)", status: "OK" },
-    { id: "M-02", health: 61, color: "rgba(239,68,68,0.9)",  bgFill: "rgba(239,68,68,0.13)",  status: "CRIT" },
-    { id: "M-03", health: 88, color: "rgba(16,185,129,0.9)", bgFill: "rgba(16,185,129,0.08)", status: "OK" },
-    { id: "M-04", health: 79, color: "rgba(251,191,36,0.9)", bgFill: "rgba(251,191,36,0.08)", status: "WARN" },
+    { id: "S-01", health: 94, color: "rgba(16,185,129,0.9)", bgFill: "rgba(16,185,129,0.08)", status: "OK" },
+    { id: "S-02", health: 61, color: "rgba(239,68,68,0.9)",  bgFill: "rgba(239,68,68,0.13)",  status: "CRIT" },
+    { id: "S-03", health: 88, color: "rgba(16,185,129,0.9)", bgFill: "rgba(16,185,129,0.08)", status: "OK" },
+    { id: "S-04", health: 79, color: "rgba(251,191,36,0.9)", bgFill: "rgba(251,191,36,0.08)", status: "WARN" },
   ];
 
   const rackX = 28;
@@ -35,7 +35,7 @@ const RackViz = () => {
       <rect x={rackX} y={rackY} width={rackW} height={rackH} rx="6" fill="url(#rackBodyGrad)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
 
       <text x={rackX + rackW / 2} y={rackY + 10} fill="rgba(255,255,255,0.22)" fontFamily="Space Mono, monospace" fontSize="7" fontWeight="600" letterSpacing="0.15em" textAnchor="middle">
-        BESS RACK #04 — SYSTEM STATUS: LIVE
+        BATTERY ASSET 04 — HEALTH MONITOR: LIVE
       </text>
 
       {modules.map((mod, i) => {
@@ -68,15 +68,15 @@ const SectionThree = () => {
 
   const metrics = [
     { val: "89.2%", label: "Capacity (SOH)", color: "text-amber-400" },
-    { val: "±2.4%", label: "Rack Imbalance", color: "text-emerald-400" },
-    { val: "Critical", label: "Fire Risk Score", color: "text-red-500" },
+    { val: "±2.4%", label: "Cell Imbalance",  color: "text-emerald-400" },
+    { val: "Critical", label: "Failure Risk", color: "text-red-500" },
   ];
 
   const bars = [
-    { label: "Calendar Aging", pct: 68, color: "bg-amber-500", val: "High" },
-    { label: "HVAC Efficiency", pct: 92, color: "bg-emerald-500", val: "Opt." },
-    { label: "Internal Short Risk", pct: 15, color: "bg-emerald-500", val: "Low" },
-    { label: "Capacity Fade", pct: 12, color: "bg-cyan-400", val: "12.1%" },
+    { label: "Calendar Aging",    pct: 68, color: "bg-amber-500",   val: "High"  },
+    { label: "Thermal Efficiency",pct: 92, color: "bg-emerald-500", val: "Opt."  },
+    { label: "Internal Short Risk",pct: 15, color: "bg-emerald-500", val: "Low"  },
+    { label: "Capacity Fade",     pct: 12, color: "bg-cyan-400",    val: "12.1%" },
   ];
 
   return (
@@ -86,13 +86,15 @@ const SectionThree = () => {
         {/* Header */}
         <div className={`text-center mb-16 md:mb-24 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
           <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-4">
-            Industrial Asset Performance Management
+            Battery Intelligence Platform
           </div>
           <h2 className="text-4xl sm:text-6xl font-bold leading-tight tracking-tight mb-4">
-            Two Engines. <span className="text-emerald-400">Zero Downtime.</span>
+            Two Engines. <span className="text-emerald-400">One Platform.</span>
           </h2>
           <p className="text-gray-500 text-sm md:text-base font-medium max-w-2xl mx-auto">
-            The first physics-informed BESS intelligence platform designed to protect SLAs, extend asset life, and eliminate blind spots in standard battery management systems.
+            The first physics-informed battery intelligence platform that gives operators
+            deep visibility into their Li-ion assets from health and degradation to
+            root cause when something goes wrong.
           </p>
         </div>
 
@@ -107,18 +109,26 @@ const SectionThree = () => {
                 <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
                   <Cpu className="w-6 h-6 text-emerald-400" />
                 </div>
-                <h3 className="text-2xl font-bold">Predictive BESS Health Monitoring</h3>
+                <h3 className="text-2xl font-bold">Predictive Battery Health</h3>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6 text-lg">
-                Predict <span className="text-white">BESS Remaining Useful Life</span> and thermal runaway risk months in advance using 
-                physics-informed battery analytics, outperforming standard BMS algorithms.
+                Predict{" "}
+                <span className="text-white">Remaining Useful Life</span>{" "}
+                and failure risk months in advance using physics-informed AI, outperforming
+                any threshold-based monitoring system.
               </p>
               <p className="text-gray-500 leading-relaxed mb-6 text-sm">
-                Identify how HVAC setpoint drift accelerates battery aging, with precise quantification of lost asset life and 
-                actionable cost-saving recommendations.
+                Track how operating conditions accumulate stress on your cells over time,
+                with precise quantification of lost asset life and actionable
+                recommendations to extend it.
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Calendar Aging Analysis", "HVAC-Correlated RUL Loss", "Thermal Runaway Risk", "String-Level Imbalance"].map((pill) => (
+                {[
+                  "Calendar Aging Analysis",
+                  "Thermal-Correlated RUL Loss",
+                  "Failure Risk Scoring",
+                  "Cell-Level Imbalance Detection",
+                ].map((pill) => (
                   <span key={pill} className="px-3 py-1.5 text-[10px] font-bold bg-white/5 border border-white/10 text-gray-400 rounded-md uppercase tracking-wider">
                     {pill}
                   </span>
@@ -132,14 +142,20 @@ const SectionThree = () => {
                 <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
                   <Activity className="w-6 h-6 text-emerald-400" />
                 </div>
-                <h3 className="text-2xl font-bold">Automated Root Cause Analysis</h3>
+                <h3 className="text-2xl font-bold">Root Cause Analysis</h3>
               </div>
               <p className="text-gray-400 leading-relaxed mb-6 text-lg">
-                Zylectra delivers fast, automated BESS root cause and warranty analysis, instantly attributing battery degradation to
-                the right party with engineering-grade, audit-ready evidence.
+                Zylectra delivers fast, automated root cause analysis, instantly
+                attributing battery degradation to the right party with
+                engineering-grade, audit-ready evidence.
               </p>
               <div className="flex flex-wrap gap-2">
-                {["Cell OEM vs PCS Attribution", "HVAC Liability Scoring", "EPC/Integrator Variance", "Audit-Ready Evidence"].map((pill) => (
+                {[
+                  "Multi-Modal RCA",
+                  "Thermal Management Attribution",
+                  "Charge Protocol Variance",
+                  "Audit-Ready Evidence Chains",
+                ].map((pill) => (
                   <span key={pill} className="px-3 py-1.5 text-[10px] font-bold bg-white/5 border border-white/10 text-gray-400 rounded-md uppercase tracking-wider">
                     {pill}
                   </span>
@@ -148,10 +164,10 @@ const SectionThree = () => {
             </div>
           </div>
 
-          {/* RIGHT SIDE — RACK MONITOR DASHBOARD */}
+          {/* RIGHT SIDE — ASSET MONITOR DASHBOARD */}
           <div className="sticky top-24 bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl">
             <div className="font-mono text-[10px] tracking-widest text-gray-500 uppercase mb-6 flex justify-between items-center">
-              <span>Rack-Level Degradation Profile</span>
+              <span>Pack-Level Degradation Profile</span>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-emerald-500">SYSTEM: ONLINE</span>

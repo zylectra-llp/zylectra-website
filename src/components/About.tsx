@@ -18,7 +18,7 @@ const About = () => {
             <div className="relative">
               <img
                 src="/image.jpg"
-                alt="Zylectra Logo - AI Battery Intelligence Platform"
+                alt="Zylectra Logo - Battery Intelligence Platform"
                 className="w-12 h-12 rounded-full border-2 border-emerald-400 shadow-lg"
               />
             </div>
@@ -119,7 +119,7 @@ const About = () => {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Zylectra",
-            "description": "AI-powered battery intelligence platform for EV and battery manufacturers",
+            "description": "Physics-informed battery intelligence platform for Li-ion health monitoring, degradation tracking, failure prediction, and root cause analysis.",
             "url": "https://zylectra.com",
             "awards": [
               {
@@ -127,11 +127,6 @@ const About = () => {
                 "name": "1st Runner Up - TiE Chandigarh Global Startup Finale 2025",
                 "awardDate": "2025",
                 "award": "₹1 Lakh Prize"
-              },
-              {
-                "@type": "Award",
-                "name": "READY Program Selection - IIT Delhi",
-                "awardDate": "2025"
               },
               {
                 "@type": "Grant",
