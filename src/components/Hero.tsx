@@ -1,92 +1,311 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
-// ── Animated Battery Intelligence Visualization ──────────────────────────────
+// ── Narrative Battery Intelligence Visualization ──────────────────────────────
+// Story arc: SOH curve draws live → green (healthy) → Zylectra flags early
+// (orange) → competitor catches up 28 days later (red) → 3s pause → loop.
 
-const BatteryViz: React.FC = () => {
-  const [tick, setTick] = useState(0);
-  const rafRef = useRef<number>();
-  const startRef = useRef<number>(Date.now());
+const TOTAL_POINTS    = 100;
+const ZYLECTRA_FLAG   = 55;   // index where Zylectra alerts
+const COMPETITOR_FLAG = 82;   // index where threshold alarm fires
+const EOL_SOH         = 80;   // end-of-life %
+const SOH_START       = 100;
+const SOH_END         = 73;
+const ANIM_SPEED      = 0.038; // points per ms
+
+function getSohAt(i: number): number {
+  const p    = i / (TOTAL_POINTS - 1);
+  const base = SOH_START - (SOH_START - SOH_END) * Math.pow(p, 1.4);
+  const noise =
+    Math.sin(i * 0.71 + 1.3) * 0.18 +
+    Math.sin(i * 0.23)        * 0.12;
+  return base + noise;
+}
+
+// Small isolated component so the live-dot RAF doesn't trigger BatteryViz re-renders
+const LiveDot: React.FC = () => {
+  const [r, setR]   = useState(3);
+  const rafRef      = useRef<number>();
+  const startRef    = useRef(Date.now());
 
   useEffect(() => {
     const loop = () => {
-      setTick(Date.now() - startRef.current);
+      const t = (Date.now() - startRef.current) / 1000;
+      setR(3 + Math.sin(t * 2.5) * 1.2);
       rafRef.current = requestAnimationFrame(loop);
     };
     rafRef.current = requestAnimationFrame(loop);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  const t = tick / 1000;
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" style={{ overflow: 'visible' }}>
+      <circle cx="6.5" cy="6.5" r={r + 2}  fill="rgba(52,211,153,0.15)" />
+      <circle cx="6.5" cy="6.5" r={r}       fill="rgba(52,211,153,0.28)" />
+      <circle cx="6.5" cy="6.5" r="3.2"     fill="#34d399" />
+    </svg>
+  );
+};
 
-  // SOH curve points — three degradation trajectories
-  const makeCurve = (baseSOH: number, rate: number, noise: number, len: number) =>
-    Array.from({ length: len }, (_, i) => {
-      const progress = i / (len - 1);
-      const soh = baseSOH - rate * progress * 22 + Math.sin(i * 0.55 + t * 0.35) * noise;
-      return { x: progress * 160, soh: Math.max(soh, 58) };
-    });
+const BatteryViz: React.FC = () => {
+  const canvasRef    = useRef<HTMLCanvasElement>(null);
+  const rafRef       = useRef<number>();
+  const frameRef     = useRef<number>(0);
+  const lastTsRef    = useRef<number | null>(null);
+  const pauseRef     = useRef<boolean>(false);
+  const pauseTimer   = useRef<ReturnType<typeof setTimeout>>();
 
-  const nominalPts  = makeCurve(98.2, 0.28, 0.12, 42);
-  const warningPts  = makeCurve(88.5, 1.75, 0.30, 42);
-  const criticalPts = makeCurve(76.8, 3.10, 0.45, 42);
+  const [visible,     setVisible]     = useState(false);
+  const [showZTag,    setShowZTag]    = useState(false);
+  const [showCTag,    setShowCTag]    = useState(false);
+  const [showAlert,   setShowAlert]   = useState(false);
+  const [rul,         setRul]         = useState('38.5');
+  const [sei,         setSei]         = useState('0.041');
+  const [lip,         setLip]         = useState('0.011');
+  const [conf,        setConf]        = useState('95.2');
+  const [rcaProgress, setRcaProgress] = useState(0);
 
-  const SOH_MIN = 58, SOH_MAX = 103, CHART_H = 78;
-  const toY = (soh: number) => ((SOH_MAX - soh) / (SOH_MAX - SOH_MIN)) * CHART_H;
-  const curvePath = (pts: { x: number; soh: number }[]) =>
-    pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${toY(p.soh).toFixed(1)}`).join(' ');
+  // Fade in on mount
+  useEffect(() => {
+    const id = setTimeout(() => setVisible(true), 500);
+    return () => clearTimeout(id);
+  }, []);
 
-  // Module health — five modules, slight animation
-  const modules = [
-    { id: 'M-01', soh: 97.8 + Math.sin(t * 0.28) * 0.08, st: 'ok'   },
-    { id: 'M-02', soh: 88.4 + Math.sin(t * 0.22) * 0.18, st: 'warn' },
-    { id: 'M-03', soh: 95.2 + Math.sin(t * 0.38) * 0.09, st: 'ok'   },
-    { id: 'M-04', soh: 72.5 + Math.sin(t * 0.33) * 0.28, st: 'crit' },
-    { id: 'M-05', soh: 91.3 + Math.sin(t * 0.19) * 0.13, st: 'ok'   },
+  // Set up canvas DPR scaling once
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr         = window.devicePixelRatio || 1;
+    canvas.width      = 520 * dpr;
+    canvas.height     = 140 * dpr;
+    canvas.style.width  = '100%';
+    canvas.style.height = '140px';
+    const ctx = canvas.getContext('2d');
+    if (ctx) ctx.scale(dpr, dpr);
+  }, []);
+
+  // Main animation loop — only canvas ops here, no setState spam
+  useEffect(() => {
+    const W = 520;
+    const H = 140;
+
+    const toX = (i: number) => 10 + (i / (TOTAL_POINTS - 1)) * (W - 20);
+    const toY = (soh: number) =>
+      H - ((soh - 68) / (EOL_SOH + 24 - 68)) * H * 0.88 - 8;
+
+    function draw(pointCount: number) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      ctx.clearRect(0, 0, W * dpr, H * dpr);
+
+      // EOL dashed line
+      const eolY = toY(EOL_SOH);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(10, eolY);
+      ctx.lineTo(W - 10, eolY);
+      ctx.strokeStyle = 'rgba(239,68,68,0.22)';
+      ctx.lineWidth   = 0.8;
+      ctx.setLineDash([4, 3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(239,68,68,0.45)';
+      ctx.font      = '400 9px "SF Mono","Fira Mono",monospace';
+      ctx.fillText('EOL 80%', W - 52, eolY - 3);
+      ctx.restore();
+
+      // Zylectra flag line
+      const zx = toX(ZYLECTRA_FLAG);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(zx, 0);
+      ctx.lineTo(zx, H);
+      ctx.strokeStyle =
+        pointCount >= ZYLECTRA_FLAG
+          ? 'rgba(52,211,153,0.55)'
+          : 'rgba(52,211,153,0.10)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 2]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if (pointCount >= ZYLECTRA_FLAG) {
+        ctx.fillStyle = 'rgba(52,211,153,0.75)';
+        ctx.font      = '700 8px "SF Mono","Fira Mono",monospace';
+        ctx.fillText('Z', zx + 3, 12);
+      }
+      ctx.restore();
+
+      // Competitor flag line
+      const cx = toX(COMPETITOR_FLAG);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(cx, 0);
+      ctx.lineTo(cx, H);
+      ctx.strokeStyle =
+        pointCount >= COMPETITOR_FLAG
+          ? 'rgba(239,68,68,0.55)'
+          : 'rgba(239,68,68,0.10)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 2]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if (pointCount >= COMPETITOR_FLAG) {
+        ctx.fillStyle = 'rgba(239,68,68,0.75)';
+        ctx.font      = '700 8px "SF Mono","Fira Mono",monospace';
+        ctx.fillText('C', cx + 3, 12);
+      }
+      ctx.restore();
+
+      // SOH curve with colour gradient green → orange → red
+      if (pointCount > 0) {
+        ctx.save();
+        const grad    = ctx.createLinearGradient(0, 0, W, 0);
+        const zRatio  = ZYLECTRA_FLAG   / (TOTAL_POINTS - 1);
+        const cRatio  = COMPETITOR_FLAG / (TOTAL_POINTS - 1);
+        grad.addColorStop(0,                          '#34d399');
+        grad.addColorStop(zRatio,                     '#34d399');
+        grad.addColorStop(zRatio + 0.01,              '#f97316');
+        grad.addColorStop(cRatio,                     '#f97316');
+        grad.addColorStop(Math.min(cRatio + 0.01, 1), '#ef4444');
+        grad.addColorStop(1,                          '#ef4444');
+
+        ctx.beginPath();
+        for (let j = 0; j < pointCount; j++) {
+          const x = toX(j);
+          const y = toY(getSohAt(j));
+          if (j === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = grad;
+        ctx.lineWidth   = 2.2;
+        ctx.lineJoin    = 'round';
+        ctx.lineCap     = 'round';
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Live cursor dot + pulse ring
+      const lastIdx = pointCount - 1;
+      if (lastIdx >= 0 && lastIdx < TOTAL_POINTS) {
+        const lx  = toX(lastIdx);
+        const ly  = toY(getSohAt(lastIdx));
+        const col =
+          lastIdx < ZYLECTRA_FLAG
+            ? '#34d399'
+            : lastIdx < COMPETITOR_FLAG
+            ? '#f97316'
+            : '#ef4444';
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(lx, ly, 4, 0, Math.PI * 2);
+        ctx.fillStyle = col;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(lx, ly, 7.5, 0, Math.PI * 2);
+        ctx.strokeStyle = col + '44';
+        ctx.lineWidth   = 1.5;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Time axis labels
+      ctx.fillStyle = 'rgba(255,255,255,0.16)';
+      ctx.font      = '400 8px "SF Mono","Fira Mono",monospace';
+      ['NOW', 'T+30d', 'T+60d', 'T+90d', 'T+120d'].forEach((label, idx) => {
+        const x = toX(Math.round((idx / 4) * (TOTAL_POINTS - 1)));
+        ctx.fillText(label, x - 12, H - 2);
+      });
+    }
+
+    function tick(ts: number) {
+      if (pauseRef.current) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+      if (lastTsRef.current === null) lastTsRef.current = ts;
+      const dt = ts - lastTsRef.current;
+      lastTsRef.current = ts;
+
+      frameRef.current = Math.min(
+        frameRef.current + dt * ANIM_SPEED,
+        TOTAL_POINTS - 1
+      );
+      const i   = Math.floor(frameRef.current);
+      const pct = i / (TOTAL_POINTS - 1);
+
+      draw(i + 1);
+
+      setRul(  (38.5 - pct * 22).toFixed(1));
+      setSei(  (0.041 + pct * 0.024).toFixed(3));
+      setLip(  (0.011 + pct * 0.019).toFixed(3));
+      setConf( (95.2  - pct * 1.8).toFixed(1));
+      setRcaProgress(pct);
+
+      if (i >= ZYLECTRA_FLAG)   setShowZTag(true);
+      if (i >= COMPETITOR_FLAG) { setShowCTag(true); setShowAlert(true); }
+
+      if (frameRef.current >= TOTAL_POINTS - 1) {
+        pauseRef.current = true;
+        pauseTimer.current = setTimeout(() => {
+          frameRef.current  = 0;
+          lastTsRef.current = null;
+          pauseRef.current  = false;
+          setShowZTag(false);
+          setShowCTag(false);
+          setShowAlert(false);
+          setRcaProgress(0);
+        }, 3000);
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    }
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    };
+  }, []);
+
+  const rcaDefs = [
+    { label: 'SEI Growth', pct: 44, color: '#f97316' },
+    { label: 'Li Plating', pct: 31, color: '#facc15' },
+    { label: 'LAM (NE)',   pct: 25, color: '#ef4444' },
   ];
-  const mc = (s: string) => s === 'ok' ? '#34d399' : s === 'warn' ? '#f97316' : '#ef4444';
-
-  // Animated RUL
-  const rul = (34.0 + Math.sin(t * 0.07) * 0.25).toFixed(1);
-
-  // Physics stats — animated values
-  const fadeRate = (0.061 + Math.sin(t * 0.12) * 0.001).toFixed(3);
-  const thermalRisk = Math.round(55 + Math.sin(t * 0.18) * 1.2);
-  const confidence = (94.1 + Math.sin(t * 0.09) * 0.15).toFixed(1);
-
-  // Live pulse
-  const pulseR = 3 + Math.sin(t * 2.5) * 1.2;
-
-  const [visible, setVisible] = useState(false);
-  useEffect(() => { const id = setTimeout(() => setVisible(true), 500); return () => clearTimeout(id); }, []);
 
   return (
     <div
       className="relative w-full select-none"
       style={{ opacity: visible ? 1 : 0, transition: 'opacity 1s ease 0.5s' }}
     >
-      {/* Ambient glow behind card */}
+      {/* Ambient glow */}
       <div
         className="absolute pointer-events-none"
         style={{
           inset: '-20px',
-          background: 'radial-gradient(ellipse 70% 55% at 55% 45%, rgba(52,211,153,0.09) 0%, transparent 68%)',
+          background:
+            'radial-gradient(ellipse 70% 55% at 55% 45%, rgba(52,211,153,0.09) 0%, transparent 68%)',
           borderRadius: 24,
         }}
       />
 
-      {/* Main dashboard card */}
+      {/* Main card */}
       <div
         className="relative rounded-2xl overflow-hidden"
         style={{
           background: 'rgba(7,9,14,0.97)',
           border: '1px solid rgba(52,211,153,0.16)',
-          boxShadow: '0 0 70px rgba(52,211,153,0.06), 0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
+          boxShadow:
+            '0 0 70px rgba(52,211,153,0.06), 0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.04)',
         }}
       >
-        {/* ─── Top bar ─── */}
+        {/* Top bar */}
         <div
           className="flex items-center justify-between px-4 py-2.5"
           style={{
@@ -95,141 +314,206 @@ const BatteryViz: React.FC = () => {
           }}
         >
           <div className="flex items-center gap-2">
-            <svg width="13" height="13" viewBox="0 0 13 13" style={{ overflow: 'visible' }}>
-              <circle cx="6.5" cy="6.5" r={pulseR + 2} fill="rgba(52,211,153,0.15)" />
-              <circle cx="6.5" cy="6.5" r={pulseR} fill="rgba(52,211,153,0.28)" />
-              <circle cx="6.5" cy="6.5" r="3.2" fill="#34d399" />
-            </svg>
-            <span style={{ fontFamily: 'monospace', fontSize: 10, color: '#34d399', letterSpacing: '0.18em' }}>
+            <LiveDot />
+            <span
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 10,
+                color: '#34d399',
+                letterSpacing: '0.18em',
+              }}
+            >
               LIVE · BATTERY INTELLIGENCE
             </span>
           </div>
-          <span style={{ fontFamily: 'monospace', fontSize: 9.5, color: 'rgba(255,255,255,0.22)', letterSpacing: '0.1em' }}>
-            RACK-07 · LFP · 5 MODULES
-          </span>
+
+          {/* Alert tags */}
+          <div className="flex items-center gap-2">
+            <span
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 8,
+                letterSpacing: '0.08em',
+                padding: '2px 8px',
+                borderRadius: 4,
+                background: 'rgba(52,211,153,0.12)',
+                color: '#34d399',
+                border: '1px solid rgba(52,211,153,0.25)',
+                opacity: showZTag ? 1 : 0,
+                transition: 'opacity 0.6s ease',
+              }}
+            >
+              ZYLECTRA ALERT
+            </span>
+            <span
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 8,
+                letterSpacing: '0.08em',
+                padding: '2px 8px',
+                borderRadius: 4,
+                background: 'rgba(239,68,68,0.10)',
+                color: 'rgba(239,68,68,0.8)',
+                border: '1px solid rgba(239,68,68,0.2)',
+                opacity: showCTag ? 1 : 0,
+                transition: 'opacity 0.6s ease',
+              }}
+            >
+              COMPETITOR ALERT
+            </span>
+          </div>
         </div>
 
-        {/* ─── SOH Trajectory Chart ─── */}
+        {/* Chart */}
         <div className="px-4 pt-4 pb-1">
           <div className="flex items-center justify-between mb-2.5">
-            <span style={{ fontFamily: 'monospace', fontSize: 8.5, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.16em' }}>
+            <span
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 8.5,
+                color: 'rgba(255,255,255,0.28)',
+                letterSpacing: '0.16em',
+              }}
+            >
               STATE-OF-HEALTH TRAJECTORY · PINN FORECAST
             </span>
             <div className="flex items-center gap-3">
-              {[['#34d399','Nominal'],['#f97316','Warning'],['#ef4444','Critical']].map(([c,l]) => (
+              {([
+                ['#34d399', 'Healthy'],
+                ['#f97316', 'Degrading'],
+                ['#ef4444', 'Critical'],
+              ] as [string, string][]).map(([c, l]) => (
                 <div key={l} className="flex items-center gap-1">
                   <div style={{ width: 13, height: 2, background: c, borderRadius: 1 }} />
-                  <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: 'rgba(255,255,255,0.3)' }}>{l}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <svg viewBox="0 0 164 80" className="w-full" style={{ height: 108, display: 'block' }}>
-            {/* Grid lines */}
-            {[100, 90, 80, 70, 60].map(soh => (
-              <g key={soh}>
-                <line
-                  x1="0" y1={toY(soh)} x2="164" y2={toY(soh)}
-                  stroke={soh === 80 ? 'rgba(239,68,68,0.25)' : 'rgba(255,255,255,0.04)'}
-                  strokeWidth={soh === 80 ? 0.7 : 0.35}
-                  strokeDasharray={soh === 80 ? '3 2' : undefined}
-                />
-                <text x="162" y={toY(soh) + 2.8} fill={soh === 80 ? 'rgba(239,68,68,0.55)' : 'rgba(255,255,255,0.18)'}
-                  fontSize="4.2" textAnchor="end" fontFamily="monospace">{soh}</text>
-              </g>
-            ))}
-
-            {/* EOL label */}
-            <text x="2" y={toY(80) - 1.5} fill="rgba(239,68,68,0.5)" fontSize="3.8" fontFamily="monospace">EOL</text>
-
-            {/* Three degradation curves */}
-            <path d={curvePath(criticalPts)} fill="none" stroke="#ef4444" strokeWidth="1.15" strokeLinejoin="round" strokeLinecap="round" opacity="0.75" />
-            <path d={curvePath(warningPts)}  fill="none" stroke="#f97316" strokeWidth="1.15" strokeLinejoin="round" strokeLinecap="round" opacity="0.82" />
-            <path d={curvePath(nominalPts)}  fill="none" stroke="#34d399" strokeWidth="1.5"  strokeLinejoin="round" strokeLinecap="round" />
-
-            {/* NOW cursor */}
-            <line x1="46" y1="0" x2="46" y2="80" stroke="rgba(255,255,255,0.1)" strokeWidth="0.55" strokeDasharray="2 2" />
-            <text x="47.5" y="5.5" fill="rgba(255,255,255,0.3)" fontSize="3.8" fontFamily="monospace">NOW</text>
-
-            {/* Dots at NOW position */}
-            {[
-              { pts: nominalPts,  col: '#34d399' },
-              { pts: warningPts,  col: '#f97316' },
-              { pts: criticalPts, col: '#ef4444' },
-            ].map(({ pts, col }) => {
-              const nearestIdx = Math.round((46 / 160) * (pts.length - 1));
-              const pt = pts[Math.min(nearestIdx, pts.length - 1)];
-              return pt ? <circle key={col} cx="46" cy={toY(pt.soh)} r="2.2" fill={col} opacity="0.9" /> : null;
-            })}
-          </svg>
-        </div>
-
-        {/* ─── Divider ─── */}
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', margin: '0 16px 0 16px' }} />
-
-        {/* ─── Module Health + Physics Output ─── */}
-        <div className="grid grid-cols-2">
-          {/* Module bars */}
-          <div className="px-4 py-3" style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
-            <p style={{ fontFamily: 'monospace', fontSize: 8.5, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.16em', marginBottom: 7 }}>
-              MODULE HEALTH
-            </p>
-            <div className="flex flex-col gap-1.5">
-              {modules.map(m => (
-                <div key={m.id} className="flex items-center gap-2">
-                  <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: 'rgba(255,255,255,0.3)', width: 24, flexShrink: 0 }}>{m.id}</span>
-                  <div style={{ flex: 1, height: 4, background: 'rgba(255,255,255,0.06)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{
-                      height: '100%',
-                      width: `${m.soh}%`,
-                      background: mc(m.st),
-                      borderRadius: 3,
-                      transition: 'width 0.4s ease',
-                      boxShadow: m.st === 'crit' ? `0 0 5px ${mc(m.st)}88` : undefined,
-                    }} />
-                  </div>
-                  <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: mc(m.st), width: 30, textAlign: 'right', flexShrink: 0 }}>
-                    {m.soh.toFixed(1)}%
+                  <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: 'rgba(255,255,255,0.3)' }}>
+                    {l}
                   </span>
                 </div>
               ))}
             </div>
           </div>
+          <canvas ref={canvasRef} style={{ display: 'block', borderRadius: 6 }} />
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', margin: '0 16px' }} />
+
+        {/* Bottom grid: RCA + Physics */}
+        <div className="grid grid-cols-2">
+          {/* Root cause */}
+          <div className="px-4 py-3" style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+            <p
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 8.5,
+                color: 'rgba(255,255,255,0.28)',
+                letterSpacing: '0.16em',
+                marginBottom: 8,
+              }}
+            >
+              DEGRADATION CAUSE
+            </p>
+            <div className="flex flex-col gap-1.5">
+              {rcaDefs.map((r) => {
+                const fill = Math.round(r.pct * rcaProgress);
+                return (
+                  <div key={r.label}>
+                    <div className="flex justify-between" style={{ marginBottom: 3 }}>
+                      <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: 'rgba(255,255,255,0.38)' }}>
+                        {r.label}
+                      </span>
+                      <span style={{ fontFamily: 'monospace', fontSize: 7.5, fontWeight: 700, color: r.color }}>
+                        {fill}%
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        width: '100%',
+                        height: 4,
+                        background: 'rgba(255,255,255,0.07)',
+                        borderRadius: 3,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: '100%',
+                          width: `${fill}%`,
+                          background: r.color,
+                          borderRadius: 3,
+                          transition: 'width 0.5s ease',
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
           {/* Physics output */}
           <div className="px-4 py-3">
-            <p style={{ fontFamily: 'monospace', fontSize: 8.5, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.16em', marginBottom: 7 }}>
+            <p
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 8.5,
+                color: 'rgba(255,255,255,0.28)',
+                letterSpacing: '0.16em',
+                marginBottom: 8,
+              }}
+            >
               PHYSICS OUTPUT
             </p>
             <div className="flex flex-col gap-1.5">
               {[
-                { label: 'RUL Forecast',   value: `${rul} mo`, color: '#34d399' },
-                { label: 'Fade Rate',       value: `${fadeRate}%/mo`, color: '#f97316' },
-                { label: 'Thermal Risk',    value: `${thermalRisk}%`, color: '#f97316' },
-                { label: 'Confidence',      value: `${confidence}%`, color: '#34d399' },
-                { label: 'RCA Top Cause',   value: 'HVAC 44%', color: '#facc15' },
+                { label: 'RUL Forecast',  value: `${rul} mo`,   color: '#34d399' },
+                { label: 'SEI Growth',    value: `${sei}%/mo`,  color: '#f97316' },
+                { label: 'Li Plating',    value: `${lip}%/mo`,  color: '#f97316' },
+                { label: 'Confidence',    value: `${conf}%`,    color: '#34d399' },
+                { label: 'RCA Top Cause', value: 'SEI Growth',  color: '#facc15' },
               ].map(({ label, value, color }) => (
                 <div key={label} className="flex items-center justify-between">
-                  <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: 'rgba(255,255,255,0.32)' }}>{label}</span>
-                  <span style={{ fontFamily: 'monospace', fontSize: 8.5, fontWeight: 700, color }}>{value}</span>
+                  <span style={{ fontFamily: 'monospace', fontSize: 7.5, color: 'rgba(255,255,255,0.32)' }}>
+                    {label}
+                  </span>
+                  <span style={{ fontFamily: 'monospace', fontSize: 8.5, fontWeight: 700, color }}>
+                    {value}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ─── Alert bar ─── */}
+        {/* Alert bar */}
         <div
           className="flex items-center gap-2.5 px-4 py-2"
-          style={{ background: 'rgba(239,68,68,0.045)', borderTop: '1px solid rgba(239,68,68,0.14)' }}
+          style={{
+            background: 'rgba(239,68,68,0.045)',
+            borderTop: '1px solid rgba(239,68,68,0.14)',
+            opacity: showAlert ? 1 : 0,
+            transition: 'opacity 0.8s ease',
+          }}
         >
-          <div style={{
-            width: 5.5, height: 5.5, borderRadius: '50%', background: '#ef4444', flexShrink: 0,
-            animation: 'hz-pulse 1.4s ease-in-out infinite',
-          }} />
-          <span style={{ fontFamily: 'monospace', fontSize: 8.5, color: 'rgba(239,68,68,0.82)', letterSpacing: '0.08em' }}>
-            M-04 · CAPACITY FADE 27.4% · REPLACE WITHIN 6 MONTHS
+          <div
+            style={{
+              width: 5.5,
+              height: 5.5,
+              borderRadius: '50%',
+              background: '#ef4444',
+              flexShrink: 0,
+              animation: 'hz-pulse 1.4s ease-in-out infinite',
+            }}
+          />
+          <span
+            style={{
+              fontFamily: 'monospace',
+              fontSize: 8.5,
+              color: 'rgba(239,68,68,0.82)',
+              letterSpacing: '0.08em',
+            }}
+          >
+            PACK-07 · SEI GROWTH EXCEEDS THRESHOLD · COMPETITOR ALERT -28 DAYS LATE
           </span>
         </div>
       </div>
@@ -245,7 +529,7 @@ const BatteryViz: React.FC = () => {
       >
         <div style={{ width: 5.5, height: 5.5, borderRadius: '50%', background: '#34d399' }} />
         <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#34d399', letterSpacing: '0.1em' }}>
-          PHYSICS-INFORMED
+          PHYSICS-INFORMED AI
         </span>
       </div>
 
@@ -259,14 +543,14 @@ const BatteryViz: React.FC = () => {
         }}
       >
         <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#facc15', letterSpacing: '0.1em' }}>
-          4-PARTY RCA
+          30-DAY EARLY WARNING
         </span>
       </div>
 
       <style>{`
         @keyframes hz-pulse {
           0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.25; transform: scale(0.85); }
+          50%       { opacity: 0.25; transform: scale(0.85); }
         }
       `}</style>
     </div>
@@ -302,8 +586,8 @@ const Hero: React.FC = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center bg-[#050508] overflow-hidden"
-      style={{ paddingTop: '4.5rem' }}
+      className="relative min-h-screen flex items-start bg-[#050508] overflow-hidden"
+      style={{ paddingTop: '3.5rem' }}
     >
       <span className="sr-only">
         Zylectra is a battery intelligence platform using physics-informed AI for Li-ion batteries health monitoring,
@@ -334,10 +618,10 @@ const Hero: React.FC = () => {
       {/* Content */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-10">
         <div
-          className="grid lg:grid-cols-2 gap-14 xl:gap-[8.5rem] 2xl:gap-[13rem] items-center py-12 lg:py-0"
-          style={{ minHeight: 'calc(100vh - 4.5rem)' }}
+          className="grid lg:grid-cols-2 gap-14 xl:gap-[8.5rem] 2xl:gap-[13rem] items-center py-8 lg:py-0"
+          style={{ minHeight: 'calc(100vh - 3.5rem)' }}
         >
-          {/* ── LEFT: Copy ── */}
+          {/* LEFT: Copy */}
           <div className="flex flex-col justify-center order-1 lg:order-1">
 
             {/* Badge */}
@@ -351,45 +635,34 @@ const Hero: React.FC = () => {
               </span>
             </div>
 
-            {/* H1 — strict 3 rows: row 1 = 2 words, row 2 = 4 words, row 3 = 2 words */}
+            {/* H1 */}
             <h1
               className={`font-bold text-white tracking-tight mb-6 transition-all duration-700 delay-150 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
               }`}
               style={{ lineHeight: 1.08 }}
             >
-              {/* Row 1 */}
               <span
                 className="block whitespace-nowrap"
                 style={{ fontSize: 'clamp(2.4rem, 4vw, 3.6rem)' }}
               >
                 Battery Degradation
               </span>
-
-              {/* Row 2 */}
               <span
                 className="block whitespace-nowrap"
-                style={{
-                  fontSize: 'clamp(2.4rem, 4vw, 3.6rem)',
-                  color: '#34d399',
-                }}
+                style={{ fontSize: 'clamp(2.4rem, 4vw, 3.6rem)', color: '#34d399' }}
               >
                 Starts Silent. We Don't.
               </span>
-
-              {/* Row 3 */}
               <span
                 className="block whitespace-nowrap"
-                style={{
-                  fontSize: 'clamp(2.4rem, 4vw, 3.6rem)',
-                  color: 'rgba(255,255,255,0.88)',
-                }}
+                style={{ fontSize: 'clamp(2.4rem, 4vw, 3.6rem)', color: 'rgba(255,255,255,0.88)' }}
               >
                 Stay Ahead.
               </span>
             </h1>
 
-            {/* Description — single paragraph, no sub-headings, no domain callouts */}
+            {/* Description */}
             <p
               className={`text-gray-400 leading-relaxed mb-8 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
               style={{ fontSize: 'clamp(14px, 1.6vw, 16px)', maxWidth: 470 }}
@@ -423,26 +696,9 @@ const Hero: React.FC = () => {
                 Request a Pilot
               </Link>
             </div>
-
-            {/* Trust bar */}
-            <div
-              className={`flex flex-wrap items-center gap-6 mt-8 pt-7 transition-all duration-700 delay-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-              style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              {[
-                { label: 'Incubated at',   value: 'VentureLab Thapar' },
-                { label: '1st Runner Up',  value: 'TiE Chandigarh 2025' },
-                { label: 'Grant received', value: '₹5 Lakhs' },
-              ].map(({ label, value }) => (
-                <div key={label}>
-                  <p style={{ fontFamily: 'monospace', fontSize: 9.5, color: 'rgba(255,255,255,0.28)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</p>
-                  <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.62)', fontWeight: 600, marginTop: 2 }}>{value}</p>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* ── RIGHT: Visualization ── */}
+          {/* RIGHT: Visualization */}
           <div
             className={`order-2 lg:order-2 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0 lg:translate-x-0' : 'opacity-0 translate-y-5 lg:translate-x-8'}`}
           >
