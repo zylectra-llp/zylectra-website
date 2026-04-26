@@ -217,7 +217,7 @@ const BatteryViz: React.FC = () => {
       // Time axis labels
       ctx.fillStyle = 'rgba(255,255,255,0.16)';
       ctx.font      = '400 8px "SF Mono","Fira Mono",monospace';
-      ['NOW', 'T+30d', 'T+60d', 'T+90d', 'T+120d'].forEach((label, idx) => {
+      ['NOW', 'T+2mo', 'T+4mo', 'T+6mo', 'T+8mo'].forEach((label, idx) => {
         const x = toX(Math.round((idx / 4) * (TOTAL_POINTS - 1)));
         ctx.fillText(label, x - 12, H - 2);
       });
@@ -375,7 +375,7 @@ const BatteryViz: React.FC = () => {
                 letterSpacing: '0.16em',
               }}
             >
-              STATE-OF-HEALTH TRAJECTORY · PINN FORECAST
+              STATE-OF-HEALTH TRAJECTORY · PHYSICS AI FORECAST
             </span>
             <div className="flex items-center gap-3">
               {([
@@ -485,35 +485,62 @@ const BatteryViz: React.FC = () => {
           </div>
         </div>
 
-        {/* Alert bar */}
+        {/* Action bar — closes the loop on "what to do about it" */}
         <div
-          className="flex items-center gap-2.5 px-4 py-2"
+          className="flex items-center justify-between gap-3 px-4 py-2.5"
           style={{
-            background: 'rgba(239,68,68,0.045)',
-            borderTop: '1px solid rgba(239,68,68,0.14)',
+            background: 'rgba(52,211,153,0.05)',
+            borderTop: '1px solid rgba(52,211,153,0.20)',
             opacity: showAlert ? 1 : 0,
             transition: 'opacity 0.8s ease',
           }}
         >
-          <div
-            style={{
-              width: 5.5,
-              height: 5.5,
-              borderRadius: '50%',
-              background: '#ef4444',
-              flexShrink: 0,
-              animation: 'hz-pulse 1.4s ease-in-out infinite',
-            }}
-          />
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div
+              style={{
+                width: 5.5,
+                height: 5.5,
+                borderRadius: '50%',
+                background: '#34d399',
+                flexShrink: 0,
+                animation: 'hz-pulse 1.4s ease-in-out infinite',
+              }}
+            />
+            <div className="flex flex-col min-w-0">
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 8,
+                  color: 'rgba(52,211,153,0.7)',
+                  letterSpacing: '0.18em',
+                }}
+              >
+                RECOMMENDED ACTION
+              </span>
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 9.5,
+                  color: 'rgba(255,255,255,0.92)',
+                  letterSpacing: '0.04em',
+                  marginTop: 1,
+                }}
+              >
+                Reduce charge current 8% above 80% SOC
+              </span>
+            </div>
+          </div>
           <span
             style={{
               fontFamily: 'monospace',
-              fontSize: 8.5,
-              color: 'rgba(239,68,68,0.82)',
-              letterSpacing: '0.08em',
+              fontSize: 9,
+              color: '#34d399',
+              fontWeight: 700,
+              letterSpacing: '0.05em',
+              whiteSpace: 'nowrap',
             }}
           >
-            PACK-07 · SEI GROWTH EXCEEDS THRESHOLD · COMPETITOR ALERT -28 DAYS LATE
+            +4 mo recovered
           </span>
         </div>
       </div>
@@ -543,7 +570,7 @@ const BatteryViz: React.FC = () => {
         }}
       >
         <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#facc15', letterSpacing: '0.1em' }}>
-          30-DAY EARLY WARNING
+          8-MONTH EARLY WARNING
         </span>
       </div>
 
@@ -590,8 +617,9 @@ const Hero: React.FC = () => {
       style={{ paddingTop: '3.5rem' }}
     >
       <span className="sr-only">
-        Zylectra is a battery intelligence platform using physics-informed AI for Li-ion batteries health monitoring,
-        degradation tracking, failure prediction, and root cause analysis for EV fleets, BESS, and data centers.
+        Zylectra is a battery intelligence platform using physics-informed AI for Li-ion batteries.
+        We tell you which cells will fail, the exact electrochemical mechanism behind the failure, and the
+        operational change that buys back warranty months. Built for EV OEMs, fleet operators, and battery financiers.
       </span>
 
       {/* Background grid */}
@@ -624,14 +652,14 @@ const Hero: React.FC = () => {
           {/* LEFT: Copy */}
           <div className="flex flex-col justify-center order-1 lg:order-1">
 
-            {/* Badge */}
+            {/* Eyebrow */}
             <div
               className={`inline-flex w-fit items-center gap-2.5 rounded-full border px-4 py-2 mb-7 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
               style={{ background: 'rgba(52,211,153,0.07)', borderColor: 'rgba(52,211,153,0.24)' }}
             >
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
               <span style={{ fontFamily: 'monospace', fontSize: 10.5, color: '#6ee7b7', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-                Battery Intelligence Platform
+                Battery intelligence for Electric Vehicles
               </span>
             </div>
 
@@ -640,61 +668,50 @@ const Hero: React.FC = () => {
               className={`font-bold text-white tracking-tight mb-6 transition-all duration-700 delay-150 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
               }`}
-              style={{ lineHeight: 1.08 }}
+              style={{ lineHeight: 1.08, fontSize: 'clamp(1.9rem, 3.15vw, 2.75rem)' }}
             >
-              <span
-                className="block whitespace-nowrap"
-                style={{ fontSize: 'clamp(2.4rem, 4vw, 3.6rem)' }}
-              >
-                Battery Degradation
+              <span>
+                Know which batteries will fail, {' '}
+                <span style={{ color: '#34d399' }}>why, and what to do about it.</span>
               </span>
-              <span
-                className="block whitespace-nowrap"
-                style={{ fontSize: 'clamp(2.4rem, 4vw, 3.6rem)', color: '#34d399' }}
-              >
-                Starts Silent. We Don't.
-              </span>
-              <span
-                className="block whitespace-nowrap"
-                style={{ fontSize: 'clamp(2.4rem, 4vw, 3.6rem)', color: 'rgba(255,255,255,0.88)' }}
-              >
-                Stay Ahead.
+              <span className="hidden sm:inline">{' '}</span>
+              <span className="block sm:inline" style={{ color: 'rgba(255,255,255,0.88)' }}>
+                8 months before they fail.
               </span>
             </h1>
 
             {/* Description */}
             <p
               className={`text-gray-400 leading-relaxed mb-8 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
-              style={{ fontSize: 'clamp(14px, 1.6vw, 16px)', maxWidth: 470 }}
+              style={{ fontSize: 'clamp(13.5px, 1.25vw, 15px)', maxWidth: 490 }}
             >
-              Zylectra tracks Li-ion battery health continuously, models degradation, and predicts failure{' '}
-              <span className="text-white font-semibold">4-8 months earlier</span>{' '}
-              than any threshold alarm, with physics-informed AI that understands the electrochemistry,
-              not just the telemetry.
+              Zylectra turns the data your BMS already collects into{' '}
+              <span className="text-white font-semibold">cell-level failure predictions</span>, the
+              electrochemical root cause, and the operational action to extend warranty life. No new sensors. No hardware changes.
             </p>
 
             {/* CTAs */}
             <div
               className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
-              <button
-                onClick={() => scrollToSection('demo')}
-                title="See Zylectra battery intelligence live demo"
+              <Link
+                to="/pilot"
+                title="Request a Zylectra pilot"
                 className="flex items-center gap-2.5 rounded-xl font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_32px_rgba(16,185,129,0.45)]"
                 style={{ background: '#34d399', color: '#050508', padding: '13px 28px', fontSize: 15 }}
               >
-                See it live
+                Request a pilot
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
 
-              <Link
-                to="/pilot"
-                title="Request a battery intelligence pilot"
+              <button
+                onClick={() => scrollToSection('demo')}
+                title="See the demo"
                 className="flex items-center gap-2 rounded-xl font-semibold border transition-all duration-300 hover:border-emerald-500/55 hover:bg-white/[0.03] hover:text-white"
                 style={{ color: 'rgba(255,255,255,0.6)', padding: '13px 24px', fontSize: 15, borderColor: 'rgba(255,255,255,0.11)' }}
               >
-                Request a Pilot
-              </Link>
+                See demo
+              </button>
             </div>
           </div>
 

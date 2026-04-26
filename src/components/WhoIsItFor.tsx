@@ -1,147 +1,100 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Zap, BatteryCharging, Wrench, Cpu } from "lucide-react";
+import { Factory, Truck, LineChart, ArrowRight } from "lucide-react";
 
-type CustomerCard = {
+type Column = {
   title: string;
-  subtitle: string;
   Icon: React.ComponentType<{ className?: string }>;
-  items: string[];
+  headline: string;
+  body: string;
+  cta: string;
 };
 
-const customers: CustomerCard[] = [
+const columns: Column[] = [
   {
-    title: "Fleet & Mobility Operators",
-    subtitle: "Asset Uptime & Range Protection",
-    Icon: Zap,
-    items: [
-      "Know which packs are degrading before range drops or vehicles go offline",
-      "Predict replacement 4-8 months ahead, plan maintenance, not emergencies",
-      "Understand exactly why a pack aged faster than its neighbors",
-      "Physics-grade evidence for OEM warranty claims, not just field reports",
-    ],
+    title: "For OEMs and Tier-1s",
+    Icon: Factory,
+    headline: "Stop discovering defects through warranty claims.",
+    body:
+      "Catch the bad batch in the first thousand cycles, not the last. Cut the share of vehicle margin that gets eaten by post-sale repair, and ship the audit trail your QA team has been asking for.",
+    cta: "Request a pilot for OEMs",
   },
   {
-    title: "Energy Storage Asset Owners",
-    subtitle: "Capital Protection & ROI",
-    Icon: BatteryCharging,
-    items: [
-      "Protect the ROI on a long-horizon capital asset from day one of commissioning",
-      "Quantify how operating conditions are costing you asset life, and what to fix first",
-      "Get months of lead time before a failure event, not a 30-second alarm",
-      "Audit-ready attribution data for defensible warranty and insurance claims",
-    ],
+    title: "For fleet operators",
+    Icon: Truck,
+    headline: "Pull the vehicle before the breakdown, not after.",
+    body:
+      "Know which packs are dying twelve weeks out. Schedule the swap. Keep the vehicle earning. Stop having the same conversation with the same driver about the same dead pack.",
+    cta: "Request a pilot for fleets",
   },
   {
-    title: "O&M & Service Teams",
-    subtitle: "Predictive Maintenance",
-    Icon: Wrench,
-    items: [
-      "Shift from reactive to predictive, stop replacing what isn't broken",
-      "Identify underperforming strings and cells before they drag down the whole asset",
-      "Remote diagnostics reduce expensive site visits and emergency dispatches",
-      "Continuous health scores give your team a single source of truth across the fleet",
-    ],
-  },
-  {
-    title: "OEMs & Manufacturers",
-    subtitle: "R&D, Warranty & Quality",
-    Icon: Cpu,
-    items: [
-      "Validate cell chemistry degradation under real-world operating profiles",
-      "Separate manufacturing variance from field operating conditions in warranty disputes",
-      "Accelerate degradation studies via physics-informed digital twins",
-      "Back performance guarantees with RUL forecasts grounded in electrochemical physics",
-    ],
+    title: "For financiers and insurers",
+    Icon: LineChart,
+    headline: "Price the residual on physics, not on hope.",
+    body:
+      "Battery health forecasts that hold up at 24 months. Risk tiers you can underwrite. A health certificate that travels with the asset, so the second-life market knows what it's buying.",
+    cta: "Request a pilot for financiers",
   },
 ];
 
-const Customers: React.FC = () => {
-  const scrollToDemo = () => {
-    const el = document.getElementById("demo");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
+const WhoIsItFor: React.FC = () => {
   return (
     <section
       id="customers"
       className="bg-[#050508] px-6 md:px-16 py-24 border-t border-white/5"
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Section Label */}
+      <div className="max-w-7xl mx-auto">
+        {/* Eyebrow */}
         <div className="text-sm tracking-widest uppercase text-emerald-500 mb-4">
-          Who It's For
+          Who it's for
         </div>
 
-        {/* Heading */}
-        <h2 className="text-3xl md:text-4xl font-semibold text-white mb-6">
-          Intelligence for{" "}
-          <span className="text-emerald-400">High-Stakes</span> Assets.
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-6 tracking-tight max-w-4xl">
+          Built for the people who carry battery risk on their{" "}
+          <span className="text-emerald-400">balance sheet.</span>
         </h2>
 
-        {/* Description */}
-        <p className="text-white/60 max-w-xl leading-relaxed mb-16">
-          Wherever lithium batteries are critical and failure is expensive, Zylectra gives
-          you the physics-informed layer that standard monitoring was never designed
-          to provide.
+        <p className="text-white/60 max-w-2xl leading-relaxed mb-16 text-base md:text-lg">
+          Find the column that sounds like your week. The other two will sound like someone you sit across from.
         </p>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {customers.map(({ title, subtitle, Icon, items }) => (
-            <div
+        {/* 3-col grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {columns.map(({ title, Icon, headline, body, cta }) => (
+            <article
               key={title}
-              className="bg-white/[0.03] border border-white/10 rounded-xl p-8 transition-all duration-300 hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.08)] hover:-translate-y-1"
+              className="group relative flex flex-col bg-white/[0.03] border border-white/10 rounded-2xl p-7 md:p-8 transition-all duration-300 hover:border-emerald-500/40 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(16,185,129,0.07)]"
             >
-              {/* Card Header */}
-              <div className="flex items-start gap-3 mb-2">
-                <Icon className="w-6 h-6 text-emerald-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="text-lg font-semibold text-white">{title}</h3>
-                  <p className="text-xs text-emerald-500/70 font-mono tracking-wide mt-0.5">
-                    {subtitle}
-                  </p>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="p-2 bg-emerald-500/10 rounded-lg">
+                  <Icon className="w-5 h-5 text-emerald-400" />
                 </div>
+                <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
+                  {title}
+                </span>
               </div>
 
-              {/* Divider */}
-              <div className="h-px bg-white/5 my-5" />
+              <h3 className="text-xl md:text-[22px] font-bold text-white mb-4 leading-snug tracking-tight">
+                {headline}
+              </h3>
 
-              {/* Items */}
-              <ul className="space-y-3">
-                {items.map((item) => (
-                  <li
-                    key={item}
-                    className="relative text-sm text-white/60 pl-5"
-                  >
-                    <span className="absolute left-0 text-emerald-500">→</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <p className="text-white/60 text-sm md:text-[15px] leading-relaxed mb-8 flex-grow">
+                {body}
+              </p>
+
+              <Link
+                to="/pilot"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+              >
+                {cta}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </article>
           ))}
-        </div>
-
-        {/* CTAs */}
-        <div className="mt-16 flex flex-col sm:flex-row sm:items-center gap-4">
-          <Link
-            to="/pilot"
-            className="inline-flex justify-center items-center px-6 py-3 rounded-lg bg-emerald-400 text-black font-semibold text-sm shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 transition"
-          >
-            Request a Pilot
-          </Link>
-          <button
-            type="button"
-            onClick={scrollToDemo}
-            className="inline-flex justify-center items-center px-6 py-3 rounded-lg border border-white/30 text-sm font-semibold text-white hover:border-emerald-400 hover:text-emerald-300 transition"
-          >
-            See it in action
-          </button>
         </div>
       </div>
     </section>
   );
 };
 
-export default Customers;
+export default WhoIsItFor;

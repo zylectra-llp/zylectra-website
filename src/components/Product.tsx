@@ -1,204 +1,254 @@
-import React, { useEffect, useState } from "react";
-import { Cpu, Activity } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Activity, Search, Wrench, FileLock2 } from "lucide-react";
 
-// Battery Asset Rack Visualization — Health Monitoring UI
-const RackViz = () => {
-  const modules = [
-    { id: "S-01", health: 94, color: "rgba(16,185,129,0.9)", bgFill: "rgba(16,185,129,0.08)", status: "OK" },
-    { id: "S-02", health: 61, color: "rgba(239,68,68,0.9)",  bgFill: "rgba(239,68,68,0.13)",  status: "CRIT" },
-    { id: "S-03", health: 88, color: "rgba(16,185,129,0.9)", bgFill: "rgba(16,185,129,0.08)", status: "OK" },
-    { id: "S-04", health: 79, color: "rgba(251,191,36,0.9)", bgFill: "rgba(251,191,36,0.08)", status: "WARN" },
-  ];
-
-  const rackX = 28;
-  const rackY = 18;
-  const rackW = 344;
-  const rackH = 138;
-  const moduleH = 26;
-  const moduleGap = 6;
-  const moduleStartY = rackY + 16;
-
-  return (
-    <svg viewBox="0 0 400 172" className="w-full h-auto mb-4 drop-shadow-2xl">
-      <defs>
-        <linearGradient id="rackBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="rgba(16,185,129,0.06)" />
-          <stop offset="100%" stopColor="rgba(16,185,129,0.01)" />
-        </linearGradient>
-        <filter id="glow-red">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-
-      {/* Rack Chassis */}
-      <rect x={rackX} y={rackY} width={rackW} height={rackH} rx="6" fill="url(#rackBodyGrad)" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-
-      <text x={rackX + rackW / 2} y={rackY + 10} fill="rgba(255,255,255,0.22)" fontFamily="Space Mono, monospace" fontSize="7" fontWeight="600" letterSpacing="0.15em" textAnchor="middle">
-        BATTERY ASSET 04 — HEALTH MONITOR: LIVE
-      </text>
-
-      {modules.map((mod, i) => {
-        const my = moduleStartY + i * (moduleH + moduleGap);
-        const isCrit = mod.status === "CRIT";
-        return (
-          <g key={mod.id}>
-            <rect x={rackX + 12} y={my} width={rackW - 24} height={moduleH} rx="3" fill="rgba(255,255,255,0.02)" stroke={isCrit ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.05)"} />
-            <circle cx={rackX + 24} cy={my + moduleH / 2} r="3.5" fill={mod.color} filter={isCrit ? "url(#glow-red)" : ""}>
-              {isCrit && <animate attributeName="opacity" values="1;0.15;1" dur="1.4s" repeatCount="indefinite" />}
-            </circle>
-            <text x={rackX + 36} y={my + moduleH / 2 + 4} fill={isCrit ? "#ef4444" : "white"} opacity={isCrit ? 1 : 0.4} fontFamily="Space Mono, monospace" fontSize="8" fontWeight="700">{mod.id}</text>
-            <rect x={rackX + 68} y={my + moduleH / 2 - 3} width={200} height="6" rx="3" fill="rgba(255,255,255,0.05)" />
-            <rect x={rackX + 68} y={my + moduleH / 2 - 3} width={(mod.health / 100) * 200} height="6" rx="3" fill={mod.color} opacity="0.7" />
-            <text x={rackX + 278} y={my + moduleH / 2 + 4} fill={mod.color} fontFamily="Space Mono, monospace" fontSize="8" fontWeight="700">{mod.health}%</text>
-          </g>
-        );
-      })}
-    </svg>
-  );
+type Outcome = {
+  Icon: React.ComponentType<{ className?: string }>;
+  eyebrow: string;
+  title: string;
+  body: string;
+  pillars: { label: string; value: string }[];
 };
 
-const SectionThree = () => {
-  const [isVisible, setIsVisible] = useState(false);
+const outcomes: Outcome[] = [
+  {
+    Icon: Activity,
+    eyebrow: "01 · Failure prediction",
+    title: "You'll know which cells are dying, before the data shows it.",
+    body:
+      "You get cell-level Remaining Useful Life on the horizon you actually price against. 12 to 24 months out if you're underwriting residual value. 30 to 90 days out if you're pulling a vehicle for service. Same engine, your lens.",
+    pillars: [
+      { label: "Lead time", value: "8 mo" },
+      { label: "Resolution", value: "Cell" },
+    ],
+  },
+  {
+    Icon: Search,
+    eyebrow: "02 · Root cause attribution",
+    title: "You'll know which mechanism is killing the cell, not just that it's sick.",
+    body:
+      "Every prediction lands with a breakdown: how much of the fade is SEI growth, how much is lithium plating, how much is loss of active material, how much is loss of lithium inventory.",
+    pillars: [
+      { label: "LLI accuracy", value: "92.9%" },
+      { label: "LAM accuracy", value: "96.5%" },
+    ],
+  },
+  {
+    Icon: Wrench,
+    eyebrow: "03 · Operational recommendation",
+    title: "You'll get the next move, not just the diagnosis.",
+    body:
+      '"Cell is dying" is not a product. "Reduce charge current 8% above 80% SOC and recover four months of useful life" is. Every alert lands with the action that earns your warranty back.',
+    pillars: [
+      { label: "Action", value: "Per-alert" },
+      { label: "Recovers", value: "Months" },
+    ],
+  },
+  {
+    Icon: FileLock2,
+    eyebrow: "04 · Audit trail",
+    title: "You'll have the receipts when warranty, insurance, or the regulator asks.",
+    body:
+      "A tamper-evident log of every prediction, every action recommended, every action taken. Built for a world where battery passports are mandatory and warranty disputes go to arbitration. Your engineers see a tool. Your CFO sees a moat.",
+    pillars: [
+      { label: "Log", value: "Tamper-evident" },
+      { label: "Built for", value: "Arbitration" },
+    ],
+  },
+];
+
+const SectionThree: React.FC = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const activeCardRef = useRef<HTMLElement | null>(null);
+  const [stageH, setStageH] = useState<number>(420);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 200);
-    return () => clearTimeout(timer);
+    const onScroll = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = el.offsetHeight - window.innerHeight;
+      const scrolled = -rect.top;
+      const p = Math.max(0, Math.min(1, scrolled / total));
+      setProgress(p);
+      // Map progress to card index. Use a bias so each card has a clear "dwell" zone.
+      const idx = Math.min(outcomes.length - 1, Math.floor(p * outcomes.length));
+      setActiveIdx(idx);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const metrics = [
-    { val: "89.2%", label: "Capacity (SOH)", color: "text-amber-400" },
-    { val: "±2.4%", label: "Cell Imbalance",  color: "text-emerald-400" },
-    { val: "Critical", label: "Failure Risk", color: "text-red-500" },
-  ];
+  useEffect(() => {
+    const measure = () => {
+      const el = activeCardRef.current;
+      if (!el) return;
+      const next = Math.ceil(el.getBoundingClientRect().height);
+      if (Number.isFinite(next) && next > 0) setStageH(next);
+    };
 
-  const bars = [
-    { label: "Calendar Aging",    pct: 68, color: "bg-amber-500",   val: "High"  },
-    { label: "Thermal Efficiency",pct: 92, color: "bg-emerald-500", val: "Opt."  },
-    { label: "Internal Short Risk",pct: 15, color: "bg-emerald-500", val: "Low"  },
-    { label: "Capacity Fade",     pct: 12, color: "bg-cyan-400",    val: "12.1%" },
-  ];
+    // Measure after paint when the active card swaps.
+    const raf = requestAnimationFrame(measure);
+
+    const el = activeCardRef.current;
+    let ro: ResizeObserver | null = null;
+    if (el && "ResizeObserver" in window) {
+      ro = new ResizeObserver(() => measure());
+      ro.observe(el);
+    } else {
+      window.addEventListener("resize", measure);
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (ro && el) ro.unobserve(el);
+      window.removeEventListener("resize", measure);
+    };
+  }, [activeIdx]);
+
+  const goTo = (i: number) => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const total = el.offsetHeight - window.innerHeight;
+    // center the target card in its dwell zone
+    const target = el.offsetTop + ((i + 0.5) / outcomes.length) * total;
+    window.scrollTo({ top: target, behavior: "smooth" });
+  };
 
   return (
-    <section id="product" className="relative py-24 md:py-32 bg-[#050508] text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <section
+      ref={wrapperRef}
+      id="product"
+      className="relative bg-[#050508] text-white"
+      style={{ height: `${outcomes.length * 95}vh` }}
+    >
+      {/* Sticky stage */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+        {/* Soft glow */}
+        <div className="absolute top-1/3 -right-24 w-[520px] h-[520px] rounded-full bg-emerald-500/[0.05] blur-3xl pointer-events-none" />
 
-        {/* Header */}
-        <div className={`text-center mb-16 md:mb-24 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-          <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-4">
-            Battery Intelligence Platform
-          </div>
-          <h2 className="text-4xl sm:text-6xl font-bold leading-tight tracking-tight mb-4">
-            Two Engines. <span className="text-emerald-400">One Platform.</span>
-          </h2>
-          <p className="text-gray-500 text-sm md:text-base font-medium max-w-2xl mx-auto">
-            The first physics-informed battery intelligence platform that gives operators
-            deep visibility into their Li-ion assets from health and degradation to
-            root cause when something goes wrong.
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-
-          {/* LEFT SIDE */}
-          <div className="space-y-12 md:space-y-16">
-
-            {/* Module 1: Prediction */}
-            <div className="group">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
-                  <Cpu className="w-6 h-6 text-emerald-400" />
-                </div>
-                <h3 className="text-2xl font-bold">Predictive Battery Health</h3>
-              </div>
-              <p className="text-gray-400 leading-relaxed mb-6 text-lg">
-                Predict{" "}
-                <span className="text-white">Remaining Useful Life</span>{" "}
-                and failure risk months in advance using physics-informed AI, outperforming
-                any threshold-based monitoring system.
-              </p>
-              <p className="text-gray-500 leading-relaxed mb-6 text-sm">
-                Track how operating conditions accumulate stress on your cells over time,
-                with precise quantification of lost asset life and actionable
-                recommendations to extend it.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "Calendar Aging Analysis",
-                  "Thermal-Correlated RUL Loss",
-                  "Failure Risk Scoring",
-                  "Cell-Level Imbalance Detection",
-                ].map((pill) => (
-                  <span key={pill} className="px-3 py-1.5 text-[10px] font-bold bg-white/5 border border-white/10 text-gray-400 rounded-md uppercase tracking-wider">
-                    {pill}
-                  </span>
-                ))}
-              </div>
+        <div className="relative max-w-7xl mx-auto px-6 w-full">
+          {/* Header */}
+          <div className="text-center mb-8 md:mb-12">
+            <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-3">
+              What you get
             </div>
-
-            {/* Module 2: Attribution */}
-            <div className="group">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
-                  <Activity className="w-6 h-6 text-emerald-400" />
-                </div>
-                <h3 className="text-2xl font-bold">Root Cause Analysis</h3>
-              </div>
-              <p className="text-gray-400 leading-relaxed mb-6 text-lg">
-                Zylectra delivers fast, automated root cause analysis, instantly
-                attributing battery degradation to the right party with
-                engineering-grade, audit-ready evidence.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "Multi-Modal RCA",
-                  "Thermal Management Attribution",
-                  "Charge Protocol Variance",
-                  "Audit-Ready Evidence Chains",
-                ].map((pill) => (
-                  <span key={pill} className="px-3 py-1.5 text-[10px] font-bold bg-white/5 border border-white/10 text-gray-400 rounded-md uppercase tracking-wider">
-                    {pill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-3">
+              Four answers your battery <span className="text-emerald-400">owes you.</span>
+            </h2>
+            <p className="text-gray-400 text-sm md:text-base font-medium max-w-2xl mx-auto leading-relaxed">
+              Outcomes, not features. Risk you can act on, a cause you can name, the highest-leverage move,
+              and the record that defends it.
+            </p>
           </div>
 
-          {/* RIGHT SIDE — ASSET MONITOR DASHBOARD */}
-          <div className="sticky top-24 bg-white/[0.03] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl shadow-2xl">
-            <div className="font-mono text-[10px] tracking-widest text-gray-500 uppercase mb-6 flex justify-between items-center">
-              <span>Pack-Level Degradation Profile</span>
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-emerald-500">SYSTEM: ONLINE</span>
-              </div>
+          {/* Card stage */}
+          <div className="relative max-w-4xl mx-auto">
+            {/* Stack — only the active card is shown; others are absolute and fade */}
+            <div className="relative transition-[height] duration-300 ease-out" style={{ height: stageH, minHeight: 360 }}>
+              {outcomes.map(({ Icon, eyebrow, title, body, pillars }, i) => {
+                const isActive = activeIdx === i;
+                const isPast = i < activeIdx;
+                return (
+                  <article
+                    key={eyebrow}
+                    aria-hidden={!isActive}
+                    ref={(node) => {
+                      if (isActive) activeCardRef.current = node;
+                    }}
+                    className="absolute inset-0 rounded-2xl md:rounded-3xl p-7 md:p-10 bg-white/[0.025] border border-white/10 transition-all duration-500"
+                    style={{
+                      opacity: isActive ? 1 : 0,
+                      transform: isActive
+                        ? "translateY(0) scale(1)"
+                        : isPast
+                        ? "translateY(-22px) scale(0.985)"
+                        : "translateY(22px) scale(0.985)",
+                      pointerEvents: isActive ? "auto" : "none",
+                      borderColor: isActive ? "rgba(52,211,153,0.30)" : "rgba(255,255,255,0.08)",
+                      boxShadow: isActive ? "0 0 60px rgba(52,211,153,0.06)" : "none",
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-emerald-500/10 rounded-lg">
+                          <Icon className="w-5 h-5 text-emerald-400" />
+                        </div>
+                        <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
+                          {eyebrow}
+                        </span>
+                      </div>
+                      <span className="font-mono text-[10.5px] tracking-[0.18em] text-white/30">
+                        {String(i + 1).padStart(2, "0")} / {String(outcomes.length).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl md:text-2xl lg:text-3xl font-bold leading-snug mb-4 tracking-tight">
+                      {title}
+                    </h3>
+
+                    <p className="text-gray-400 text-[14.5px] md:text-base leading-relaxed mb-7">
+                      {body}
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 pt-5 border-t border-white/5">
+                      {pillars.map((p) => (
+                        <div key={p.label}>
+                          <div className="font-mono text-[9.5px] tracking-widest uppercase text-gray-500 mb-1">
+                            {p.label}
+                          </div>
+                          <div className="text-emerald-400 font-bold text-[15px] tracking-tight">
+                            {p.value}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                );
+              })}
             </div>
 
-            <RackViz />
-
-            {/* Live Metrics Grid */}
-            <div className="grid grid-cols-3 gap-3 my-6">
-              {metrics.map(({ val, label, color }) => (
-                <div key={label} className="bg-white/[0.02] border border-white/5 rounded-xl p-4 hover:bg-white/[0.04] transition-colors">
-                  <div className={`font-mono text-lg font-bold ${color}`}>{val}</div>
-                  <div className="text-[10px] text-gray-500 uppercase tracking-tighter mt-1">{label}</div>
-                </div>
+            {/* Progress dots / step nav (also acts as user-driven jumps) */}
+            <div className="mt-8 flex items-center justify-center gap-3">
+              {outcomes.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to outcome ${i + 1}`}
+                  className="group flex items-center gap-2"
+                >
+                  <span
+                    className="block rounded-full transition-all duration-300"
+                    style={{
+                      width: activeIdx === i ? 28 : 8,
+                      height: 8,
+                      background: activeIdx === i
+                        ? "#34d399"
+                        : i < activeIdx
+                        ? "rgba(52,211,153,0.4)"
+                        : "rgba(255,255,255,0.18)",
+                    }}
+                  />
+                </button>
               ))}
             </div>
 
-            {/* Asset Risks */}
-            <div className="space-y-4">
-              {bars.map(({ label, pct, color, val }) => (
-                <div key={label} className="space-y-1.5">
-                  <div className="flex justify-between text-[10px] uppercase tracking-widest text-gray-500">
-                    <span>{label}</span>
-                    <span className="text-white font-bold">{val}</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div className={`h-full ${color} transition-all duration-1000 ease-out`} style={{ width: `${pct}%` }} />
-                  </div>
-                </div>
-              ))}
+            {/* Scroll affordance */}
+            <p className="mt-4 text-center font-mono text-[10px] tracking-widest uppercase text-white/30">
+              {activeIdx < outcomes.length - 1 ? "Scroll for the next answer" : "Scroll up to revisit"}
+            </p>
+
+            {/* Progress bar at top of section */}
+            <div
+              className="absolute -top-6 left-0 right-0 h-[2px] rounded-full overflow-hidden"
+              style={{ background: "rgba(255,255,255,0.05)" }}
+            >
+              <div
+                className="h-full bg-emerald-400/70 transition-all duration-200"
+                style={{ width: `${Math.round(progress * 100)}%` }}
+              />
             </div>
           </div>
         </div>

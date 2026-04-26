@@ -6,36 +6,30 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import CallToAction from "./components/CallToAction";
 import Footer from "./components/Footer";
-import SectionTwo from "./components/Problem";
-import SectionThree from "./components/Product";
-import SectionFour from "./components/HowItWorks";
-import SectionFive from "./components/Demo";
-import SectionSix from "./components/WhoIsItFor";
+import TheShift from "./components/Problem";
+import WhatYouGet from "./components/Product";
+import HowItWorks from "./components/HowItWorks";
+import Demo from "./components/Demo";
+import WhoIsItFor from "./components/WhoIsItFor";
+import FAQ from "./components/FAQ";
 import PilotPage from "./pages/Pilot";
 import ScrollToTop from "./utils/scrollToTop";
-
-/* --------------------------
-   LANDING PAGE COMPONENT
---------------------------- */
 
 function LandingPage() {
   return (
     <>
       <Hero />
-      <SectionTwo />
-      <SectionThree />
-      <SectionFour />
+      <TheShift />
+      <WhatYouGet />
+      <HowItWorks />
+      <WhoIsItFor />
+      <Demo />
       <About />
-      <SectionFive />
-      <SectionSix />
+      <FAQ />
       <CallToAction />
     </>
   );
 }
-
-/* --------------------------
-   MAIN APP
---------------------------- */
 
 function App() {
   return (

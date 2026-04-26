@@ -52,9 +52,10 @@ const Navbar = () => {
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-2 font-medium text-[13px] tracking-wider">
                         {[
-                            ["Product",    "product"],
-                            ["Physics-AI", "how-it-works"],
-                            ["About",      "about"],
+                            ["What you get", "product"],
+                            ["How it works", "how-it-works"],
+                            ["Demo",         "demo"],
+                            ["FAQ",          "faq"],
                         ].map(([label, id]) => (
                             <button
                                 key={id}
@@ -64,12 +65,12 @@ const Navbar = () => {
                                 {label}
                             </button>
                         ))}
-                        
+
                         <Link
                             to="/pilot"
                             className="group flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold ml-4 transition-all"
                         >
-                            <span>Request a Pilot</span>
+                            <span>Request a pilot</span>
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </Link>
                     </div>
@@ -88,15 +89,16 @@ const Navbar = () => {
                 {isMobileMenuOpen && (
                     <div className="md:hidden bg-black border border-white/10 p-6 mt-3 rounded-2xl shadow-2xl animate-in slide-in-from-top-5">
                         <div className="flex flex-col space-y-4 text-center">
-                            <button onClick={() => scrollToSection("product")}      className="text-gray-300 py-2">Product</button>
-                            <button onClick={() => scrollToSection("how-it-works")} className="text-gray-300 py-2">Physics-AI</button>
-                            <button onClick={() => scrollToSection("about")}        className="text-gray-300 py-2">About</button>
+                            <button onClick={() => scrollToSection("product")}      className="text-gray-300 py-2">What you get</button>
+                            <button onClick={() => scrollToSection("how-it-works")} className="text-gray-300 py-2">How it works</button>
+                            <button onClick={() => scrollToSection("demo")}         className="text-gray-300 py-2">Demo</button>
+                            <button onClick={() => scrollToSection("faq")}          className="text-gray-300 py-2">FAQ</button>
                             <Link
                                 to="/pilot"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="bg-emerald-500 text-black py-4 rounded-xl font-bold text-center"
                             >
-                                Request a Pilot
+                                Request a pilot
                             </Link>
                         </div>
                     </div>
