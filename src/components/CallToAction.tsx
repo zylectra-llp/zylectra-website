@@ -37,14 +37,6 @@ const CTA: React.FC = () => {
             Request a pilot
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
-
-          <a
-            href="#demo"
-            aria-label="See the demo"
-            className="px-8 py-3.5 rounded-lg border border-emerald-500/60 text-emerald-400 font-semibold transition-all duration-300 hover:bg-emerald-500/10 hover:border-emerald-500"
-          >
-            See the demo
-          </a>
         </div>
 
         <p className="mt-8 font-mono text-[11px] tracking-widest uppercase text-white/40">

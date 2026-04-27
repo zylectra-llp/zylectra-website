@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Activity, Search, Wrench, FileLock2 } from "lucide-react";
+import { Activity, Search, Wrench, FileLock2, ArrowRight } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 type Outcome = {
   Icon: React.ComponentType<{ className?: string }>;
@@ -62,6 +63,8 @@ const SectionThree: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const activeCardRef = useRef<HTMLElement | null>(null);
   const [stageH, setStageH] = useState<number>(420);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => {
@@ -115,6 +118,16 @@ const SectionThree: React.FC = () => {
     // center the target card in its dwell zone
     const target = el.offsetTop + ((i + 0.5) / outcomes.length) * total;
     window.scrollTo({ top: target, behavior: "smooth" });
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -239,6 +252,28 @@ const SectionThree: React.FC = () => {
             <p className="mt-4 text-center font-mono text-[10px] tracking-widest uppercase text-white/30">
               {activeIdx < outcomes.length - 1 ? "Scroll for the next answer" : "Scroll up to revisit"}
             </p>
+
+            {/* CTA */}
+            <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                to="/pilot"
+                aria-label="Request a Zylectra pilot"
+                className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-emerald-500 text-black font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
+              >
+                Request a pilot
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+
+              <button
+                type="button"
+                onClick={() => scrollToSection("film")}
+                aria-label="See it in action (opens the film demo section)"
+                className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-lg border border-white/15 bg-white/[0.02] text-white/85 font-bold transition-all duration-300 hover:bg-white/[0.05] hover:border-white/25"
+              >
+                See it in action
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
 
             {/* Progress bar at top of section */}
             <div

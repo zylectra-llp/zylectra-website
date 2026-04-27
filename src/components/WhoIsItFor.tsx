@@ -69,7 +69,7 @@ const WhoIsItFor: React.FC = () => {
                 <div className="p-2 bg-emerald-500/10 rounded-lg">
                   <Icon className="w-5 h-5 text-emerald-400" />
                 </div>
-                <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
+                <span className="font-mono text-[12px] md:text-[13px] tracking-[0.18em] uppercase text-emerald-400/80">
                   {title}
                 </span>
               </div>

@@ -8,7 +8,7 @@ const steps = [
   {
     num: "01",
     icon: Database,
-    title: "Send us the telemetry your BMS already collects",
+    title: "Load the telemetry your BMS already collects to Zylectra",
     desc: "Voltage, current, temperature, timestamps. Whatever your BMS logs today, in whatever format you log it. Batch uploads, API push, secure dump. All fine.",
     objection: "Kills: \"we'd need to retrofit.\"",
   },

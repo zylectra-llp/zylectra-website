@@ -54,7 +54,7 @@ const Navbar = () => {
                         {[
                             ["What you get", "product"],
                             ["How it works", "how-it-works"],
-                            ["Demo",         "demo"],
+                            ["Film",         "film"],
                             ["FAQ",          "faq"],
                         ].map(([label, id]) => (
                             <button
@@ -91,7 +91,7 @@ const Navbar = () => {
                         <div className="flex flex-col space-y-4 text-center">
                             <button onClick={() => scrollToSection("product")}      className="text-gray-300 py-2">What you get</button>
                             <button onClick={() => scrollToSection("how-it-works")} className="text-gray-300 py-2">How it works</button>
-                            <button onClick={() => scrollToSection("demo")}         className="text-gray-300 py-2">Demo</button>
+                            <button onClick={() => scrollToSection("film")}         className="text-gray-300 py-2">Film</button>
                             <button onClick={() => scrollToSection("faq")}          className="text-gray-300 py-2">FAQ</button>
                             <Link
                                 to="/pilot"

@@ -795,7 +795,7 @@ const Demo: React.FC = () => {
   return (
     <section
       ref={wrapperRef}
-      id="demo"
+      id="film"
       className="relative bg-[#050508] text-white"
       style={{ height: `${SCENES.length * 110}vh` }}
     >
@@ -806,7 +806,7 @@ const Demo: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
               <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-2">
-                The demo · A short film in six scenes
+                A short film in six scenes
               </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight max-w-3xl">
                 You don't need another dashboard.

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 // ── Narrative Battery Intelligence Visualization ──────────────────────────────
@@ -694,24 +693,25 @@ const Hero: React.FC = () => {
             <div
               className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
-              <Link
-                to="/pilot"
-                title="Request a Zylectra pilot"
-                className="flex items-center gap-2.5 rounded-xl font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_32px_rgba(16,185,129,0.45)]"
-                style={{ background: '#34d399', color: '#050508', padding: '13px 28px', fontSize: 15 }}
-              >
-                Request a pilot
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
               <button
-                onClick={() => scrollToSection('demo')}
-                title="See the demo"
-                className="flex items-center gap-2 rounded-xl font-semibold border transition-all duration-300 hover:border-emerald-500/55 hover:bg-white/[0.03] hover:text-white"
-                style={{ color: 'rgba(255,255,255,0.6)', padding: '13px 24px', fontSize: 15, borderColor: 'rgba(255,255,255,0.11)' }}
+                onClick={() => scrollToSection('film')}
+                title="See the story"
+                className="relative group inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.21)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
+                style={{
+                  letterSpacing: '0.015em',
+                  minWidth: 180,
+                }}
               >
-                See demo
+                <span className="relative z-10 flex items-center gap-2"> {/* for future icon upgrades */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 text-emerald-800 group-hover:text-emerald-900 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.1} d="M9 5l7 7-7 7" />
+                  </svg>
+                  See the story
+                </span>
+                {/* Blurred glow */}
+                <span className="absolute inset-0 rounded-2xl pointer-events-none group-hover:blur-[2px] group-hover:bg-emerald-300/20"></span>
               </button>
+         
             </div>
           </div>
 
