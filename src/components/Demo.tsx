@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight, AlertTriangle, Phone, Clock, IndianRupee, X, Check, ChevronLeft, ChevronRight,
+  Database, Cpu, Bell,
 } from "lucide-react";
 
 // ─── Hooks ───────────────────────────────────────────────────────────────────
@@ -27,7 +28,7 @@ function useCounter(target: number, durationMs = 1600, start = false) {
   return val;
 }
 
-// ─── Scene 1: Cold open (the nightmare) ──────────────────────────────────────
+// ─── Scene 2: Cold open (the nightmare) ──────────────────────────────────────
 
 const SceneColdOpen: React.FC<{ active: boolean }> = ({ active }) => {
   const [step, setStep] = useState(0);
@@ -46,7 +47,7 @@ const SceneColdOpen: React.FC<{ active: boolean }> = ({ active }) => {
         className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-red-400/70 mb-8 text-center"
         style={{ opacity: active ? 1 : 0, transition: "opacity 0.5s" }}
       >
-        Scene 1 · Tuesday · 02:47 AM
+        Scene 2 · Tuesday · 02:47 AM
       </div>
 
       <div
@@ -104,7 +105,7 @@ const SceneColdOpen: React.FC<{ active: boolean }> = ({ active }) => {
   );
 };
 
-// ─── Scene 2: Try it yourself ────────────────────────────────────────────────
+// ─── Scene 1: Try it yourself ────────────────────────────────────────────────
 
 type CellState = {
   id: string;
@@ -174,7 +175,7 @@ const SceneTryIt: React.FC<{ active: boolean }> = ({ active }) => {
         className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-400/80 mb-6 text-center"
         style={{ opacity: active ? 1 : 0, transition: "opacity 0.5s" }}
       >
-        Scene 2 · Try it · click any cell
+        Scene 1 · Try it · click any cell
       </div>
 
       <h3 className="text-center text-white text-xl md:text-3xl font-bold tracking-tight leading-tight mb-3">
@@ -407,145 +408,284 @@ const SceneOutcome: React.FC<{ active: boolean }> = ({ active }) => {
   );
 };
 
-// ─── Scene 4: Two costs ──────────────────────────────────────────────────────
+// ─── Scene 4: Year-end balance sheet (interactive) ───────────────────────────
 
-const SceneTwoCosts: React.FC<{ active: boolean }> = () => (
-  <div className="relative w-full max-w-5xl mx-auto">
-    <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-white/40 mb-4 text-center">
-      Scene 4 · The math
-    </div>
-    <h3 className="text-center text-white text-xl md:text-3xl font-bold tracking-tight leading-tight mb-8">
-      Most vendors quote you the cost of saying yes.
-      <br />
-      <span className="text-emerald-400">Here's the cost of saying no.</span>
-    </h3>
+const fmtLakh = (n: number) => `₹${(n / 100000).toFixed(n / 100000 >= 100 ? 0 : 1)}L`;
+const fmtCrore = (n: number) => `₹${(n / 10000000).toFixed(2)} crore`;
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-      <div
-        className="rounded-2xl p-5 md:p-7 border"
-        style={{ borderColor: "rgba(239,68,68,0.22)", background: "rgba(239,68,68,0.025)" }}
-      >
-        <div className="flex items-center gap-3 mb-3">
-          <AlertTriangle className="w-5 h-5 text-red-400" />
-          <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-red-400/80">
-            Cost of saying no
-          </span>
-        </div>
-        <p className="text-white text-base font-semibold mb-4">
-          Per pack. Per year. Per call you don't want to take.
-        </p>
-        <div className="space-y-2.5">
-          {[
-            ["One stranded vehicle", "₹35,000 / day"],
-            ["One emergency pack swap", "₹7-8 lakhs"],
-            ["One voided warranty claim", "₹4-7 lakhs"],
-            ["One thermal event in a depot", "₹25-40 lakhs"],
-            ["One driver who quits", "Immeasurable"],
-            ["A residual nobody can underwrite", "Your balance sheet"],
-          ].map(([label, cost], i) => (
-            <div key={i} className="flex items-center justify-between gap-4 py-2 border-b border-white/5 last:border-0">
-              <span className="text-white/70 text-sm">{label}</span>
-              <span className="font-mono text-red-300/90 text-sm text-right whitespace-nowrap">{cost}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+const SceneTwoCosts: React.FC<{ active: boolean }> = ({ active }) => {
+  const [fleet, setFleet] = useState(120);
 
-      <div
-        className="rounded-2xl p-5 md:p-7 border"
-        style={{
-          borderColor: "rgba(52,211,153,0.28)",
-          background: "rgba(52,211,153,0.03)",
-          boxShadow: "0 0 30px rgba(52,211,153,0.06)",
-        }}
-      >
-        <div className="flex items-center gap-3 mb-3">
-          <Check className="w-5 h-5 text-emerald-400" />
-          <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
-            Cost of saying yes
-          </span>
-        </div>
-        <p className="text-white text-base font-semibold mb-4">
-          Six to twelve weeks. The telemetry you already collect. A door you can walk back through.
-        </p>
-        <div className="space-y-2.5">
-          {[
-            ["Time commitment", "6-12 weeks"],
-            ["Hardware to install", "None"],
-            ["Engineer hours / week", "≈ 4"],
-            ["Data we need", "What your BMS already logs"],
-            ["NDA", "Mutual, two pages"],
-            ["If predictions don't hold up", "You walk away"],
-          ].map(([label, cost], i) => (
-            <div key={i} className="flex items-center justify-between gap-4 py-2 border-b border-white/5 last:border-0">
-              <span className="text-white/70 text-sm">{label}</span>
-              <span className="font-mono text-emerald-300/90 text-sm text-right whitespace-nowrap">{cost}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-// ─── Scene 5: Loved / Hated ──────────────────────────────────────────────────
-
-const SceneStakes: React.FC<{ active: boolean }> = () => {
-  const liked = [
-    { who: "Your drivers",      line: "Stop having the same conversation about the same dead pack." },
-    { who: "Your CFO",          line: "Warranty claims that come with the audit trail attached." },
-    { who: "Your customers",    line: "Vehicles that show up. SLAs that don't cost you ₹3L every breach." },
-    { who: "Your underwriter",  line: "A health certificate that travels with the asset. Defensible residual." },
+  const drainLines = [
+    { label: "Emergency pack replacements",       perPack: 50000 },
+    { label: "Voided warranty claims",            perPack: 25000 },
+    { label: "Customer SLA penalties",            perPack: 35000 },
+    { label: "Productivity & dispatch downtime",  perPack: 30000 },
+    { label: "Catastrophic thermal exposure",     perPack: 20000 },
+    { label: "Underwriter discount on residual",  perPack: 40000 },
   ];
-  const hated = [
-    "The competitor's fleet manager, still being woken up at 02:47 AM.",
-    "The OEM that sold you a 'predictive' BMS firmware that fires alarms a day late.",
-    "The legacy analytics vendor selling pattern dashboards on data they don't have.",
-    "The integrator who told you 'this isn't possible without new sensors.'",
+  const annualPerPack = drainLines.reduce((s, l) => s + l.perPack, 0); // ₹2,00,000
+  const annualDrain = annualPerPack * fleet;
+  const exposureAvoided = 780000 * fleet; // ₹7.8L per pack lifetime exposure
+
+  return (
+    <div className="relative w-full max-w-5xl mx-auto">
+      <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-white/40 mb-4 text-center"
+           style={{ opacity: active ? 1 : 0, transition: "opacity 0.5s" }}>
+        Scene 4 · Your balance sheet at year-end
+      </div>
+      <h3 className="text-center text-white text-xl md:text-3xl font-bold tracking-tight leading-tight mb-3">
+        One incident is a story.
+        <br />
+        <span className="text-emerald-400">Twelve months across a fleet is a balance sheet.</span>
+      </h3>
+      <p className="text-center text-white/55 text-sm mb-6 max-w-2xl mx-auto">
+        Drag the slider. The numbers move with your fleet — because so does the cost.
+      </p>
+
+      {/* Fleet size input */}
+      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 md:p-5 mb-5 max-w-xl mx-auto">
+        <div className="flex items-center justify-between mb-3">
+          <label htmlFor="fleet-size" className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-white/55">
+            Your fleet size
+          </label>
+          <div className="flex items-center gap-2">
+            <input
+              id="fleet-size-num"
+              type="number"
+              min={10}
+              max={1000}
+              step={10}
+              value={fleet}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                if (!Number.isNaN(v)) setFleet(Math.max(10, Math.min(1000, v)));
+              }}
+              className="w-20 bg-black/40 border border-white/10 rounded-md px-2 py-1 text-white font-bold text-right tabular-nums focus:outline-none focus:border-emerald-400/60"
+            />
+            <span className="text-white/50 text-sm">vehicles</span>
+          </div>
+        </div>
+        <input
+          id="fleet-size"
+          type="range"
+          min={10}
+          max={500}
+          step={10}
+          value={Math.min(500, fleet)}
+          onChange={(e) => setFleet(Number(e.target.value))}
+          className="w-full accent-emerald-400 cursor-pointer"
+        />
+        <div className="flex justify-between mt-1.5 font-mono text-[10px] text-white/35">
+          <span>10</span><span>100</span><span>250</span><span>500</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+        <div
+          className="rounded-2xl p-5 md:p-6 border"
+          style={{ borderColor: "rgba(239,68,68,0.22)", background: "rgba(239,68,68,0.025)" }}
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <AlertTriangle className="w-5 h-5 text-red-400" />
+            <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-red-400/80">
+              Without Zylectra · 12 months
+            </span>
+          </div>
+          <p className="text-white text-sm font-medium mb-4">
+            What {fleet} vehicles quietly bleed across one year.
+          </p>
+          <div className="space-y-1.5">
+            {drainLines.map((l, i) => (
+              <div key={i} className="flex items-center justify-between gap-4 py-1.5 border-b border-white/5 last:border-0">
+                <span className="text-white/70 text-sm">{l.label}</span>
+                <span className="font-mono text-red-300/90 text-sm text-right whitespace-nowrap tabular-nums">
+                  {fmtLakh(l.perPack * fleet)}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-red-400/20">
+            <div className="flex items-baseline justify-between">
+              <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-red-400/80">
+                Drained this year
+              </span>
+              <span className="font-bold text-red-300 text-2xl md:text-3xl tabular-nums">
+                {fmtCrore(annualDrain)}
+              </span>
+            </div>
+            <p className="text-white/45 text-xs mt-1.5 italic">
+              That's the line item nobody puts on the slide deck.
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="rounded-2xl p-5 md:p-6 border"
+          style={{
+            borderColor: "rgba(52,211,153,0.28)",
+            background: "rgba(52,211,153,0.03)",
+            boxShadow: "0 0 30px rgba(52,211,153,0.06)",
+          }}
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <Check className="w-5 h-5 text-emerald-400" />
+            <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
+              With Zylectra · what you protect
+            </span>
+          </div>
+          <p className="text-white text-sm font-medium mb-4">
+            Cells flagged early. Packs extended. Claims defensible.
+          </p>
+          <div className="space-y-1.5">
+            {[
+              ["Pack-life avoided losses",      "₹7.8L / pack"],
+              ["Time commitment",               "6–12 weeks"],
+              ["Hardware to install",           "None"],
+              ["Engineer hours / week",         "≈ 4"],
+              ["Data we need",                  "What your BMS already logs"],
+              ["If predictions don't hold up",  "You walk away"],
+            ].map(([label, cost], i) => (
+              <div key={i} className="flex items-center justify-between gap-4 py-1.5 border-b border-white/5 last:border-0">
+                <span className="text-white/70 text-sm">{label}</span>
+                <span className="font-mono text-emerald-300/90 text-sm text-right whitespace-nowrap">{cost}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-emerald-400/20">
+            <div className="flex items-baseline justify-between">
+              <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
+                Lifetime exposure protected
+              </span>
+              <span className="font-bold text-emerald-300 text-2xl md:text-3xl tabular-nums">
+                {fmtCrore(exposureAvoided)}
+              </span>
+            </div>
+            <p className="text-white/45 text-xs mt-1.5 italic">
+              That's the line item your CFO has been asking you about.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Scene 5: How it fits your stack ─────────────────────────────────────────
+
+const SceneHowItWorks: React.FC<{ active: boolean }> = ({ active }) => {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    if (!active) { setStep(0); return; }
+    const t1 = setTimeout(() => setStep(1), 250);
+    const t2 = setTimeout(() => setStep(2), 900);
+    const t3 = setTimeout(() => setStep(3), 1550);
+    return () => { [t1, t2, t3].forEach(clearTimeout); };
+  }, [active]);
+
+  const steps = [
+    {
+      n: "01",
+      title: "Your BMS logs data",
+      Icon: Database,
+      body: "Voltage, current, temperature, timestamps. The telemetry you already collect — exactly the way you collect it today.",
+      tag: "Already running",
+    },
+    {
+      n: "02",
+      title: "Zylectra reads it",
+      Icon: Cpu,
+      body: "Physics AI checks every cell against the electrochemistry envelope. Continuously. Looking for what threshold alarms can't see.",
+      tag: "Cloud or on-prem",
+    },
+    {
+      n: "03",
+      title: "Insight is delivered",
+      Icon: Bell,
+      body: "Mechanism, remaining useful life, and the action to take. Email, dashboard, or pushed into the maintenance tool your team already uses.",
+      tag: "Where your team works",
+    },
   ];
 
   return (
     <div className="relative w-full max-w-5xl mx-auto">
-      <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-white/40 mb-4 text-center">
-        Scene 5 · Who's clapping, who's quietly furious
+      <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-white/40 mb-4 text-center"
+           style={{ opacity: active ? 1 : 0, transition: "opacity 0.5s" }}>
+        Scene 5 · How it fits your stack
       </div>
-      <h3 className="text-center text-white text-xl md:text-3xl font-bold tracking-tight leading-tight mb-8">
-        The right people will love you for this.
+      <h3 className="text-center text-white text-xl md:text-3xl font-bold tracking-tight leading-tight mb-3">
+        No new hardware. Nothing to rip out.
         <br />
-        <span className="text-emerald-400">The right people will hate you for it.</span>
+        <span className="text-emerald-400">Your stack already has the data. We just listen better.</span>
       </h3>
+      <p className="text-center text-white/55 text-sm mb-10 max-w-xl mx-auto">
+        Three steps. The middle one is ours. The other two are already yours.
+      </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-        <div className="rounded-2xl p-5 md:p-7 border border-emerald-500/20 bg-white/[0.02]">
-          <div className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80 mb-5">
-            People who'll thank you
-          </div>
-          <div className="space-y-4">
-            {liked.map((l, i) => (
-              <div key={i} className="flex gap-4">
-                <div className="font-mono text-[10.5px] tracking-widest uppercase text-emerald-400/70 w-24 flex-shrink-0 pt-0.5">
-                  {l.who}
+      <div className="relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-3 relative">
+          {steps.map((s, i) => {
+            const visible = step > i;
+            return (
+              <React.Fragment key={s.n}>
+                <div
+                  className="rounded-2xl border bg-[#07090e] p-5 md:p-6 transition-all duration-500 relative"
+                  style={{
+                    borderColor: i === 1 ? "rgba(52,211,153,0.35)" : "rgba(255,255,255,0.10)",
+                    background: i === 1 ? "rgba(52,211,153,0.04)" : "rgba(255,255,255,0.02)",
+                    boxShadow: i === 1 ? "0 0 30px rgba(52,211,153,0.07)" : "none",
+                    opacity: visible ? 1 : 0.15,
+                    transform: visible ? "translateY(0)" : "translateY(8px)",
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-white/35">
+                      Step {s.n}
+                    </span>
+                    <s.Icon
+                      className="w-5 h-5"
+                      style={{ color: i === 1 ? "#34d399" : "rgba(255,255,255,0.55)" }}
+                    />
+                  </div>
+                  <h4 className="text-white font-bold text-base md:text-lg leading-snug mb-2">
+                    {s.title}
+                  </h4>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                    {s.body}
+                  </p>
+                  <div
+                    className="inline-block font-mono text-[10px] tracking-widest uppercase rounded-md px-2 py-1"
+                    style={{
+                      color: i === 1 ? "rgba(52,211,153,0.85)" : "rgba(255,255,255,0.45)",
+                      background: i === 1 ? "rgba(52,211,153,0.08)" : "rgba(255,255,255,0.04)",
+                      border: `1px solid ${i === 1 ? "rgba(52,211,153,0.25)" : "rgba(255,255,255,0.08)"}`,
+                    }}
+                  >
+                    {s.tag}
+                  </div>
                 </div>
-                <p className="text-white/80 text-sm leading-relaxed">{l.line}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-2xl p-5 md:p-7 border border-white/10 bg-white/[0.015]">
-          <div className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-red-400/70 mb-5">
-            People who'd rather you hadn't
-          </div>
-          <div className="space-y-3">
-            {hated.map((h, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="text-red-400/60 mt-0.5">—</span>
-                <p className="text-white/65 text-sm leading-relaxed">{h}</p>
-              </div>
-            ))}
-          </div>
+                {i < steps.length - 1 && (
+                  <div className="hidden md:flex items-center justify-center -mx-3 pointer-events-none">
+                    <ArrowRight
+                      className="w-5 h-5 transition-all duration-500"
+                      style={{
+                        color: step > i + 1 ? "rgba(52,211,153,0.7)" : "rgba(255,255,255,0.18)",
+                      }}
+                    />
+                  </div>
+                )}
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
+
+      <p className="mt-8 text-center text-white/55 text-sm md:text-base max-w-2xl mx-auto">
+        What changes inside your stack: <span className="text-white">nothing</span>.
+        <br className="hidden sm:block" />
+        What changes inside your fleet: <span className="text-emerald-400 font-semibold">everything.</span>
+      </p>
     </div>
   );
 };
@@ -570,7 +710,20 @@ const SceneClose: React.FC<{ active: boolean }> = () => (
         Are you listening?
       </span>
     </h3>
-    <p className="text-white/60 max-w-lg mx-auto text-base leading-relaxed mb-8">
+
+    <div className="max-w-xl mx-auto mb-7 space-y-2 text-left sm:text-center">
+      <p className="text-white/75 text-sm md:text-base leading-relaxed">
+        Your maintenance team stops firefighting and starts scheduling.
+      </p>
+      <p className="text-white/75 text-sm md:text-base leading-relaxed">
+        Your CFO stops writing off voided claims.
+      </p>
+      <p className="text-white/75 text-sm md:text-base leading-relaxed">
+        Your drivers stop getting calls about packs they didn't know were dying.
+      </p>
+    </div>
+
+    <p className="text-white/55 max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8">
       Six weeks. Telemetry you already have. Walk away if it doesn't hold up.
     </p>
 
@@ -599,11 +752,11 @@ const SceneClose: React.FC<{ active: boolean }> = () => (
 // ─── Demo (sticky scroll-driven) ─────────────────────────────────────────────
 
 const SCENES = [
-  { key: "open",     label: "The 02:47 call",     Component: SceneColdOpen },
   { key: "try",      label: "Try the diagnosis",  Component: SceneTryIt },
+  { key: "open",     label: "The 02:47 call",     Component: SceneColdOpen },
   { key: "outcome",  label: "Two universes",      Component: SceneOutcome },
-  { key: "math",     label: "The math",           Component: SceneTwoCosts },
-  { key: "stakes",   label: "Loved · hated",      Component: SceneStakes },
+  { key: "math",     label: "Your year",          Component: SceneTwoCosts },
+  { key: "stack",    label: "How it fits",        Component: SceneHowItWorks },
   { key: "close",    label: "End",                Component: SceneClose },
 ];
 
