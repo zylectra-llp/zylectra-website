@@ -604,11 +604,6 @@ const Hero: React.FC = () => {
     }
   }, [location]);
 
-  const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
       id="hero"
@@ -693,26 +688,27 @@ const Hero: React.FC = () => {
             <div
               className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
             >
-              <button
-                onClick={() => scrollToSection('film')}
-                title="See the story"
+              <a
+                href="/pilot"
+                title="Request a pilot"
                 className="relative group inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.21)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
                 style={{
                   letterSpacing: '0.015em',
                   minWidth: 180,
                 }}
               >
-                <span className="relative z-10 flex items-center gap-2"> {/* for future icon upgrades */}
+                <span className="relative z-10 flex items-center gap-2">
+                  {/* Pilot icon - arrow/right */}
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 text-emerald-800 group-hover:text-emerald-900 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.1} d="M9 5l7 7-7 7" />
                   </svg>
-                  See the story
+                  Request a pilot
                 </span>
                 {/* Blurred glow */}
                 <span className="absolute inset-0 rounded-2xl pointer-events-none group-hover:blur-[2px] group-hover:bg-emerald-300/20"></span>
-              </button>
-         
+              </a>
             </div>
+       
           </div>
 
           {/* RIGHT: Visualization */}

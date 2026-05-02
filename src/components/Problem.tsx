@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Atom, ArrowRight, History } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Atom, History } from "lucide-react";
 
 const SectionTwo: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -21,16 +18,6 @@ const SectionTwo: React.FC = () => {
     if (sectionRef.current) obs.observe(sectionRef.current);
     return () => obs.disconnect();
   }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== "/") {
-      navigate(`/#${sectionId}`);
-      return;
-    }
-
-    const element = document.getElementById(sectionId);
-    if (element) element.scrollIntoView({ behavior: "smooth" });
-  };
 
   const historianBullets = [
     {
@@ -182,25 +169,7 @@ const SectionTwo: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* CTA */}
-        <div
-          className={`mt-16 md:mt-24 flex justify-center transition-all duration-700 ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          <button
-            type="button"
-            onClick={() => scrollToSection("film")}
-            className="group inline-flex items-center gap-3 px-12 py-5 rounded-xl bg-emerald-500 text-black text-lg md:text-xl font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_38px_rgba(16,185,129,0.38)]"
-            aria-label='Watch what changes (opens the film demo section)'
-          >
-            Watch what changes
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
-   
+        </div>   
       </div>
     </section>
   );

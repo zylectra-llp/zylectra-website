@@ -9,7 +9,6 @@ import Footer from "./components/Footer";
 import TheShift from "./components/Problem";
 import WhatYouGet from "./components/Product";
 import HowItWorks from "./components/HowItWorks";
-import Demo from "./components/Demo";
 import WhoIsItFor from "./components/WhoIsItFor";
 import FAQ from "./components/FAQ";
 import PilotPage from "./pages/Pilot";
@@ -23,7 +22,6 @@ function LandingPage() {
       <WhatYouGet />
       <HowItWorks />
       <WhoIsItFor />
-      <Demo />
       <About />
       <FAQ />
       <CallToAction />
