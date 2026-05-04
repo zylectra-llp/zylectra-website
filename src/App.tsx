@@ -10,6 +10,7 @@ import TheShift from "./components/Problem";
 import WhatYouGet from "./components/Product";
 import HowItWorks from "./components/HowItWorks";
 import WhoIsItFor from "./components/WhoIsItFor";
+import Demo from "./components/Demo";
 import FAQ from "./components/FAQ";
 import PilotPage from "./pages/Pilot";
 import ScrollToTop from "./utils/scrollToTop";
@@ -22,6 +23,7 @@ function LandingPage() {
       <WhatYouGet />
       <HowItWorks />
       <WhoIsItFor />
+      <Demo />
       <About />
       <FAQ />
       <CallToAction />
