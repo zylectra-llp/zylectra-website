@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 
@@ -30,6 +30,14 @@ type Attribution = {
   note: string;
 };
 
+type FinancialImpact = {
+  packValue: string;
+  lifeLost: string;
+  earlyWarningValue: string;
+  headline: string;
+  detail: string;
+};
+
 type ScenarioResult = {
   status: "NOMINAL" | "WARNING" | "CRITICAL";
   rul: number;
@@ -42,8 +50,12 @@ type ScenarioResult = {
   recommendation: string;
   trajectoryActual: { x: number; soh: number }[];
   trajectoryForecast: { x: number; soh: number }[];
+  bmsOnlyForecast?: { x: number; soh: number }[];
+  zylectraDetectedAt?: number;
+  bmsWouldAlertAt?: number;
   uncertaintyBand: number;
   currentIdx: number;
+  financialImpact: FinancialImpact;
   rca?: {
     failType: string;
     confidence: number;
@@ -63,6 +75,7 @@ type Scenario = {
   description: string;
   metaChemistry: string;
   metaForm: string;
+  hasRca: boolean;
   telemetry: TelemetryRow[];
   result: ScenarioResult;
 };
@@ -77,6 +90,7 @@ const SCENARIOS: Scenario[] = [
     subtitle: "PACK-07 · LFP · Month 14 of 120",
     badge: "NOMINAL",
     badgeHex: "#34d399",
+    hasRca: false,
     description:
       "Asset operating within all design envelopes. Early-stage electrolyte oxidation detected by physics model. No intervention required; trend monitoring advised.",
     metaChemistry: "LFP (LiFePO₄)",
@@ -103,8 +117,15 @@ const SCENARIOS: Scenario[] = [
         { label: "Capacity Fade",    value: "2.0%",    severity: "ok", detail: "Linear fade regime. dV/dQ plateau intact at LFP voltage signature. No acceleration.", pct: 20 },
         { label: "Resistance Rise",  value: "+3.6%",   severity: "ok", detail: "Modest SEI growth on LFP anode. Consistent with calendar-dominated aging at low cycle count.", pct: 11 },
       ],
+      financialImpact: {
+        packValue: "₹18L pack",
+        lifeLost: "0 months lost",
+        earlyWarningValue: "—",
+        headline: "Pack is healthy. Full asset value intact.",
+        detail: "Zylectra confirms the asset is on nominal trajectory. Operational planning can proceed with confidence for the next 102 months. No capital at risk.",
+      },
       recommendation:
-        "No action required. Schedule full EIS sweep at month 18. Current fade rate (0.014%/month) is nominal for LFP at this operating temperature. Monitor thermal management efficiency, any ambient rise above 30°C will accelerate calendar aging nonlinearly.",
+        "No action required. Schedule full EIS sweep at month 18. Current fade rate (0.014%/month) is nominal for LFP at this operating temperature. Monitor thermal management efficiency — any ambient rise above 30°C will accelerate calendar aging nonlinearly.",
       trajectoryActual: [
         { x: 0,  soh: 100.0 }, { x: 1,  soh: 99.9 }, { x: 2,  soh: 99.7 },
         { x: 3,  soh: 99.6  }, { x: 4,  soh: 99.4 }, { x: 5,  soh: 99.3 },
@@ -129,6 +150,7 @@ const SCENARIOS: Scenario[] = [
     subtitle: "PACK-07 · LFP · Month 38 of 120",
     badge: "WARNING",
     badgeHex: "#f97316",
+    hasRca: false,
     description:
       "Persistent pack temperature 4–6°C above setpoint for 11 months. Arrhenius model shows 2.3× accelerated calendar aging. Fade rate has increased; EOL brought forward by ~18 months.",
     metaChemistry: "LFP (LiFePO₄)",
@@ -148,6 +170,8 @@ const SCENARIOS: Scenario[] = [
       kneeDetected: true,
       kneeCycle: 34,
       fadeRate: 0.061,
+      zylectraDetectedAt: 34,
+      bmsWouldAlertAt: 52,
       physics: [
         { label: "Calendar Aging",   value: "25.6 AU", severity: "warn", detail: "2.3× accelerated vs nominal at 26°C. Arrhenius model confirms thermal management shortfall as primary driver. Linear growth regime onset at month 34.", pct: 71 },
         { label: "Thermal Risk",     value: "55%",     severity: "warn", detail: "Pack sustained at 34°C average for 11 months. Every +10°C doubles electrolyte decomposition rate. Thermal SLA breach confirmed.", pct: 55 },
@@ -155,8 +179,15 @@ const SCENARIOS: Scenario[] = [
         { label: "Capacity Fade",    value: "11.8%",   severity: "warn", detail: "Post-acceleration regime. Fade rate 4.4× higher than month 14. Knee confirmed at month 34 via d²Q/dt² threshold crossing.", pct: 72 },
         { label: "Resistance Rise",  value: "+48.2%",  severity: "warn", detail: "Electrolyte oxidation byproducts coating electrode surfaces. EIS Nyquist arc expansion confirming interfacial resistance growth.", pct: 60 },
       ],
+      financialImpact: {
+        packValue: "₹18L pack",
+        lifeLost: "~18 months consumed early",
+        earlyWarningValue: "₹5.4L replacement cost avoidable",
+        headline: "Zylectra flagged this 18 months before a standard BMS alert would fire.",
+        detail: "At the current fade rate, EOL arrives at month 69 — not month 87. Acting on this finding now avoids an unplanned replacement and 11 days of fleet downtime at peak utilisation. The thermal fix costs a fraction of the pack replacement it prevents.",
+      },
       recommendation:
-        "Restore thermal management to 25±2°C setpoint immediately, this is the highest-leverage intervention. Restrict peak discharge to 0.5C until thermal environment is stabilised. Replace PACK-07 within 32 months. Run full string EIS at next maintenance window to quantify hot-cell damage.",
+        "Restore thermal management to 25±2°C setpoint immediately — this is the highest-leverage intervention. Restrict peak discharge to 0.5C until thermal environment is stabilised. Replace PACK-07 within 32 months. Run full string EIS at next maintenance window to quantify hot-cell damage.",
       trajectoryActual: [
         { x: 0,  soh: 100.0 }, { x: 2,  soh: 99.7 }, { x: 4,  soh: 99.4 },
         { x: 6,  soh: 99.0  }, { x: 8,  soh: 98.7 }, { x: 10, soh: 98.3 },
@@ -170,6 +201,10 @@ const SCENARIOS: Scenario[] = [
         { x: 38, soh: 88.2 }, { x: 44, soh: 84.3 },
         { x: 50, soh: 80.0 }, { x: 56, soh: 75.2 }, { x: 62, soh: 69.8 },
       ],
+      bmsOnlyForecast: [
+        { x: 38, soh: 91.5 }, { x: 44, soh: 90.8 },
+        { x: 50, soh: 90.0 }, { x: 52, soh: 89.5 },
+      ],
       uncertaintyBand: 2.8,
       currentIdx: 19,
     },
@@ -182,6 +217,7 @@ const SCENARIOS: Scenario[] = [
     subtitle: "PACK-07 · LFP · Month 61 of 120",
     badge: "CRITICAL",
     badgeHex: "#ef4444",
+    hasRca: true,
     description:
       "SOH 12.4% below EOL threshold. Electrolyte depletion confirmed. Overcharge events detected in audit log, contributing to accelerated lithium inventory loss. Immediate replacement required.",
     metaChemistry: "LFP (LiFePO₄)",
@@ -201,6 +237,8 @@ const SCENARIOS: Scenario[] = [
       kneeDetected: true,
       kneeCycle: 34,
       fadeRate: 0.198,
+      zylectraDetectedAt: 34,
+      bmsWouldAlertAt: 58,
       physics: [
         { label: "Calendar Aging",   value: "63.1 AU", severity: "crit", detail: "Critical electrolyte depletion. Linear aging regime since month 34, pore clogging confirmed. Ion transport severely impeded.", pct: 96 },
         { label: "Thermal Risk",     value: "97%",     severity: "crit", detail: "Pack at 38.2°C. Joule heating 3.1× nominal. Thermal runaway risk within operating window. Thermal restoration no longer sufficient at this stage.", pct: 97 },
@@ -208,6 +246,13 @@ const SCENARIOS: Scenario[] = [
         { label: "Capacity Fade",    value: "32.6%",   severity: "crit", detail: "12.4% past EOL threshold. Lithium inventory loss dominant. Active material isolation confirmed by dV/dQ plateau erosion.", pct: 98 },
         { label: "Resistance Rise",  value: "+150.9%", severity: "crit", detail: "Electrolyte partially depleted, CPE dispersion massive on EIS. Inhomogeneous degradation across string confirmed.", pct: 99 },
       ],
+      financialImpact: {
+        packValue: "₹18L pack",
+        lifeLost: "23 months consumed by preventable failures",
+        earlyWarningValue: "₹21.2L total loss (replacement + downtime)",
+        headline: "Zylectra detected the failure trajectory 27 months before it became a crisis.",
+        detail: "Three simultaneous degradation modes — each independently detectable months earlier. The compounded loss: full pack replacement 23 months early, plus attributable fault data that shifts warranty liability to the charge system vendor, not the fleet operator.",
+      },
       recommendation:
         "REPLACE IMMEDIATELY. 12.4% below 80% SOH EOL threshold. Thermal runaway risk at 97% under any peak discharge. Estimated 6 months to functional failure. Isolate PACK-07 from critical loads now. Charge system audit log shows 14 overcharge events contributing to lithium inventory loss.",
       trajectoryActual: [
@@ -225,6 +270,10 @@ const SCENARIOS: Scenario[] = [
         { x: 61, soh: 67.4 }, { x: 64, soh: 62.1 },
         { x: 67, soh: 55.8 }, { x: 70, soh: 48.3 },
       ],
+      bmsOnlyForecast: [
+        { x: 38, soh: 91.2 }, { x: 44, soh: 90.5 },
+        { x: 50, soh: 89.6 }, { x: 55, soh: 88.8 }, { x: 58, soh: 88.1 },
+      ],
       uncertaintyBand: 3.8,
       currentIdx: 25,
       rca: {
@@ -235,7 +284,7 @@ const SCENARIOS: Scenario[] = [
             label: "Thermal Management Failure",
             pct: 44,
             color: "#f97316",
-            note: "Sustained 34–38°C ambient for 27 months. Arrhenius-accelerated calendar aging accounts for 44% of total capacity loss. Every 10°C above setpoint doubles degradation rate, thermal management failure is the dominant cause.",
+            note: "Sustained 34–38°C ambient for 27 months. Arrhenius-accelerated calendar aging accounts for 44% of total capacity loss. Every 10°C above setpoint doubles degradation rate — thermal management failure is the dominant cause.",
           },
           {
             label: "Charge Protocol Overcharge",
@@ -286,7 +335,7 @@ const STATUS_STYLE = {
 // ─── Trajectory Chart ─────────────────────────────────────────────────────────
 
 function TrajectoryChart({ s }: { s: Scenario }) {
-  const { trajectoryActual, trajectoryForecast, uncertaintyBand, currentIdx, kneeCycle, status } = s.result;
+  const { trajectoryActual, trajectoryForecast, bmsOnlyForecast, uncertaintyBand, currentIdx, kneeCycle, status, zylectraDetectedAt, bmsWouldAlertAt } = s.result;
   const col = STATUS_STYLE[status].ring;
   const TOTAL = 70;
   const SOH_MIN = 46, SOH_MAX = 102;
@@ -302,57 +351,170 @@ function TrajectoryChart({ s }: { s: Scenario }) {
   const nowX = cur ? px(cur.x) : 0;
   const nowY = cur ? py(cur.soh) : 0;
   const kneeXPx = kneeCycle ? px(kneeCycle) : null;
+  const zylectraX = zylectraDetectedAt ? px(zylectraDetectedAt) : null;
+  const bmsAlertX = bmsWouldAlertAt ? px(bmsWouldAlertAt) : null;
+  const showComparison = !!(zylectraDetectedAt && bmsWouldAlertAt && bmsOnlyForecast);
+
+  // Find SOH at detection point for circle placement
+  const detectionPoint = zylectraDetectedAt
+    ? trajectoryActual.reduce((prev, curr) =>
+        Math.abs(curr.x - zylectraDetectedAt) < Math.abs(prev.x - zylectraDetectedAt) ? curr : prev
+      )
+    : null;
 
   return (
-    <div className="relative rounded-xl bg-[#05070B] border border-white/8 overflow-hidden" style={{ height: 180 }}>
-      <svg viewBox="0 0 100 60" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
-        {[70, 80, 90, 100].map(soh => (
-          <line key={soh} x1="0" x2="100" y1={py(soh)} y2={py(soh)}
-            stroke={soh === 80 ? "rgba(239,68,68,0.28)" : "rgba(255,255,255,0.04)"}
-            strokeWidth={soh === 80 ? 0.8 : 0.4} strokeDasharray={soh === 80 ? "3 2" : undefined} />
+    <div className="space-y-2">
+      <div className="relative rounded-xl bg-[#05070B] border border-white/8 overflow-hidden" style={{ height: 200 }}>
+        <svg viewBox="0 0 100 60" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
+          {/* Grid lines */}
+          {[70, 80, 90, 100].map(soh => (
+            <line key={soh} x1="0" x2="100" y1={py(soh)} y2={py(soh)}
+              stroke={soh === 80 ? "rgba(239,68,68,0.28)" : "rgba(255,255,255,0.04)"}
+              strokeWidth={soh === 80 ? 0.8 : 0.4} strokeDasharray={soh === 80 ? "3 2" : undefined} />
+          ))}
+
+          {/* Uncertainty band */}
+          <polygon points={`${bandT} ${bandB}`} fill={`${col}18`} />
+
+          {/* BMS-only ghost line — what standard monitoring would show */}
+          {showComparison && bmsOnlyForecast && (
+            <polyline
+              fill="none"
+              stroke="rgba(255,255,255,0.2)"
+              strokeWidth="0.9"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray="2 2"
+              points={pts(bmsOnlyForecast)}
+            />
+          )}
+
+          {/* Actual measured */}
+          <polyline fill="none" stroke={col} strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" points={pts(trajectoryActual)} />
+
+          {/* PINN forecast */}
+          <polyline fill="none" stroke={col} strokeWidth="1.1" strokeLinejoin="round" strokeLinecap="round" strokeDasharray="3 2" points={pts(trajectoryForecast)} opacity="0.65" />
+
+          {/* Knee marker */}
+          {kneeXPx !== null && (
+            <line x1={kneeXPx} x2={kneeXPx} y1="0" y2="60" stroke="rgba(251,191,36,0.5)" strokeWidth="0.7" strokeDasharray="2 2" />
+          )}
+
+          {/* Zylectra detection flag */}
+          {zylectraX !== null && detectionPoint && (
+            <>
+              <line x1={zylectraX} x2={zylectraX} y1="0" y2="60" stroke={col} strokeWidth="0.6" opacity="0.4" strokeDasharray="1.5 1.5" />
+              <circle cx={zylectraX} cy={py(detectionPoint.soh)} r="1.4" fill={col} />
+              <circle cx={zylectraX} cy={py(detectionPoint.soh)} r="3" fill={col} opacity="0.15" />
+            </>
+          )}
+
+          {/* BMS would-alert flag */}
+          {bmsAlertX !== null && (
+            <line x1={bmsAlertX} x2={bmsAlertX} y1="0" y2="60" stroke="rgba(255,255,255,0.18)" strokeWidth="0.5" strokeDasharray="1.5 1.5" />
+          )}
+
+          {/* Now marker */}
+          <circle cx={nowX} cy={nowY} r="1.8" fill={col} />
+          <circle cx={nowX} cy={nowY} r="3.8" fill={col} opacity="0.14" />
+          <line x1={nowX} x2={nowX} y1="0" y2="60" stroke={col} strokeWidth="0.5" opacity="0.3" />
+        </svg>
+
+        {/* Axis labels */}
+        <div className="absolute top-1.5 left-2 text-[0.52rem] text-gray-600 font-mono">SOH %</div>
+        <div className="absolute top-1.5 right-2 text-[0.52rem] text-gray-600 font-mono">Month →</div>
+
+        {/* SOH tick labels */}
+        {[100, 90, 80, 70].map(soh => (
+          <div key={soh} className="absolute text-[0.5rem] font-mono pointer-events-none"
+            style={{ color: soh === 80 ? "#ef4444" : "#374151", right: 3, top: `${(py(soh) / 60) * 100}%`, transform: "translateY(-50%)" }}>
+            {soh}
+          </div>
         ))}
-        <polygon points={`${bandT} ${bandB}`} fill={`${col}18`} />
-        <polyline fill="none" stroke={col} strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" points={pts(trajectoryActual)} />
-        <polyline fill="none" stroke={col} strokeWidth="1.1" strokeLinejoin="round" strokeLinecap="round" strokeDasharray="3 2" points={pts(trajectoryForecast)} opacity="0.65" />
+
+        {/* Knee label */}
         {kneeXPx !== null && (
-          <line x1={kneeXPx} x2={kneeXPx} y1="0" y2="60" stroke="rgba(251,191,36,0.5)" strokeWidth="0.7" strokeDasharray="2 2" />
+          <div className="absolute text-[0.5rem] text-amber-400 font-mono pointer-events-none"
+            style={{ left: `${kneeXPx}%`, top: 4, transform: "translateX(-50%)" }}>
+            Knee
+          </div>
         )}
-        <circle cx={nowX} cy={nowY} r="1.8" fill={col} />
-        <circle cx={nowX} cy={nowY} r="3.8" fill={col} opacity="0.14" />
-        <line x1={nowX} x2={nowX} y1="0" y2="60" stroke={col} strokeWidth="0.5" opacity="0.3" />
-      </svg>
 
-      <div className="absolute top-1.5 left-2 text-[0.52rem] text-gray-600 font-mono">SOH %</div>
-      <div className="absolute top-1.5 right-2 text-[0.52rem] text-gray-600 font-mono">→ Month</div>
+        {/* Zylectra detected label */}
+        {zylectraX !== null && (
+          <div className="absolute font-mono font-bold pointer-events-none"
+            style={{ color: col, fontSize: "0.47rem", left: `${zylectraX}%`, bottom: 22, transform: "translateX(-105%)", whiteSpace: "nowrap" }}>
+            ▲ Zylectra
+          </div>
+        )}
 
-      {[100, 90, 80, 70].map(soh => (
-        <div key={soh} className="absolute text-[0.5rem] font-mono pointer-events-none"
-          style={{ color: soh === 80 ? "#ef4444" : "#374151", right: 3, top: `${(py(soh) / 60) * 100}%`, transform: "translateY(-50%)" }}>
-          {soh}
+        {/* BMS alert label */}
+        {bmsAlertX !== null && (
+          <div className="absolute font-mono pointer-events-none text-center"
+            style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.44rem", left: `${bmsAlertX}%`, bottom: 22, transform: "translateX(-50%)", whiteSpace: "nowrap" }}>
+            BMS alert
+          </div>
+        )}
+
+        {/* Now label */}
+        <div className="absolute text-[0.52rem] font-mono font-semibold pointer-events-none"
+          style={{ color: col, left: `${Math.min(nowX + 1, 75)}%`, top: `${(nowY / 60) * 100}%`, transform: "translateY(-50%)" }}>
+          Now
         </div>
-      ))}
 
-      {kneeXPx !== null && (
-        <div className="absolute text-[0.5rem] text-amber-400 font-mono pointer-events-none"
-          style={{ left: `${kneeXPx}%`, top: 4, transform: "translateX(-50%)" }}>
-          Knee
+        {/* Legend */}
+        <div className="absolute bottom-2 left-2 flex items-center gap-3 pointer-events-none flex-wrap">
+          {[
+            { label: "Measured",          dash: false, col },
+            { label: "PINN Forecast",     dash: true,  col },
+            { label: "EOL 80%",           dash: true,  col: "#ef4444" },
+            ...(showComparison ? [{ label: "BMS-only view", dash: true, col: "rgba(255,255,255,0.28)" }] : []),
+          ].map(({ label, dash, col: c }) => (
+            <span key={label} className="flex items-center gap-1 text-[0.5rem] text-gray-600 font-mono">
+              <svg width="12" height="4"><line x1="0" y1="2" x2="12" y2="2" stroke={c} strokeWidth="1.4" strokeDasharray={dash ? "3 2" : undefined}/></svg>
+              {label}
+            </span>
+          ))}
         </div>
-      )}
-      <div className="absolute text-[0.52rem] font-mono font-semibold pointer-events-none"
-        style={{ color: col, left: `${Math.min(nowX + 1, 75)}%`, top: `${(nowY / 60) * 100}%`, transform: "translateY(-50%)" }}>
-        Now
       </div>
 
-      <div className="absolute bottom-2 left-2 flex items-center gap-3 pointer-events-none">
+      {/* Detection lead time callout */}
+      {showComparison && zylectraDetectedAt && bmsWouldAlertAt && (
+        <div className="flex items-start gap-3 rounded-lg px-4 py-3 border"
+          style={{ borderColor: `${col}30`, backgroundColor: `${col}07` }}>
+          <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full animate-pulse mt-1.5" style={{ backgroundColor: col }} />
+          <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.75)" }}>
+            <span className="font-bold" style={{ color: col }}>Zylectra flagged degradation at month {zylectraDetectedAt}.</span>
+            {" "}A standard BMS threshold alert wouldn't fire until month {bmsWouldAlertAt} —{" "}
+            <span className="font-semibold text-white">{bmsWouldAlertAt - zylectraDetectedAt} months later.</span>
+            {" "}The dashed white line shows what BMS-only monitoring sees: a pack that looks fine, right up until it isn't.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Financial Impact Panel ───────────────────────────────────────────────────
+
+function FinancialImpactPanel({ fi, statusColor }: { fi: FinancialImpact; statusColor: string }) {
+  return (
+    <div className="rounded-xl border p-5 space-y-4" style={{ borderColor: `${statusColor}25`, backgroundColor: `${statusColor}06` }}>
+      <p className="text-[0.58rem] tracking-[0.2em] uppercase font-mono font-bold" style={{ color: statusColor }}>
+        Financial Impact
+      </p>
+      <p className="text-sm font-semibold text-white leading-snug">{fi.headline}</p>
+      <p className="text-xs text-gray-400 leading-relaxed">{fi.detail}</p>
+      <div className="grid grid-cols-3 gap-3 pt-1">
         {[
-          { label: "Measured",      dash: false, col },
-          { label: "PINN Forecast", dash: true,  col },
-          { label: "EOL 80%",       dash: true,  col: "#ef4444" },
-        ].map(({ label, dash, col: c }) => (
-          <span key={label} className="flex items-center gap-1 text-[0.5rem] text-gray-600 font-mono">
-            <svg width="12" height="4"><line x1="0" y1="2" x2="12" y2="2" stroke={c} strokeWidth="1.4" strokeDasharray={dash ? "3 2" : undefined}/></svg>
-            {label}
-          </span>
+          { label: "Asset",       value: fi.packValue },
+          { label: "Life Lost",   value: fi.lifeLost },
+          { label: "At Stake",    value: fi.earlyWarningValue },
+        ].map(({ label, value }) => (
+          <div key={label} className="rounded-lg p-3 text-center" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <p className="text-[0.56rem] tracking-[0.15em] uppercase font-mono text-gray-600 mb-1">{label}</p>
+            <p className="text-xs font-mono font-semibold text-gray-200 leading-tight">{value}</p>
+          </div>
         ))}
       </div>
     </div>
@@ -414,6 +576,36 @@ function PhysicsBar({ f }: { f: PhysicsFinding }) {
   );
 }
 
+// ─── Pipeline Trace (collapsible) ─────────────────────────────────────────────
+
+function PipelineTrace({ steps }: { steps: string[] }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-white/6 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full flex items-center justify-between px-4 py-2.5 bg-white/[0.015] hover:bg-white/[0.03] transition-colors text-left"
+      >
+        <span className="text-[0.58rem] tracking-[0.2em] uppercase font-mono text-gray-600">Physics Pipeline Trace</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[0.56rem] font-mono text-emerald-500">6 steps · all passed</span>
+          <ChevronDown className={`w-3 h-3 text-gray-600 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        </div>
+      </button>
+      {open && (
+        <div className="px-4 py-3 space-y-2.5 border-t border-white/5 bg-black/20">
+          {steps.map((step, i) => (
+            <div key={i} className="flex items-center gap-2.5 text-[0.63rem] font-mono text-gray-400">
+              <span className="w-3.5 h-3.5 flex items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-[0.48rem] flex-shrink-0">✓</span>
+              {step}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const Section5: React.FC = () => {
@@ -466,10 +658,21 @@ const Section5: React.FC = () => {
             See Zylectra Run on Real Battery Data
           </h2>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl leading-relaxed mb-5">
-            Select a scenario below. Zylectra runs its full physics-informed pipeline;
+            Select a scenario below. Zylectra runs its full physics-informed pipeline:
             calendar aging model, electrochemical-thermal analysis, and physics-based RUL
-            forecast on real Li-ion batteries degradation data. No synthetic inputs. No sliders.
+            forecast on real Li-ion battery degradation data. No synthetic inputs. No sliders.
           </p>
+
+          {/* Context hook for customers and investors */}
+          <div className="inline-flex items-center gap-2.5 rounded-lg px-4 py-2.5 border border-emerald-500/20 bg-emerald-500/5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+            <p className="text-xs text-gray-400 font-mono">
+              Indian EV fleets lose an estimated{" "}
+              <span className="text-emerald-400 font-semibold">₹2.4L–₹21L per pack</span>
+              {" "}to undetected degradation annually.{" "}
+              <span className="text-gray-300">Zylectra closes that gap months before a BMS alert ever fires.</span>
+            </p>
+          </div>
         </header>
 
         {/* Scenario Cards */}
@@ -491,10 +694,18 @@ const Section5: React.FC = () => {
               >
                 <div className="flex items-start justify-between mb-3">
                   <span className="text-[0.57rem] tracking-[0.22em] uppercase text-gray-600 font-mono">{s.tag}</span>
-                  <span className="text-[0.62rem] font-bold px-2 py-0.5 rounded-full border"
-                    style={{ color: s.badgeHex, borderColor: `${s.badgeHex}38`, backgroundColor: `${s.badgeHex}10` }}>
-                    {s.badge}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {/* RCA badge signals extra depth on Scenario C */}
+                    {s.hasRca && (
+                      <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded border border-amber-400/30 bg-amber-400/10 text-amber-300 font-mono">
+                        + RCA
+                      </span>
+                    )}
+                    <span className="text-[0.62rem] font-bold px-2 py-0.5 rounded-full border"
+                      style={{ color: s.badgeHex, borderColor: `${s.badgeHex}38`, backgroundColor: `${s.badgeHex}10` }}>
+                      {s.badge}
+                    </span>
+                  </div>
                 </div>
                 <p className="text-sm font-bold text-white mb-0.5">{s.title}</p>
                 <p className="text-[0.66rem] text-gray-500 font-mono mb-3">{s.subtitle}</p>
@@ -594,19 +805,24 @@ const Section5: React.FC = () => {
             <div className="flex border-b border-white/8 bg-black/22" role="tablist">
               {(["prediction", ...(active.result.rca ? ["rca"] : [])] as ("prediction" | "rca")[]).map(tab => {
                 const labels = { prediction: "Failure Prediction", rca: "Root Cause Analysis" };
+                const isRca = tab === "rca";
                 return (
                   <button
                     key={tab}
                     role="tab"
                     aria-selected={activeTab === tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-6 py-3 text-xs font-semibold border-b-2 transition-all ${
+                    className={`px-6 py-3 text-xs font-semibold border-b-2 transition-all flex items-center gap-2 ${
                       activeTab === tab
                         ? "text-emerald-400 border-emerald-400 bg-emerald-500/5"
                         : "text-gray-600 border-transparent hover:text-gray-300 hover:bg-white/3"
                     }`}
                   >
                     {labels[tab]}
+                    {/* Pulse dot on RCA tab when unvisited — draws the eye */}
+                    {isRca && activeTab !== "rca" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    )}
                   </button>
                 );
               })}
@@ -621,6 +837,9 @@ const Section5: React.FC = () => {
                   </p>
                   <TrajectoryChart s={active} />
                 </div>
+
+                {/* Financial impact — first thing after the chart, before engineering detail */}
+                <FinancialImpactPanel fi={active.result.financialImpact} statusColor={ss.ring} />
 
                 <div className="grid md:grid-cols-2 gap-5">
                   <div className="bg-[#05070B] border border-white/8 rounded-xl p-5 space-y-4">
@@ -650,6 +869,9 @@ const Section5: React.FC = () => {
                 </div>
 
                 <TelemetryTable rows={active.telemetry} />
+
+                {/* Pipeline trace — moat made permanent and inspectable */}
+                <PipelineTrace steps={STEPS} />
 
                 <div className="rounded-xl border px-5 py-4"
                   style={{ borderColor: `${ss.ring}32`, backgroundColor: `${ss.ring}07` }}>
@@ -710,15 +932,17 @@ const Section5: React.FC = () => {
                     ))}
                   </div>
                 </div>
+
+                <PipelineTrace steps={STEPS} />
               </div>
             )}
 
             {/* CTA */}
             <div className="px-5 md:px-7 py-5 border-t border-white/8 bg-black/18 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold text-white">Want Zylectra running on your battery assets?</p>
+                <p className="text-sm font-semibold text-white">This is what it looks like on controlled data.</p>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  Same physics models. Live data integration. Your chemistry, your assets, your edge cases.
+                  Your BMS telemetry. Your chemistry. Your failure modes. Six weeks to find out what your packs are hiding.
                 </p>
               </div>
               <Link
@@ -726,14 +950,14 @@ const Section5: React.FC = () => {
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-400 text-black text-sm font-bold shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 transition whitespace-nowrap"
                 aria-label="Request a battery intelligence pilot"
               >
-                Request a Pilot
+                Run it on my data
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>
           </div>
         )}
 
-        {/* Empty state */}
+        {/* Empty state — only briefly visible before auto-load kicks in */}
         {!active && !loading && (
           <div className="border border-white/6 border-dashed rounded-2xl py-14 text-center" aria-label="No scenario selected">
             <p className="text-sm text-gray-700 font-mono">Select a scenario above to run the analysis</p>

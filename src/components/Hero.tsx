@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
 
 // ── Narrative Battery Intelligence Visualization ──────────────────────────────
 // Story arc: SOH curve draws live → green (healthy) → Zylectra flags early
@@ -587,22 +586,11 @@ const BatteryViz: React.FC = () => {
 
 const Hero: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 120);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    if (location.hash) {
-      const id = location.hash.replace('#', '');
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-  }, [location]);
 
   return (
     <section
@@ -707,6 +695,39 @@ const Hero: React.FC = () => {
                 {/* Blurred glow */}
                 <span className="absolute inset-0 rounded-2xl pointer-events-none group-hover:blur-[2px] group-hover:bg-emerald-300/20"></span>
               </a>
+
+              <button
+                type="button"
+                title="See demo"
+                className="relative group inline-flex items-center justify-center gap-3 px-9 py-4 rounded-2xl font-bold text-base md:text-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
+                style={{
+                  letterSpacing: '0.015em',
+                  minWidth: 180,
+                  background: 'rgba(255,255,255,0.02)',
+                  border: '1px solid rgba(255,255,255,0.14)',
+                  color: 'rgba(255,255,255,0.92)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(52,211,153,0.38)';
+                  e.currentTarget.style.background = 'rgba(52,211,153,0.06)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)';
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                }}
+                onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  {/* Demo icon - play */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 text-emerald-300/90 group-hover:text-emerald-200 transition-colors duration-200" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5.14v13.72a1 1 0 0 0 1.52.86l10.29-6.86a1 1 0 0 0 0-1.72L9.52 4.28A1 1 0 0 0 8 5.14Z" />
+                  </svg>
+                  See Demo
+                </span>
+                <span className="absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ boxShadow: '0 0 0 1px rgba(52,211,153,0.18) inset, 0 10px 40px rgba(52,211,153,0.08)' }}
+                />
+              </button>
             </div>
        
           </div>

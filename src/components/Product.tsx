@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Activity, Search, Wrench, FileLock2, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 
 type Outcome = {
   Icon: React.ComponentType<{ className?: string }>;
@@ -243,14 +242,15 @@ const SectionThree: React.FC = () => {
 
             {/* CTA */}
             <div className="mt-7 flex justify-center">
-              <Link
-                to="/pilot"
-                aria-label="Request a Zylectra pilot"
+              <button
+                type="button"
+                onClick={() => document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" })}
+                aria-label="See Zylectra demo"
                 className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-emerald-500 text-black font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
               >
-                Request a pilot
+                See Demo
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </button>
             </div>
 
             {/* Progress bar at top of section */}

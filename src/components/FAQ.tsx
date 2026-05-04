@@ -172,6 +172,19 @@ const FAQ: React.FC = () => {
             );
           })}
         </div>
+
+        {/* CTA */}
+        <div className="mt-12 md:mt-14 flex justify-center">
+          <a
+            href="/pilot"
+            title="Request pilot"
+            aria-label="Request a Zylectra pilot"
+            className="group inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.18)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
+            style={{ letterSpacing: "0.015em", minWidth: 220 }}
+          >
+            Request a pilot
+          </a>
+        </div>
       </div>
     </section>
   );
