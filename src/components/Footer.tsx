@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
   const scrollToSection = (id: string): void => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
+  }
 
   return (
     <footer className="relative bg-[#050508] text-white border-t border-white/10">

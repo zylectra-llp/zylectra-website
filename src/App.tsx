@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -14,6 +13,7 @@ import Demo from "./components/Demo";
 import FAQ from "./components/FAQ";
 import PilotPage from "./pages/Pilot";
 import ScrollToTop from "./utils/scrollToTop";
+import EastmanDemo from "./components/Eastman";
 
 function LandingPage() {
   return (
@@ -31,16 +31,28 @@ function LandingPage() {
   );
 }
 
-function App() {
+function AppInner() {
+  const location = useLocation();
+  const isDemo = location.pathname === "/eastman";
+
   return (
-    <Router>
+    <>
       <ScrollToTop />
-      <Navbar />
+      {!isDemo && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/pilot" element={<PilotPage />} />
+        <Route path="/eastman" element={<EastmanDemo />} />
       </Routes>
-      <Footer />
+      {!isDemo && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppInner />
     </Router>
   );
 }

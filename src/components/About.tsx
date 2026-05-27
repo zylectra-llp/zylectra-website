@@ -1,5 +1,5 @@
 import React from "react";
-import { Beaker, Users, Linkedin, ExternalLink } from "lucide-react";
+import { Linkedin, ExternalLink } from "lucide-react";
 
 // ─── Team data ─────────────────────────────────────────────────────────────
 // NOTE: Update photo paths and prof-page URLs as real assets become available.
@@ -132,103 +132,71 @@ const About: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative py-24 md:py-28 bg-[#050508] text-white overflow-hidden"
+      // Reduce top and bottom vertical padding to decrease gap to previous section
+      className="relative py-16 md:py-20 bg-[#050508] text-white overflow-hidden"
     >
       <div className="absolute -top-44 -right-36 w-80 h-80 bg-emerald-500/[0.06] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-44 -left-36 w-80 h-80 bg-emerald-400/[0.05] rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 z-10">
-        {/* Header */}
-        <div className="mb-7 md:mb-10">
-          <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-4">
-            Proof
+        {/* Partners & Supporters */}
+        <div className="mb-8 md:mb-10">
+          <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-500 mb-3">
+            Partners &amp; Supporters
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tight max-w-4xl leading-tight">
-            The work behind <span className="text-emerald-400">the numbers.</span>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight">
+            Incubator. Prize. Alliance. <span className="text-emerald-400">Recognition.</span>
           </h2>
-        </div>
-
-        {/* Two-card row: validation + backers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 md:mb-16">
-          {/* Technical validation */}
-          <article className="flex flex-col bg-white/[0.03] border border-white/10 rounded-2xl p-7 md:p-8 transition-all duration-300 hover:border-emerald-500/30 hover:bg-white/[0.04]">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="p-2 bg-emerald-500/10 rounded-lg">
-                <Beaker className="w-5 h-5 text-emerald-400" />
-              </div>
-              <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
-                Technical validation
-              </span>
-            </div>
-            <h3 className="text-lg md:text-xl font-bold text-white mb-3 leading-snug tracking-tight">
-              Validated on the open benchmarks every serious group publishes against.
-            </h3>
-            <p className="text-white/60 text-sm md:text-[15px] leading-relaxed mb-6 flex-grow">
-              Validated on widely used public benchmarks and against published baselines. Mechanism attribution
-              stays within reported literature bounds, and RUL error tracks the same range.
-            </p>
-            <div className="grid grid-cols-2 gap-4 pt-5 border-t border-white/5">
-              <div>
-                <div className="text-emerald-400 font-bold text-xl md:text-2xl tracking-tight">92.9%</div>
-                <div className="font-mono text-[9.5px] tracking-widest uppercase text-gray-500 mt-1 leading-snug">
-                  LLI attribution accuracy
-                </div>
-              </div>
-              <div>
-                <div className="text-emerald-400 font-bold text-xl md:text-2xl tracking-tight">96.5%</div>
-                <div className="font-mono text-[9.5px] tracking-widest uppercase text-gray-500 mt-1 leading-snug">
-                  LAM attribution accuracy
-                </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
+              <img
+                src="/venture-lab-logo.svg"
+                alt="VentureLab Thapar"
+                className="max-h-8 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
+              />
+              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
+                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">Incubated</p>
+                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">₹4L grant · TIET</p>
               </div>
             </div>
-          </article>
-
-          {/* Backers + logos */}
-          <article className="flex flex-col bg-white/[0.03] border border-white/10 rounded-2xl p-7 md:p-8 transition-all duration-300 hover:border-emerald-500/30 hover:bg-white/[0.04]">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="p-2 bg-emerald-500/10 rounded-lg">
-                <Users className="w-5 h-5 text-emerald-400" />
-              </div>
-              <span className="font-mono text-[10.5px] tracking-[0.18em] uppercase text-emerald-400/80">
-                Where we're built · who's backed us
-              </span>
-            </div>
-            <h3 className="text-lg md:text-xl font-bold text-white mb-3 leading-snug tracking-tight">
-              Built at VentureLab Thapar · 1st Runner Up at TiE Chandigarh 2025.
-            </h3>
-            <p className="text-white/60 text-sm md:text-[15px] leading-relaxed mb-6 flex-grow">
-              VentureLab Thapar is the incubator at the Thapar Institute of Engineering and Technology.
-              ₹4 lakh incubation grant. ₹1 lakh prize at the TiE Chandigarh Global Startup Finale 2025.
-            </p>
-
-            {/* Logos */}
-            <div className="grid grid-cols-2 gap-4 pt-5 border-t border-white/5">
-              <div className="flex flex-col items-center justify-center gap-2 rounded-xl bg-white/[0.92] p-4 transition-colors">
-                <img
-                  src="/venture-lab-logo.svg"
-                  alt="VentureLab Thapar"
-                  className="h-9 w-auto object-contain"
-                />
-                <span className="font-mono text-[9px] tracking-widest uppercase text-gray-700/80">
-                  Incubated
-                </span>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-2 rounded-xl bg-white/[0.92] p-4 transition-colors">
-                <img
-                  src="/tie-silicon-logo.png"
-                  alt="TiE Chandigarh"
-                  className="h-9 w-auto object-contain"
-                />
-                <span className="font-mono text-[9px] tracking-widest uppercase text-gray-700/80">
-                  1st Runner Up · 2025
-                </span>
+            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
+              <img
+                src="/tie-silicon-logo.png"
+                alt="TiE Chandigarh"
+                className="max-h-10 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
+              />
+              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
+                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">1st Runner Up · 2025</p>
+                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">TiE Global Startup Finale</p>
               </div>
             </div>
-          </article>
+            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
+              <img
+                src="/battery360.svg"
+                alt="Battery360 Alliance"
+                className="max-h-10 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
+              />
+              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
+                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">Industry Alliance</p>
+                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">Battery tech consortium</p>
+              </div>
+            </div>
+            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
+              <img
+                src="/meity.png"
+                alt="MeitY"
+                className="max-h-12 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
+              />
+              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
+                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">Recognized</p>
+                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">Ministry of Electronics & IT</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Team */}
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-500 mb-3">
             The people on the wall
           </div>
@@ -238,7 +206,7 @@ const About: React.FC = () => {
         </div>
 
         {/* Founder */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-4">
           <PersonCard person={founder} isFounder />
           <div className="md:col-span-2 flex items-center rounded-2xl border border-dashed border-white/10 px-6 py-5">
             <p className="text-white/55 text-sm md:text-base leading-relaxed">
