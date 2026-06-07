@@ -125,7 +125,7 @@ const SCENARIOS: Scenario[] = [
         detail: "Zylectra confirms the asset is on nominal trajectory. Operational planning can proceed with confidence for the next 102 months. No capital at risk.",
       },
       recommendation:
-        "No action required. Schedule full EIS sweep at month 18. Current fade rate (0.014%/month) is nominal for LFP at this operating temperature. Monitor thermal management efficiency — any ambient rise above 30°C will accelerate calendar aging nonlinearly.",
+        "No action required. Schedule full EIS sweep at month 18. Current fade rate (0.014%/month) is nominal for LFP at this operating temperature. Monitor thermal management efficiency, any ambient rise above 30°C will accelerate calendar aging nonlinearly.",
       trajectoryActual: [
         { x: 0,  soh: 100.0 }, { x: 1,  soh: 99.9 }, { x: 2,  soh: 99.7 },
         { x: 3,  soh: 99.6  }, { x: 4,  soh: 99.4 }, { x: 5,  soh: 99.3 },
@@ -184,10 +184,10 @@ const SCENARIOS: Scenario[] = [
         lifeLost: "~18 months consumed early",
         earlyWarningValue: "₹5.4L replacement cost avoidable",
         headline: "Zylectra flagged this 18 months before a standard BMS alert would fire.",
-        detail: "At the current fade rate, EOL arrives at month 69 — not month 87. Acting on this finding now avoids an unplanned replacement and 11 days of fleet downtime at peak utilisation. The thermal fix costs a fraction of the pack replacement it prevents.",
+        detail: "At the current fade rate, EOL arrives at month 69, not month 87. Acting on this finding now avoids an unplanned replacement and 11 days of fleet downtime at peak utilisation. The thermal fix costs a fraction of the pack replacement it prevents.",
       },
       recommendation:
-        "Restore thermal management to 25±2°C setpoint immediately — this is the highest-leverage intervention. Restrict peak discharge to 0.5C until thermal environment is stabilised. Replace PACK-07 within 32 months. Run full string EIS at next maintenance window to quantify hot-cell damage.",
+        "Restore thermal management to 25±2°C setpoint immediately, this is the highest-leverage intervention. Restrict peak discharge to 0.5C until thermal environment is stabilised. Replace PACK-07 within 32 months. Run full string EIS at next maintenance window to quantify hot-cell damage.",
       trajectoryActual: [
         { x: 0,  soh: 100.0 }, { x: 2,  soh: 99.7 }, { x: 4,  soh: 99.4 },
         { x: 6,  soh: 99.0  }, { x: 8,  soh: 98.7 }, { x: 10, soh: 98.3 },
@@ -251,7 +251,7 @@ const SCENARIOS: Scenario[] = [
         lifeLost: "23 months consumed by preventable failures",
         earlyWarningValue: "₹21.2L total loss (replacement + downtime)",
         headline: "Zylectra detected the failure trajectory 27 months before it became a crisis.",
-        detail: "Three simultaneous degradation modes — each independently detectable months earlier. The compounded loss: full pack replacement 23 months early, plus attributable fault data that shifts warranty liability to the charge system vendor, not the fleet operator.",
+        detail: "Three simultaneous degradation modes, each independently detectable months earlier. The compounded loss: full pack replacement 23 months early, plus attributable fault data that shifts warranty liability to the charge system vendor, not the fleet operator.",
       },
       recommendation:
         "REPLACE IMMEDIATELY. 12.4% below 80% SOH EOL threshold. Thermal runaway risk at 97% under any peak discharge. Estimated 6 months to functional failure. Isolate PACK-07 from critical loads now. Charge system audit log shows 14 overcharge events contributing to lithium inventory loss.",
@@ -290,7 +290,7 @@ const SCENARIOS: Scenario[] = [
             label: "Charge Protocol Overcharge",
             pct: 33,
             color: "#facc15",
-            note: "14 overcharge events identified in charge system audit log (months 28–47). Each event pushed string voltage 18–24 mV above LFP upper cutoff, driving lithium inventory loss and electrolyte oxidation at cathode interface.",
+            note: "14 overcharge events identified in charge system audit log (months 28-47). Each event pushed string voltage 18–24 mV above LFP upper cutoff, driving lithium inventory loss and electrolyte oxidation at cathode interface.",
           },
           {
             label: "Cell Manufacturing Variance",
@@ -652,15 +652,15 @@ const Section5: React.FC = () => {
         {/* Header */}
         <header>
           <p className="text-xs tracking-[0.25em] uppercase text-emerald-400 font-mono mb-3">
-            Zylectra Live Demo · Battery Intelligence Platform
+            Try it yourself · Interactive Analysis
           </p>
           <h2 id="demo-heading" className="text-2xl md:text-3xl font-bold mb-3">
-            See Zylectra Run on Real Battery Data
+            You're in the seat. Pick a pack, run the engine.
           </h2>
           <p className="text-sm md:text-base text-gray-400 max-w-2xl leading-relaxed mb-5">
-            Select a scenario below. Zylectra runs its full physics-informed pipeline:
-            calendar aging model, electrochemical-thermal analysis, and physics-based RUL
-            forecast on real Li-ion battery degradation data. No synthetic inputs. No sliders.
+            Three real degradation scenarios. Select one and Zylectra runs its full
+            physics-informed pipeline on it; calendar aging model, electrochemical-thermal
+            analysis, RUL forecast, and root cause attribution. Same engine that runs on your fleet telemetry.
           </p>
 
           {/* Context hook for customers and investors */}
@@ -670,7 +670,7 @@ const Section5: React.FC = () => {
               Indian EV fleets lose an estimated{" "}
               <span className="text-emerald-400 font-semibold">₹2.4L–₹21L per pack</span>
               {" "}to undetected degradation annually.{" "}
-              <span className="text-gray-300">Zylectra closes that gap months before a BMS alert ever fires.</span>
+              <span className="text-gray-300">See exactly how Zylectra finds it months before a BMS alert ever fires.</span>
             </p>
           </div>
         </header>
@@ -685,7 +685,7 @@ const Section5: React.FC = () => {
                 onClick={() => handleLoad(s)}
                 role="listitem"
                 aria-pressed={isSelected}
-                aria-label={`Load scenario: ${s.title}`}
+                aria-label={`Run scenario: ${s.title}`}
                 className={`text-left rounded-2xl border p-5 transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                   isSelected
                     ? "border-emerald-500/45 bg-emerald-500/5 shadow-[0_0_28px_rgba(16,185,129,0.09)]"
@@ -719,7 +719,7 @@ const Section5: React.FC = () => {
                   className={`text-[0.65rem] font-semibold font-mono transition-opacity ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-50"}`}
                   style={{ color: s.badgeHex }}
                 >
-                  {isSelected ? "▶ Loaded, results below" : "Click to run analysis →"}
+                  {isSelected ? "▶ Running — results below" : "Run this scenario →"}
                 </div>
               </button>
             );
@@ -731,7 +731,7 @@ const Section5: React.FC = () => {
           <div className="bg-[#0B0F15] border border-white/8 rounded-2xl p-6 md:p-8" role="status" aria-live="polite" aria-label="Running Zylectra physics pipeline">
             <div className="flex items-center gap-3 mb-5">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
-              <p className="text-sm font-semibold text-white">Running Zylectra Physics Pipeline</p>
+              <p className="text-sm font-semibold text-white">Running your analysis…</p>
               <span className="ml-auto text-[0.62rem] text-gray-600 font-mono hidden sm:block">{active?.subtitle}</span>
             </div>
             <div className="space-y-3">
@@ -940,7 +940,7 @@ const Section5: React.FC = () => {
             {/* CTA */}
             <div className="px-5 md:px-7 py-5 border-t border-white/8 bg-black/18 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold text-white">This is what it looks like on controlled data.</p>
+                <p className="text-sm font-semibold text-white">Now run it on your own fleet data.</p>
                 <p className="text-xs text-gray-500 mt-0.5">
                   Your BMS telemetry. Your chemistry. Your failure modes. Six weeks to find out what your packs are hiding.
                 </p>
@@ -948,9 +948,9 @@ const Section5: React.FC = () => {
               <Link
                 to="/pilot"
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-400 text-black text-sm font-bold shadow-lg shadow-emerald-500/30 hover:bg-emerald-300 transition whitespace-nowrap"
-                aria-label="Request a battery intelligence pilot"
+                aria-label="Book a call"
               >
-                Run it on my data
+                Book a call
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>

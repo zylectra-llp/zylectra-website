@@ -22,7 +22,7 @@ const steps = [
   {
     num: "03",
     icon: LayoutDashboard,
-    title: "You get predictions, mechanisms, and actions on a dashboard your team can use",
+    title: "You get predictions, mechanisms, and the next move at cell, fleet, and risk level.",
     desc: "Cell-level views for the engineer. Fleet-level views for the operator. Risk-tier views for the underwriter. One source of truth, three lenses.",
     objection: "Kills: \"my team doesn't have time to learn another tool.\"",
   },
@@ -84,14 +84,14 @@ const Section4: React.FC = () => {
 
         {/* CTA */}
         <div className="mt-20 flex flex-col items-center justify-center text-center">
-          <p className="text-gray-300 text-sm mb-6 font-medium italic">
-            Six to twelve week pilot. NDA-protected. We respond within two working days.
+          <p className="text-gray-300 text-sm mb-6 font-medium">
+            6-month pilot. NDA-protected. We respond within two working days.
           </p>
           <Link
             to="/pilot"
             className="group flex items-center gap-3 px-8 py-4 bg-emerald-500 text-black font-bold rounded-full hover:bg-emerald-400 transition-all active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
           >
-            Request a pilot
+            Book a call
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

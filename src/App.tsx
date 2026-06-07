@@ -13,7 +13,6 @@ import Demo from "./components/Demo";
 import FAQ from "./components/FAQ";
 import PilotPage from "./pages/Pilot";
 import ScrollToTop from "./utils/scrollToTop";
-import EastmanDemo from "./components/Eastman";
 
 function LandingPage() {
   return (
@@ -42,7 +41,6 @@ function AppInner() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/pilot" element={<PilotPage />} />
-        <Route path="/eastman" element={<EastmanDemo />} />
       </Routes>
       {!isDemo && <Footer />}
     </>

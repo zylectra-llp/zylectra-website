@@ -12,20 +12,20 @@ type Column = {
 
 const columns: Column[] = [
   {
-    title: "For OEMs and Tier-1s",
+    title: "For builders and assemblers",
     Icon: Factory,
     headline: "Stop discovering defects through warranty claims.",
     body:
-      "Catch the bad batch in the first thousand cycles, not the last. Cut the share of vehicle margin that gets eaten by post-sale repair, and ship the audit trail your QA team has been asking for.",
-    cta: "Request a pilot for OEMs",
+      "Whether you manufacture cells, assemble packs, or supply to OEMs. Catch the bad batch in the first thousand cycles, not the last. Cut the share of vehicle margin that gets eaten by post-sale repair, and ship the audit trail your QA team has been asking for.",
+    cta: "Book a call",
   },
   {
-    title: "For fleet operators",
+    title: "For operators",
     Icon: Truck,
-    headline: "Pull the vehicle before the breakdown, not after.",
+    headline: "Take action before the failure, not after.",
     body:
-      "Know which packs are dying twelve weeks out. Schedule the swap. Keep the vehicle earning. Stop having the same conversation with the same driver about the same dead pack.",
-    cta: "Request a pilot for fleets",
+      "Whether you run an EV fleet, a BESS installation, or an industrial site, you already know the cost of an unplanned outage. Know which packs are dying twelve weeks out. Schedule the intervention. Keep the asset earning.",
+    cta: "Book a call",
   },
   {
     title: "For financiers and insurers",
@@ -33,7 +33,7 @@ const columns: Column[] = [
     headline: "Price the residual on physics, not on hope.",
     body:
       "Battery health forecasts that hold up at 24 months. Risk tiers you can underwrite. A health certificate that travels with the asset, so the second-life market knows what it's buying.",
-    cta: "Request a pilot for financiers",
+    cta: "Book a call",
   },
 ];
 

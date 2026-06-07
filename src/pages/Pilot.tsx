@@ -265,7 +265,7 @@ const tickerItems = [
   "Loss of lithium inventory",
   "Audit trail",
   "Warranty defense",
-  "Six-week pilot",
+  "Six-month pilot",
   "No new hardware",
 ];
 
@@ -298,7 +298,7 @@ const Pilot: React.FC = () => {
 
   const timelineSteps = [
     {
-      week: "Weeks 1–2",
+      week: "Months 1–2",
       phase: "Setup and ingestion",
       tasks: [
         "NDA signed. Mutual, two pages. We send the template; you redline; both parties sign in a day.",
@@ -311,7 +311,7 @@ const Pilot: React.FC = () => {
       icon: "01",
     },
     {
-      week: "Weeks 3–4",
+      week: "Months 3–4",
       phase: "Co-training and first results",
       tasks: [
         "Our physics AI model tuned to your operating envelope; chemistry, duty cycle, ambient profile.",
@@ -324,20 +324,20 @@ const Pilot: React.FC = () => {
       icon: "02",
     },
     {
-      week: "Weeks 5–6",
+      week: "Months 5–6",
       phase: "Validation and handover",
       tasks: [
         "Ground-truth comparison runs against your degradation events, capacity tests, and warranty returns.",
         "Confidence intervals nailed down. Numbers your CTO and board can defend.",
         "Integration spec your engineering team can use to wire the model into your existing data pipeline.",
-        "Go or no-go decision, on both sides, by end of week six.",
+        "Go or no-go decision, on both sides, by end of month six.",
       ],
       deliverable: "Validation report · integration spec · go / no-go",
       color: "#00e87a",
       icon: "03",
     },
     {
-      week: "Week 7+",
+      week: "Month 7+",
       phase: "Optional · commercial engagement",
       tasks: [
         "Production deployment on live telemetry, model retraining on a rolling window.",
@@ -352,7 +352,7 @@ const Pilot: React.FC = () => {
   ];
 
   const metrics = [
-    { value: 6, suffix: "wk", label: "Pilot length", sub: "From NDA to go / no-go" },
+    { value: 6, suffix: "mo", label: "Pilot length", sub: "From NDA to go / no-go" },
     { value: 4, suffix: "",   label: "Spots open", sub: "2026 design partner cohort" },
     { value: 96, suffix: "%", label: "LAM attribution", sub: "Validated on NASA cycling data" },
     { value: 0, suffix: "",   label: "New sensors", sub: "Telemetry you already collect" },
@@ -382,7 +382,7 @@ const Pilot: React.FC = () => {
     {
       icon: "🤝",
       title: "A go or no-go decision",
-      desc: "On both sides, by week six. We don't sell licenses on hope. If the predictions don't hold up, we say so.",
+      desc: "On both sides, by month six. We don't sell licenses on hope. If the predictions don't hold up, we say so.",
     },
     {
       icon: "📜",
@@ -418,8 +418,8 @@ const Pilot: React.FC = () => {
     "You operate, finance, manufacture, or insure lithium-ion batteries at scale. Five hundred packs and up.",
     "You have BMS telemetry already being logged, and you can share at least six months of it under NDA.",
     "Battery-related downtime, warranty exposure, or residual value risk is showing up on a P&L you care about.",
-    "You have a technical lead who can own the engagement on your side for six weeks.",
-    "You're willing to commit to a six-week timeline before a commercial conversation.",
+    "You have a technical lead who can own the engagement on your side for six months.",
+    "You're willing to commit to a six-month timeline before a commercial conversation.",
   ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -562,7 +562,7 @@ const Pilot: React.FC = () => {
             className="animate-fadeUp delay-100 font-syne mb-6"
             style={{ fontSize: "clamp(2rem, 5vw, 3.8rem)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.12 }}
           >
-            <span style={{ display: "block" }}>Six weeks. Your telemetry.</span>
+            <span style={{ display: "block" }}>Six months. Your telemetry.</span>
             <span className="shimmer-text" style={{ display: "block", lineHeight: 1.12 }}>
               Cell-level answers.
             </span>
@@ -573,7 +573,7 @@ const Pilot: React.FC = () => {
             style={{ maxWidth: 640, color: "rgba(255,255,255,0.6)", fontSize: "clamp(14px, 2vw, 16px)" }}
           >
             A structured engagement where we co-validate the model on your fleet, hand you a working dashboard,
-            and give you the kind of cell-level diagnosis your BMS vendor can't. By the end of week six, you know
+            and give you the kind of cell-level diagnosis your BMS vendor can't. By the end of month six, you know
             whether this is worth a commercial contract. So do we.
           </p>
 
@@ -586,7 +586,7 @@ const Pilot: React.FC = () => {
             </a>
             <a
               href="#timeline"
-              aria-label="See how the six weeks run"
+              aria-label="See how the six months run"
               className="font-syne rounded-lg px-8 py-4 transition-all"
               style={{
                 border: "1px solid rgba(255,255,255,0.12)",
@@ -600,12 +600,12 @@ const Pilot: React.FC = () => {
               onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--green-mid)")}
               onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
             >
-              See how the six weeks run
+              See how the six months run
             </a>
           </div>
 
           <p className="mt-8 font-mono-jb" style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>
-            CURRENTLY ACCEPTING FOUR DESIGN PARTNERS · WE RESPOND WITHIN TWO WORKING DAYS
+            LIMITED SPOTS FOR 2026 · WE RESPOND WITHIN TWO WORKING DAYS
           </p>
         </div>
       </section>
@@ -666,7 +666,7 @@ const Pilot: React.FC = () => {
             className="font-syne mb-3"
             style={{ fontSize: "clamp(1.4rem, 2.5vw, 2.2rem)", fontWeight: 700, letterSpacing: "-0.01em" }}
           >
-            What you have at the end of week six
+            What you have at the end of month six
           </h2>
           <p className="mb-10 md:mb-12" style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", maxWidth: 600 }}>
             Each one is a thing you can show your boss. The fifth is the strongest: it makes the offer mutual,
@@ -738,13 +738,13 @@ const Pilot: React.FC = () => {
         }} />
 
         <div className="relative max-w-5xl mx-auto">
-          <div className="section-label">The six weeks</div>
+          <div className="section-label">The six months</div>
           <h2
             id="timeline-heading"
             className="font-syne mb-3"
             style={{ fontSize: "clamp(1.4rem, 2.5vw, 2.2rem)", fontWeight: 700, letterSpacing: "-0.01em" }}
           >
-            Week by week, in plain language
+            Month by month, in plain language
           </h2>
           <p className="mb-10 md:mb-12" style={{ fontSize: 14, color: "rgba(255,255,255,0.45)", maxWidth: 600 }}>
             The shape, not the daily plan. Click any phase to see what we're doing inside it.
@@ -921,10 +921,10 @@ const Pilot: React.FC = () => {
             className="font-syne mb-3"
             style={{ fontSize: "clamp(1.4rem, 2.8vw, 2.3rem)", fontWeight: 700, letterSpacing: "-0.01em" }}
           >
-            Apply for the 2026 pilot cohort
+            Apply for the 2026 pilot
           </h2>
           <p className="mb-8" style={{ fontSize: 14, color: "rgba(255,255,255,0.5)" }}>
-            Four spots open. Six-week engagement. We respond within two working days.
+            Limited spots for 2026. Six-month engagement. We respond within two working days.
           </p>
 
           {formStatus === "sent" ? (
@@ -1010,7 +1010,7 @@ const Pilot: React.FC = () => {
           </h2>
 
           <p className="mb-10" style={{ fontSize: "clamp(13px, 2vw, 15px)", color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}>
-            Six weeks to find out whether your batteries are sending warnings nobody is reading.
+            Six months to find out whether your batteries are sending warnings nobody is reading.
             If the predictions don't hold up, you walk away. We don't sell licenses on hope.
           </p>
 
@@ -1021,7 +1021,7 @@ const Pilot: React.FC = () => {
           </div>
 
           <p className="mt-6 font-mono-jb" style={{ fontSize: 11, color: "rgba(255,255,255,0.25)" }}>
-            Six to twelve week pilot · No new hardware · NDA-protected · We respond within two working days
+            6-month pilot · No new hardware · NDA-protected · We respond within two working days
           </p>
         </div>
       </section>

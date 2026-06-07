@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Atom, History } from "lucide-react";
+import { Atom, History, ArrowRight } from "lucide-react";
 
 const SectionTwo: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -45,7 +45,7 @@ const SectionTwo: React.FC = () => {
     },
     {
       sharp: "Loss of Active Material in cathode. 96.5% attribution confidence.",
-      meta: "Validated against ground-truth on NASA Ames cycling data.",
+      meta: "Validated against ground-truth on controlled cycling datasets.",
     },
   ];
 
@@ -53,7 +53,7 @@ const SectionTwo: React.FC = () => {
     <section
       ref={sectionRef}
       id="the-shift"
-      className="relative py-20 md:py-28 bg-[#050508] overflow-hidden"
+      className="relative pt-10 md:pt-14 pb-20 md:pb-28 bg-[#050508] overflow-hidden"
     >
       {/* Subtle grid */}
       <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -66,7 +66,7 @@ const SectionTwo: React.FC = () => {
           }`}
         >
           <div className="inline-block px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-[10px] tracking-[0.2em] uppercase text-emerald-400 rounded-full mb-6 font-bold">
-            The Shift
+            Why Most Battery AI Gets It Wrong
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-[1.2]">
@@ -179,13 +179,15 @@ const SectionTwo: React.FC = () => {
         >
           <a
             href="/pilot"
-            title="Request a pilot"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.18)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
+            title="Book a call"
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.18)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
             style={{ letterSpacing: "0.015em", minWidth: 220 }}
           >
-            Request a pilot
+            Book a call
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </a>
         </div>
+   
       </div>
     </section>
   );

@@ -14,6 +14,9 @@ const FAQ: React.FC = () => {
           <br />
           Zylectra is predictive. It models internal electrochemistry to flag risk and name the mechanism earlier,
           using the same telemetry.
+          <br />
+          <br />
+          By the time it alarms, the damage is already priced into your warranty reserve.
         </>
       ),
     },
@@ -35,11 +38,10 @@ const FAQ: React.FC = () => {
           If you do not control the telemetry, the OEM (or financier) needs to be involved.
           <br />
           <br />
-          Email{" "}
-          <a href="mailto:info@zylectra.com" className="text-emerald-400 hover:text-emerald-300 underline-offset-2 hover:underline">
-            info@zylectra.com
+          <a href="/pilot" className="text-emerald-400 hover:text-emerald-300 underline-offset-2 hover:underline font-semibold">
+            Book a 20-minute call
           </a>{" "}
-          and we will share a short one pager to forward internally.
+          and we'll walk you through it — including a short one-pager you can forward internally to get the right people in the room.
         </>
       ),
     },
@@ -55,18 +57,13 @@ const FAQ: React.FC = () => {
       ),
     },
     {
-      q: "What does the pilot actually look like? How long, what's needed from us?",
+      q: "Does this work for BESS and non-EV applications?",
       a: (
         <>
-          Six weeks.
+          Yes. The physics-informed models work on any Li-ion chemistry.
           <br />
           <br />
-          You provide BMS telemetry (minimum 50 packs, at least 6 months history) and one technical owner for a few hours per week.
-          You get a working dashboard, a validation readout on your data, and a clear go or no go decision.
-          Details are on the{" "}
-          <a href="/pilot" className="text-emerald-400 hover:text-emerald-300 underline-offset-2 hover:underline">
-            pilot page
-          </a>.
+          We've validated on LFP and NMC. If you're running Li-ion and failures cost you money, the conversation is worth having.
         </>
       ),
     },
@@ -177,12 +174,12 @@ const FAQ: React.FC = () => {
         <div className="mt-12 md:mt-14 flex justify-center">
           <a
             href="/pilot"
-            title="Request pilot"
-            aria-label="Request a Zylectra pilot"
+            title="Book a call"
+            aria-label="Book a call"
             className="group inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.18)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
             style={{ letterSpacing: "0.015em", minWidth: 220 }}
           >
-            Request a pilot
+            Book a call
           </a>
         </div>
       </div>

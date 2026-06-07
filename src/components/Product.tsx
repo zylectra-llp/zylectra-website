@@ -30,6 +30,7 @@ const outcomes: Outcome[] = [
     pillars: [
       { label: "LLI accuracy", value: "92.9%" },
       { label: "LAM accuracy", value: "96.5%" },
+      { label: "Failure prediction accuracy", value: "94.5%" },
     ],
   },
   {
@@ -48,7 +49,7 @@ const outcomes: Outcome[] = [
     eyebrow: "04 · Audit trail",
     title: "You'll have the receipts when warranty, insurance, or the regulator asks.",
     body:
-      "A tamper-evident log of every prediction, every action recommended, every action taken. Built for a world where battery passports are mandatory and warranty disputes go to arbitration. Your engineers see a tool. Your CFO sees a moat.",
+      "A tamper-evident log of every prediction, every action recommended, every action taken. Built for a world where battery passports are mandatory and warranty disputes go to arbitration. Your engineers see a tool. Your CFO sees a defensible paper trail.",
     pillars: [
       { label: "Log", value: "Tamper-evident" },
       { label: "Built for", value: "Arbitration" },
@@ -133,7 +134,7 @@ const SectionThree: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-8 md:mb-12">
             <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-3">
-              What you get
+              The Intelligence
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight mb-3">
               Four answers your battery <span className="text-emerald-400">owes you.</span>
@@ -245,10 +246,10 @@ const SectionThree: React.FC = () => {
               <button
                 type="button"
                 onClick={() => document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" })}
-                aria-label="See Zylectra demo"
+                aria-label="Try Zylectra yourself"
                 className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-emerald-500 text-black font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
               >
-                See Demo
+                Try it yourself
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>

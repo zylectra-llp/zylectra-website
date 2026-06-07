@@ -27,23 +27,23 @@ const CTA: React.FC = () => {
         </h2>
 
         <p className="text-white/65 max-w-xl mx-auto leading-relaxed mb-10 text-base md:text-lg">
-          Six weeks. Telemetry you already have. If the predictions don't hold up against ground truth in your fleet, you walk away.
+          Six months. If the predictions don't hold up against ground truth in your fleet, you walk away. No lock-in, no hardware left behind, no awkward conversation.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/pilot"
-            aria-label="Request a Zylectra pilot"
+            aria-label="Book a call"
             className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-emerald-500 text-black font-bold transition-all duration-300 hover:bg-emerald-400 hover:shadow-[0_0_25px_rgba(16,185,129,0.35)]"
           >
-            Request a pilot
+            Book a call
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
 
           <button
             type="button"
-            title="See demo"
-            aria-label="See Zylectra demo"
+            title="Try it yourself"
+            aria-label="Try Zylectra yourself"
             className="relative group inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg font-bold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
             style={{
               letterSpacing: "0.015em",
@@ -72,7 +72,7 @@ const CTA: React.FC = () => {
               >
                 <path d="M8 5.14v13.72a1 1 0 0 0 1.52.86l10.29-6.86a1 1 0 0 0 0-1.72L9.52 4.28A1 1 0 0 0 8 5.14Z" />
               </svg>
-              See demo
+              Try it yourself
             </span>
             <span
               className="absolute inset-0 rounded-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
@@ -85,7 +85,7 @@ const CTA: React.FC = () => {
         </div>
 
         <p className="mt-8 font-mono text-[11px] tracking-widest uppercase text-white/40">
-          Six to twelve week pilot · No hardware · NDA-protected · We respond within two working days
+          6-month pilot · No hardware · NDA-protected · We respond within two working days
         </p>
       </div>
     </section>

@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
             <h4 className="text-sm uppercase tracking-widest text-emerald-500 mb-6">Site</h4>
             <div className="space-y-3 text-sm text-white/70">
               <Link to="/pilot" className="block hover:text-emerald-400 transition-colors">
-                Request a pilot
+                Book a call
               </Link>
               <button
                 onClick={() => scrollToSection("how-it-works")}
