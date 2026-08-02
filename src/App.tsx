@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -9,9 +9,9 @@ import TheShift from "./components/Problem";
 import WhatYouGet from "./components/Product";
 import HowItWorks from "./components/HowItWorks";
 import WhoIsItFor from "./components/WhoIsItFor";
-import Demo from "./components/Demo";
 import FAQ from "./components/FAQ";
-import PilotPage from "./pages/Pilot";
+import ContactPage from "./pages/Contact";
+import PoCPage from "./pages/PoC";
 import ScrollToTop from "./utils/scrollToTop";
 
 function LandingPage() {
@@ -22,7 +22,6 @@ function LandingPage() {
       <WhatYouGet />
       <HowItWorks />
       <WhoIsItFor />
-      <Demo />
       <About />
       <FAQ />
       <CallToAction />
@@ -31,18 +30,16 @@ function LandingPage() {
 }
 
 function AppInner() {
-  const location = useLocation();
-  const isDemo = location.pathname === "/eastman";
-
   return (
     <>
       <ScrollToTop />
-      {!isDemo && <Navbar />}
+      <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/pilot" element={<PilotPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/poc" element={<PoCPage />} />
       </Routes>
-      {!isDemo && <Footer />}
+      <Footer />
     </>
   );
 }

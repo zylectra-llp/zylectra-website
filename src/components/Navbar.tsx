@@ -1,134 +1,196 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const location = useLocation();
-    const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    // After navigating from a sub-page (e.g. /pilot) to /#section,
-    // scroll to the target section once the home page has mounted.
-    useEffect(() => {
-        if (location.pathname === "/" && location.hash) {
-            const id = location.hash.replace("#", "");
-            // Small delay lets React finish rendering the landing page
-            const timer = setTimeout(() => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.scrollIntoView({ behavior: "smooth" });
-                    setIsMobileMenuOpen(false);
-                }
-            }, 120);
-            return () => clearTimeout(timer);
-        }
-    }, [location.pathname, location.hash]);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
 
-    const navLinks = [
-        ["The Intelligence", "product"],
-        ["How it works", "how-it-works"],
-    ] as const;
+    window.addEventListener("scroll", handleScroll);
 
-    const scrollToSection = (sectionId: string) => {
-        if (location.pathname !== "/") {
-          navigate(`/#${sectionId}`);
-          return;
-        }
-      
-        const element = document.getElementById(sectionId);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll to the correct section when navigating
+  // from another page such as /pilot back to the homepage.
+  useEffect(() => {
+    if (location.pathname === "/" && location.hash) {
+      const id = location.hash.replace("#", "");
+
+      const timer = setTimeout(() => {
+        const element = document.getElementById(id);
+
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
           setIsMobileMenuOpen(false);
         }
-    };
+      }, 120);
 
-    return (
-        <nav
-            className={`fixed top-4 left-4 right-4 z-50 transition-all duration-300 ${isScrolled
-                    ? "bg-black/80 backdrop-blur-md shadow-2xl border border-white/10"
-                    : "bg-transparent"
-                } rounded-2xl`}
-        >
-            <div className="max-w-7xl mx-auto px-6 py-3">
-                <div className="flex items-center justify-between">
-                    {/* Brand Logo */}
-                    <div
-                        className="flex items-center gap-3 cursor-pointer group"
-                        onClick={() => scrollToSection("hero")}
-                    >
-                        <img src="\image.jpg" alt="Zylectra Logo" className="w-10 h-10 object-contain"/>
-                        <span className="text-xl font-bold text-white tracking-tight">
-                            Zylectra
-                        </span>
-                    </div>
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname, location.hash]);
 
-                    {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-2 font-medium text-[13px] tracking-wider">
-                        {navLinks.map(([label, id]) => (
-                            <button
-                                key={id}
-                                onClick={() => scrollToSection(id)}
-                                className="text-gray-400 hover:text-white transition-colors px-4 py-2 whitespace-nowrap"
-                            >
-                                {label}
-                            </button>
-                        ))}
+  const navLinks = [
+    ["The Intelligence", "product"],
+    ["How it works", "how-it-works"],
+    ["Who it's for", "customers"],
+    ["FAQ", "faq"],
+  ] as const;
 
-                        <Link
-                            to="/pilot"
-                            className="group flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold ml-4 transition-all whitespace-nowrap"
-                        >
-                            <span>Book a call</span>
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                    </div>
+  const scrollToSection = (sectionId: string) => {
+    // If the user is on another route, navigate back
+    // to the homepage and preserve the target section.
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      return;
+    }
 
-                    {/* Mobile Toggle */}
-                    <button
-                        className="md:hidden p-2 text-white"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-                    >
-                        {isMobileMenuOpen ? <X /> : <Menu />}
-                    </button>
-                </div>
+    const element = document.getElementById(sectionId);
 
-                {/* Mobile Menu */}
-                {isMobileMenuOpen && (
-                    <div className="md:hidden bg-black border border-white/10 p-6 mt-3 rounded-2xl shadow-2xl animate-in slide-in-from-top-5">
-                        <div className="flex flex-col space-y-4 text-center">
-                            {navLinks.map(([label, id]) => (
-                                <button
-                                    key={id}
-                                    onClick={() => scrollToSection(id)}
-                                    className="text-gray-300 py-2 text-base"
-                                >
-                                    {label}
-                                </button>
-                            ))}
-                            <Link
-                                to="/pilot"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="group flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black py-4 rounded-xl font-bold text-center transition-all"
-                            >
-                                <span>Book a call</span>
-                                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                            </Link>
-                        </div>
-                    </div>
-                )}
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  const goHome = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+      return;
+    }
+
+    const element = document.getElementById("hero");
+
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setIsMobileMenuOpen(false);
+    }
+  };
+
+  return (
+    <nav
+      className={`fixed top-4 left-4 right-4 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-[rgba(var(--bg-rgb),0.8)] backdrop-blur-md shadow-2xl border border-[rgba(var(--fg-rgb),0.1)]"
+          : "bg-transparent"
+      } rounded-2xl`}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-3">
+        <div className="flex items-center justify-between">
+          {/* Brand */}
+          <button
+            type="button"
+            className="flex items-center gap-3 cursor-pointer group"
+            onClick={goHome}
+            aria-label="Go to Zylectra home"
+          >
+            <img
+              src="/image.jpg"
+              alt="Zylectra Logo"
+              className="w-10 h-10 object-contain"
+            />
+
+            <span className="text-xl font-bold text-[var(--text)] tracking-tight">
+              Zylectra
+            </span>
+          </button>
+
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex items-center space-x-1 font-medium text-[13px] tracking-wider">
+            {navLinks.map(([label, id]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => scrollToSection(id)}
+                className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-3 py-2 whitespace-nowrap"
+              >
+                {label}
+              </button>
+            ))}
+
+            <Link
+              to="/poc"
+              className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-3 py-2 whitespace-nowrap"
+            >
+              PoC
+            </Link>
+
+            <ThemeToggle className="ml-2" />
+
+            <Link
+              to="/contact"
+              className="group flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold ml-3 transition-all whitespace-nowrap"
+            >
+              <span>Contact us</span>
+
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+
+          {/* Mobile Toggle */}
+          <div className="lg:hidden flex items-center gap-1">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="p-2 text-[var(--text)]"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={
+              isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X /> : <Menu />}
+          </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-[var(--surface)] border border-[rgba(var(--fg-rgb),0.1)] p-6 mt-3 rounded-2xl shadow-2xl animate-in slide-in-from-top-5">
+            <div className="flex flex-col space-y-3 text-center">
+              {navLinks.map(([label, id]) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => scrollToSection(id)}
+                  className="text-[var(--text-secondary)] hover:text-[var(--text)] py-3 text-base transition-colors"
+                >
+                  {label}
+                </button>
+              ))}
+
+              <Link
+                to="/poc"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-[var(--text-secondary)] hover:text-[var(--text)] py-3 text-base transition-colors"
+              >
+                PoC
+              </Link>
+
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="group flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black py-4 rounded-xl font-bold text-center transition-all mt-2"
+              >
+                <span>Contact us</span>
+
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
-        </nav>
-    );
+          </div>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;

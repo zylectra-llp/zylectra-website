@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Atom, History, ArrowRight } from "lucide-react";
+import {
+  BatteryWarning,
+  IndianRupee,
+  Gauge,
+  ArrowDown,
+  ArrowRight,
+} from "lucide-react";
 
 const SectionTwo: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -7,190 +13,397 @@ const SectionTwo: React.FC = () => {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
+      ([entry]) => {
+        if (entry.isIntersecting) {
           setVisible(true);
           obs.disconnect();
         }
       },
-      { threshold: 0.18 }
+      // threshold is a % of the whole section's own height, and this section
+      // is taller than the viewport on mobile/tablet — a ratio-based
+      // threshold can never be satisfied there. rootMargin fires as soon as
+      // the section's top edge nears the viewport instead, independent of
+      // how tall the section is.
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
     );
+
     if (sectionRef.current) obs.observe(sectionRef.current);
+
     return () => obs.disconnect();
   }, []);
 
-  const historianBullets = [
+  const problems = [
     {
-      vague: "Pack-12: anomaly detected.",
-      meta: "Source: pattern-matching ML",
+      icon: BatteryWarning,
+      title: "Unexpected Downtime",
+      text:
+        "Weak batteries often stay in service until they begin affecting vehicles and daily operations.",
+      color: "text-red-400",
+      bg: "bg-red-500/10",
+      border: "border-red-500/20",
     },
     {
-      vague: "Cell voltage variance flagged.",
-      meta: "Action: investigate.",
+      icon: IndianRupee,
+      title: "Higher Battery Costs",
+      text:
+        "Healthy batteries are replaced too early while weaker ones continue running longer than they should.",
+      color: "text-yellow-400",
+      bg: "bg-yellow-500/10",
+      border: "border-yellow-500/20",
     },
     {
-      vague: "Failure probability: elevated.",
-      meta: "Confidence: not stated.",
-    },
-  ];
-
-  const physicistBullets = [
-    {
-      sharp: "Cell 47B. SEI growth dominant. 41% of total fade attributable.",
-      meta: "Failure window: Day 247 ± 9.",
-    },
-    {
-      sharp: "Lithium plating onset detected on graphite anode.",
-      meta: "Reduce charge current 8% above 80% SOC. Recovers ~4 months of useful life.",
-    },
-    {
-      sharp: "Loss of Active Material in cathode. 96.5% attribution confidence.",
-      meta: "Validated against ground-truth on controlled cycling datasets.",
+      icon: Gauge,
+      title: "Lower Utilization",
+      text:
+        "Every battery is treated the same, even though every battery ages differently.",
+      color: "text-sky-400",
+      bg: "bg-sky-500/10",
+      border: "border-sky-500/20",
     },
   ];
 
   return (
     <section
       ref={sectionRef}
-      id="the-shift"
-      className="relative pt-10 md:pt-14 pb-20 md:pb-28 bg-[#050508] overflow-hidden"
+      className="relative overflow-hidden bg-[var(--bg)] py-20 md:py-28"
     >
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
+      {/* Background grid */}
+      <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:42px_42px]" />
+
+      {/* Background glow */}
+      <div
+        className="absolute left-1/2 top-20 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%)",
+        }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-6">
+
         {/* Header */}
+
         <div
-          className={`mb-14 md:mb-20 text-center transition-all duration-700 ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          className={`max-w-4xl mx-auto text-center transition-all duration-700 ${
+            visible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-6"
           }`}
         >
-          <div className="inline-block px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-[10px] tracking-[0.2em] uppercase text-emerald-400 rounded-full mb-6 font-bold">
-            Why Most Battery AI Gets It Wrong
+          <div className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400 mb-6">
+            THE REAL PROBLEM
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-[1.2]">
-            Most battery AI is a historian.
-            <span className="block mt-2 text-emerald-400">Yours should be a physicist.</span>
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight text-[var(--text)] tracking-tight">
+            Every wrong battery
+            <span className="block text-emerald-400 mt-2">
+              decision costs money.
+            </span>
           </h2>
 
-          <div className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed space-y-3">
-            <p>
-              Pattern-matching tools wait for a failure they’ve already seen. By then, your warranty is cooked.
-            </p>
-            <p>
-              Physics-informed AI reads your data against the laws of electrochemistry, so it names the cause
-              the first time it ever appears.
-            </p>
-            <p className="text-white font-semibold">
-              One gives you a warning. The other gives you a diagnosis.
-            </p>
-          </div>
+          <p className="mt-8 text-lg text-[var(--text-muted)] leading-relaxed max-w-3xl mx-auto">
+            Every battery ages differently.
+            Without knowing which batteries need attention,
+            operators often replace healthy batteries too early,
+            keep weak batteries running too long,
+            or treat every battery the same.
+          </p>
+
+          <p className="mt-5 text-[var(--text)] font-semibold text-xl">
+            The result is higher operating costs and lower fleet availability.
+          </p>
         </div>
 
-        {/* Comparison */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-          {/* Historian */}
-          <div
-            className={`group relative bg-white/[0.02] border border-white/10 rounded-2xl md:rounded-3xl p-6 md:p-10 transition-all duration-700 ${
-              visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
-            } hover:border-red-500/30`}
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-red-500/10 rounded-lg">
-                <History className="w-5 h-5 md:w-6 md:h-6 text-red-400" />
-              </div>
-              <h3 className="text-lg md:text-xl font-bold text-white tracking-wider uppercase">
-                Pattern-matching AI
-              </h3>
-            </div>
-            <p className="text-xs md:text-sm font-mono uppercase tracking-widest text-red-400/70 mb-7 ml-12">
-              "The Historian"
-            </p>
+        {/* Problem Cards */}
 
-            <p className="text-gray-400 mb-8 text-sm md:text-base leading-relaxed">
-              Looks backward. Triggers when the data starts looking like a failure that already happened.
-              By then the warranty is already cooked.
-            </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-16">
 
-            <div className="space-y-4">
-              {historianBullets.map((b) => (
+          {problems.map((item, index) => {
+
+            const Icon = item.icon;
+
+            return (
+
+              <div
+                key={item.title}
+                className={`group rounded-3xl border ${item.border}
+                bg-[rgba(var(--fg-rgb),0.02)]
+                p-8 transition-all duration-700 hover:-translate-y-2 hover:border-emerald-500/30
+                ${
+                  visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+                style={{
+                  transitionDelay: `${index * 120}ms`,
+                }}
+              >
+
                 <div
-                  key={b.vague}
-                  className="rounded-xl border border-white/5 bg-white/[0.015] p-4"
+                  className={`w-14 h-14 rounded-2xl ${item.bg}
+                  flex items-center justify-center mb-6`}
                 >
-                  <p className="text-gray-300 text-sm md:text-base font-medium leading-snug">
-                    {b.vague}
-                  </p>
-                  <p className="font-mono text-[10.5px] tracking-wider text-red-400/60 mt-1.5 uppercase">
-                    {b.meta}
-                  </p>
+                  <Icon className={`w-7 h-7 ${item.color}`} />
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Physicist */}
-          <div
-            className={`group relative bg-emerald-500/[0.02] border border-emerald-500/20 rounded-2xl md:rounded-3xl p-6 md:p-10 transition-all duration-700 ${
-              visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
-            } hover:border-emerald-500/40`}
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-emerald-500/10 rounded-lg">
-                <Atom className="w-5 h-5 md:w-6 md:h-6 text-emerald-400" />
+                <h3 className="text-[var(--text)] text-2xl font-bold mb-4">
+                  {item.title}
+                </h3>
+
+                <p className="text-[var(--text-muted)] leading-relaxed text-base">
+                  {item.text}
+                </p>
+
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-white tracking-wider uppercase">
-                Physics-informed AI
-              </h3>
-            </div>
-            <p className="text-xs md:text-sm font-mono uppercase tracking-widest text-emerald-400/70 mb-7 ml-12">
-              "The Physicist"
-            </p>
 
-            <p className="text-gray-300 mb-8 text-sm md:text-base leading-relaxed">
-              Reads the same telemetry through the equations governing how lithium ions actually move.
-              Names the mechanism, the timeline, and the action that earns the warranty back.
-            </p>
+            );
 
-            <div className="space-y-4">
-              {physicistBullets.map((b) => (
-                <div
-                  key={b.sharp}
-                  className="rounded-xl border border-emerald-500/15 bg-emerald-500/[0.04] p-4"
-                >
-                  <p className="text-white text-sm md:text-base font-semibold leading-snug">
-                    {b.sharp}
-                  </p>
-                  <p className="font-mono text-[10.5px] tracking-wider text-emerald-400/80 mt-1.5 uppercase">
-                    {b.meta}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>   
+          })}
 
-        {/* CTA */}
+        </div>
+
+        {/* Divider */}
+
         <div
-          className={`mt-10 md:mt-14 flex justify-center transition-all duration-700 delay-200 ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          className={`flex flex-col items-center mt-20 transition-all duration-700 delay-500 ${
+            visible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-5"
           }`}
         >
-          <a
-            href="/pilot"
-            title="Book a call"
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.18)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
-            style={{ letterSpacing: "0.015em", minWidth: 220 }}
-          >
-            Book a call
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </a>
+          <ArrowDown className="w-6 h-6 text-emerald-400 mb-4 animate-bounce" />
+
+          <p className="uppercase tracking-[0.25em] text-xs font-bold text-emerald-400">
+            WHY DOES THIS HAPPEN?
+          </p>
+
+          <h3 className="mt-5 text-3xl md:text-4xl font-bold text-[var(--text)] text-center">
+            Most systems tell you
+            <span className="block text-emerald-400 mt-2">
+              what happened.
+            </span>
+          </h3>
+
+          <p className="mt-6 text-[var(--text-muted)] text-lg max-w-2xl text-center leading-relaxed">
+            Dashboards, health scores and alerts are useful,
+            but they still leave operators asking the same three questions:
+          </p>
         </div>
-   
+
+        {/* PART 2 CONTINUES HERE */}
+
+                {/* Comparison */}
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16">
+
+{/* Current Approach */}
+
+<div
+  className={`rounded-3xl border border-[rgba(var(--fg-rgb),0.1)] bg-[rgba(var(--fg-rgb),0.02)] p-8 transition-all duration-700 ${
+    visible
+      ? "opacity-100 translate-x-0"
+      : "opacity-0 -translate-x-8"
+  }`}
+>
+
+  <div className="inline-flex items-center rounded-full bg-[rgba(var(--fg-rgb),0.05)] border border-[rgba(var(--fg-rgb),0.1)] px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--text-muted)] font-semibold mb-6">
+    CURRENT APPROACH
+  </div>
+
+  <h3 className="text-3xl font-bold text-[var(--text)] mb-6">
+    Battery dashboards
+  </h3>
+
+  <p className="text-[var(--text-muted)] leading-relaxed mb-8">
+    Most systems monitor batteries well. They show health scores,
+    alerts and charts. But operators still have to decide what those
+    numbers actually mean.
+  </p>
+
+  <div className="space-y-4">
+
+    {[
+      "Health score",
+      "Voltage & temperature alerts",
+      "Battery dashboards",
+      "Manual decisions"
+    ].map((item) => (
+
+      <div
+        key={item}
+        className="rounded-2xl border border-[rgba(var(--fg-rgb),0.05)] bg-[rgba(var(--fg-rgb),0.02)] p-4 flex items-center gap-4"
+      >
+
+        <div className="w-2 h-2 rounded-full bg-[rgba(var(--fg-rgb),0.4)]" />
+
+        <span className="text-[var(--text)]">
+          {item}
+        </span>
+
       </div>
-    </section>
-  );
+
+    ))}
+
+  </div>
+
+  <div className="mt-8 rounded-2xl bg-red-500/10 border border-red-500/20 p-5">
+
+    <p className="text-red-300 font-semibold">
+      They tell you what happened.
+    </p>
+
+    <p className="text-[var(--text-muted)] text-sm mt-2 leading-relaxed">
+      You're still left figuring out which batteries need attention,
+      why they're changing and what action to take.
+    </p>
+
+  </div>
+
+</div>
+
+{/* Zylectra */}
+
+<div
+  className={`rounded-3xl border border-emerald-500/25 bg-emerald-500/[0.03] p-8 transition-all duration-700 delay-150 ${
+    visible
+      ? "opacity-100 translate-x-0"
+      : "opacity-0 translate-x-8"
+  }`}
+>
+
+  <div className="inline-flex items-center rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs uppercase tracking-[0.18em] text-emerald-400 font-semibold mb-6">
+    WITH ZYLECTRA
+  </div>
+
+  <h3 className="text-3xl font-bold text-[var(--text)] mb-6">
+    Better battery decisions
+  </h3>
+
+  <p className="text-[var(--text-secondary)] leading-relaxed mb-8">
+    Zylectra combines battery data with AI grounded in battery
+    physics to help operators understand what is changing,
+    why it's changing and what to do next.
+  </p>
+
+  <div className="space-y-4">
+
+    {[
+      "Know which batteries need attention",
+      "Understand why they're changing",
+      "Prioritize the right batteries first",
+      "Decide what to do next"
+    ].map((item) => (
+
+      <div
+        key={item}
+        className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] p-4 flex items-center gap-4"
+      >
+
+        <div className="w-2 h-2 rounded-full bg-emerald-400" />
+
+        <span className="text-[var(--text)]">
+          {item}
+        </span>
+
+      </div>
+
+    ))}
+
+  </div>
+
+  <div className="mt-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-5">
+
+    <p className="text-emerald-300 font-semibold">
+      It helps you decide what to do next.
+    </p>
+
+    <p className="text-[var(--text-secondary)] text-sm mt-2 leading-relaxed">
+      Keep running. Monitor closely. Move to lighter duty.
+      Replace only when it actually makes sense.
+    </p>
+
+  </div>
+
+</div>
+
+</div>
+
+{/* Closing Statement */}
+
+<div
+className={`max-w-4xl mx-auto text-center mt-24 transition-all duration-700 delay-300 ${
+  visible
+    ? "opacity-100 translate-y-0"
+    : "opacity-0 translate-y-6"
+}`}
+>
+
+<p className="text-3xl md:text-4xl font-bold leading-tight text-[var(--text)]">
+
+  Every battery decision
+
+  <span className="block text-emerald-400 mt-2">
+    is a money decision.
+  </span>
+
+</p>
+
+<div className="grid md:grid-cols-3 gap-5 mt-12">
+
+  <div className="rounded-2xl border border-[rgba(var(--fg-rgb),0.08)] bg-[rgba(var(--fg-rgb),0.02)] p-5">
+    <p className="text-[var(--text)] font-semibold">
+      Replace too early
+    </p>
+    <p className="text-[var(--text-muted)] mt-2 text-sm">
+      Lose useful battery life.
+    </p>
+  </div>
+
+  <div className="rounded-2xl border border-[rgba(var(--fg-rgb),0.08)] bg-[rgba(var(--fg-rgb),0.02)] p-5">
+    <p className="text-[var(--text)] font-semibold">
+      Replace too late
+    </p>
+    <p className="text-[var(--text-muted)] mt-2 text-sm">
+      Lose uptime and productivity.
+    </p>
+  </div>
+
+  <div className="rounded-2xl border border-[rgba(var(--fg-rgb),0.08)] bg-[rgba(var(--fg-rgb),0.02)] p-5">
+    <p className="text-[var(--text)] font-semibold">
+      Treat every battery the same
+    </p>
+    <p className="text-[var(--text-muted)] mt-2 text-sm">
+      Lose money without knowing it.
+    </p>
+  </div>
+
+</div>
+
+</div>
+
+{/* CTA */}
+
+<div
+className={`flex justify-center mt-16 transition-all duration-700 delay-500 ${
+  visible
+    ? "opacity-100 translate-y-0"
+    : "opacity-0 translate-y-6"
+}`}
+>
+
+<a
+  href="/poc"
+  className="inline-flex items-center gap-3 rounded-2xl bg-emerald-400 px-8 py-4 text-black font-bold text-lg hover:bg-emerald-300 transition-all duration-300 shadow-lg shadow-emerald-400/10 hover:shadow-[0_4px_40px_rgba(52,211,153,0.2)]"
+>
+  Start a PoC
+  <ArrowRight className="w-5 h-5" />
+</a>
+
+</div>
+
+</div>
+</section>
+);
 };
 
 export default SectionTwo;

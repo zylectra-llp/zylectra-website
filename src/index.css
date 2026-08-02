@@ -3,13 +3,130 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Theme tokens ───────────────────────────────────────────────────────
+   Auto-sync: no [data-theme] attribute → follows prefers-color-scheme.
+   Manual override: [data-theme="dark"] / [data-theme="light"] set by the
+   toggle, persisted in localStorage, always win over the system setting. */
+:root {
+  --bg: #050508;
+  --bg-rgb: 5, 5, 8;
+  --surface: #0d0d14;
+  --surface-rgb: 13, 13, 20;
+  --text: #ffffff;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-faint: #6b7280;
+  --fg-rgb: 255, 255, 255;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f7f7f8;
+    --bg-rgb: 247, 247, 248;
+    --surface: #ffffff;
+    --surface-rgb: 255, 255, 255;
+    --text: #0a0a0f;
+    --text-secondary: #27272a;
+    --text-muted: #52525b;
+    --text-faint: #71717a;
+    --fg-rgb: 0, 0, 0;
+    --border: rgba(0, 0, 0, 0.08);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #050508;
+  --bg-rgb: 5, 5, 8;
+  --surface: #0d0d14;
+  --surface-rgb: 13, 13, 20;
+  --text: #ffffff;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-faint: #6b7280;
+  --fg-rgb: 255, 255, 255;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f7f8;
+  --bg-rgb: 247, 247, 248;
+  --surface: #ffffff;
+  --surface-rgb: 255, 255, 255;
+  --text: #0a0a0f;
+  --text-secondary: #27272a;
+  --text-muted: #52525b;
+  --text-faint: #71717a;
+  --fg-rgb: 0, 0, 0;
+  --border: rgba(0, 0, 0, 0.08);
+}
+
+/* Emerald/red text utilities are tuned for a dark bg. On a light bg they wash
+   out (fail contrast), so darken just the text color in light mode, leaving
+   backgrounds/borders using the same palette untouched. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --accent-green-text: #047857;
+    --accent-red-text: #b91c1c;
+  }
+}
+:root[data-theme="light"] {
+  --accent-green-text: #047857;
+  --accent-red-text: #b91c1c;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .text-emerald-300,
+  :root:not([data-theme="dark"]) .text-emerald-400,
+  :root:not([data-theme="dark"]) .text-emerald-500,
+  :root:not([data-theme="dark"]) .hover\:text-emerald-300:hover,
+  :root:not([data-theme="dark"]) .hover\:text-emerald-400:hover,
+  :root:not([data-theme="dark"]) .group:hover .group-hover\:text-emerald-400 {
+    color: var(--accent-green-text);
+  }
+}
+:root[data-theme="light"] .text-emerald-300,
+:root[data-theme="light"] .text-emerald-400,
+:root[data-theme="light"] .text-emerald-500,
+:root[data-theme="light"] .hover\:text-emerald-300:hover,
+:root[data-theme="light"] .hover\:text-emerald-400:hover,
+:root[data-theme="light"] .group:hover .group-hover\:text-emerald-400 {
+  color: var(--accent-green-text);
+}
+:root[data-theme="light"] .text-emerald-300\/90 { color: rgb(4 120 87 / 0.9); }
+:root[data-theme="light"] .text-emerald-400\/70 { color: rgb(4 120 87 / 0.7); }
+:root[data-theme="light"] .text-emerald-400\/80 { color: rgb(4 120 87 / 0.8); }
+:root[data-theme="light"] .text-emerald-500\/50 { color: rgb(4 120 87 / 0.5); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .text-emerald-300\/90 { color: rgb(4 120 87 / 0.9); }
+  :root:not([data-theme="dark"]) .text-emerald-400\/70 { color: rgb(4 120 87 / 0.7); }
+  :root:not([data-theme="dark"]) .text-emerald-400\/80 { color: rgb(4 120 87 / 0.8); }
+  :root:not([data-theme="dark"]) .text-emerald-500\/50 { color: rgb(4 120 87 / 0.5); }
+}
+
+:root[data-theme="light"] .text-red-400,
+:root[data-theme="light"] .text-red-300 { color: var(--accent-red-text); }
+:root[data-theme="light"] .text-red-400\/60 { color: rgb(185 28 28 / 0.6); }
+:root[data-theme="light"] .text-red-400\/70 { color: rgb(185 28 28 / 0.7); }
+:root[data-theme="light"] .text-yellow-400 { color: #a16207; }
+:root[data-theme="light"] .text-sky-400 { color: #0369a1; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .text-red-400,
+  :root:not([data-theme="dark"]) .text-red-300 { color: var(--accent-red-text); }
+  :root:not([data-theme="dark"]) .text-red-400\/60 { color: rgb(185 28 28 / 0.6); }
+  :root:not([data-theme="dark"]) .text-red-400\/70 { color: rgb(185 28 28 / 0.7); }
+  :root:not([data-theme="dark"]) .text-yellow-400 { color: #a16207; }
+  :root:not([data-theme="dark"]) .text-sky-400 { color: #0369a1; }
+}
 
 html, body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #050508;
+  background-color: var(--bg);
+  color: var(--text);
   overscroll-behavior-y: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .pre-heading {
@@ -63,6 +180,41 @@ html, body {
 .animate-fade-in-up {
   animation: fade-in-up 0.8s ease-out forwards;
   opacity: 0;
+}
+
+/* ── How It Works pipeline animations ─────────────────────────────────── */
+@keyframes hiw-dash {
+  to { stroke-dashoffset: -100; }
+}
+@keyframes hiw-ring {
+  0%   { transform: scale(0.55); opacity: 0.55; }
+  100% { transform: scale(1.7);  opacity: 0; }
+}
+@keyframes hiw-flow {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes hiw-shimmer {
+  0%, 100% { transform: translateX(-60%); }
+  50%      { transform: translateX(60%); }
+}
+
+.hiw-line {
+  background-image: linear-gradient(90deg,
+    transparent 0%,
+    rgba(16,185,129,0.15) 20%,
+    rgba(16,185,129,0.65) 50%,
+    rgba(16,185,129,0.15) 80%,
+    transparent 100%);
+  background-size: 200% 100%;
+  animation: hiw-flow 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hiw-line,
+  .hiw-dash,
+  .hiw-ring,
+  .hiw-shimmer { animation: none !important; }
 }
 
 /* Smooth scrolling */

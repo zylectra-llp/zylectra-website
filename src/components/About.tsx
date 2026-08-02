@@ -20,7 +20,7 @@ type Person = {
 const founder: Person = {
   name: "Prabh Singh",
   role: "Founder · CEO",
-  blurb: "Builds the system. Writes the cheques. Picks up the 02:47 AM call so you don't have to.",
+  blurb: "Founder of Zylectra. Building Physical AI that helps businesses make better battery decisions.",
   href: "https://www.linkedin.com/in/prabhsingh14",
   hrefLabel: "Prabh Singh on LinkedIn",
   initials: "PS",
@@ -34,7 +34,7 @@ const advisors: Person[] = [
   {
     name: "Dr. Ashish Kumar Gupta",
     role: "Advisor · Deep learning",
-    blurb: "Faculty, TIET. Keeps the model honest where the physics gets handed to the network.",
+    blurb: "Deep learning researcher helping shape Zylectra's AI and machine learning systems.",
     href: "https://eied.thapar.edu/facultydetails/MTUzMg==",
     hrefLabel: "Dr. Ashish Kumar Gupta · TIET faculty profile",
     initials: "AG",
@@ -43,7 +43,7 @@ const advisors: Person[] = [
   {
     name: "Dr. Krishna Kumar Gupta",
     role: "Advisor · Power electronics",
-    blurb: "Faculty, TIET. Pushes back where the model's pretty answer doesn't survive the physics.",
+    blurb: "Power electronics expert advising on battery systems and real-world engineering.",
     href: "https://www.thapar.edu/faculties/view/Dr.-Krishna-Kumar-Gupta/NTAx/Nw==",
     hrefLabel: "Dr. Krishna Kumar Gupta · TIET faculty profile",
     initials: "KG",
@@ -52,7 +52,7 @@ const advisors: Person[] = [
   {
     name: "Amit Aneja",
     role: "Advisor · Growth · ex-KPMG",
-    blurb: "Translates the engineering into something a CFO actually wants to sign.",
+    blurb: "Former KPMG leader helping translate technical innovation into commercial strategy.",
     href: "https://www.linkedin.com/in/amitaneja/",
     hrefLabel: "Amit Aneja · advisor profile",
     initials: "AA",
@@ -66,7 +66,7 @@ const Avatar: React.FC<{ person: Person; size?: number }> = ({ person, size = 64
   const [errored, setErrored] = React.useState(!person.photo);
   return (
     <div
-      className="relative rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border border-emerald-500/25 bg-[#050508]"
+      className="relative rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border border-emerald-500/25 bg-[var(--bg)]"
       style={{
         width: size,
         height: size,
@@ -104,24 +104,24 @@ const PersonCard: React.FC<{ person: Person; isFounder?: boolean }> = ({ person,
     target="_blank"
     rel="noopener noreferrer"
     aria-label={person.hrefLabel}
-    className="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5 md:p-6 transition-all duration-300 hover:border-emerald-500/40 hover:bg-white/[0.04] hover:-translate-y-0.5"
+    className="group flex h-full items-start gap-4 rounded-2xl border border-[rgba(var(--fg-rgb),0.1)] bg-[rgba(var(--fg-rgb),0.02)] p-5 md:p-6 transition-all duration-300 hover:border-emerald-500/40 hover:bg-[rgba(var(--fg-rgb),0.04)] hover:-translate-y-0.5"
   >
     <Avatar person={person} size={56} />
     <div className="min-w-0 flex-1">
       <div className="flex items-center gap-2">
-        <h4 className="text-white font-semibold text-base md:text-[17px] tracking-tight truncate">
+        <h4 className="text-[var(--text)] font-semibold text-base md:text-[17px] tracking-tight">
           {person.name}
         </h4>
         {isFounder ? (
-          <Linkedin className="w-3.5 h-3.5 text-emerald-400/70 group-hover:text-emerald-400 transition-colors" />
+          <Linkedin className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400/70 group-hover:text-emerald-400 transition-colors" />
         ) : (
-          <ExternalLink className="w-3.5 h-3.5 text-emerald-400/70 group-hover:text-emerald-400 transition-colors" />
+          <ExternalLink className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400/70 group-hover:text-emerald-400 transition-colors" />
         )}
       </div>
       <p className="font-mono text-[10.5px] tracking-[0.16em] uppercase text-emerald-400/80 mt-0.5">
         {person.role}
       </p>
-      <p className="text-white/55 text-sm leading-relaxed mt-2">{person.blurb}</p>
+      <p className="text-[var(--text-muted)] text-sm leading-relaxed mt-2">{person.blurb}</p>
     </div>
   </a>
 );
@@ -133,7 +133,7 @@ const About: React.FC = () => {
     <section
       id="about"
       // Reduce top and bottom vertical padding to decrease gap to previous section
-      className="relative py-16 md:py-20 bg-[#050508] text-white overflow-hidden"
+      className="relative py-20 md:py-28 bg-[var(--bg)] text-[var(--text)] overflow-hidden"
     >
       <div className="absolute -top-44 -right-36 w-80 h-80 bg-emerald-500/[0.06] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-44 -left-36 w-80 h-80 bg-emerald-400/[0.05] rounded-full blur-3xl pointer-events-none" />
@@ -144,9 +144,10 @@ const About: React.FC = () => {
           <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-500 mb-3">
             Partners &amp; Supporters
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight">
-            Incubator. Prize. Alliance. <span className="text-emerald-400">Recognition.</span>
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--text)] mb-6 tracking-tight">
+            Backed by people who <span className="text-emerald-400">believe</span> in what we're building.
           </h2>
+     
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
               <img
@@ -198,27 +199,16 @@ const About: React.FC = () => {
         {/* Team */}
         <div className="mb-6">
           <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-500 mb-3">
-            The people on the wall
+            THE TEAM
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
-            Click any face. <span className="text-emerald-400">See who you're talking to.</span>
+          <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)] mb-4 tracking-tight">
+            The people behind <span className="text-emerald-400">Zylectra</span>.
           </h3>
         </div>
 
-        {/* Founder */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-4">
+        {/* Team grid — founder + advisors */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <PersonCard person={founder} isFounder />
-          <div className="md:col-span-2 flex items-center rounded-2xl border border-dashed border-white/10 px-6 py-5">
-            <p className="text-white/55 text-sm md:text-base leading-relaxed">
-              When you book a pilot, the first email back is directly from our founder, Prabh.
-              The second one is too; looping in the right technical owner as needed. You get fast answers and direct
-              access, without getting bounced between teams.
-            </p>
-          </div>
-        </div>
-
-        {/* Advisors */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {advisors.map((p) => (
             <PersonCard key={p.name} person={p} />
           ))}

@@ -1,131 +1,217 @@
 import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 
-/* eslint-disable react-refresh/only-export-components */
-
 const FAQ: React.FC = () => {
   const items: { q: string; a: React.ReactNode }[] = [
     {
-      q: "How is this different from what our BMS already gives us?",
+      q: "Is Zylectra replacing our BMS?",
       a: (
         <>
-          Your BMS is reactive. It alarms after a threshold is crossed.
+          No. Your BMS remains responsible for real-time battery control,
+          protection, and safety.
           <br />
           <br />
-          Zylectra is predictive. It models internal electrochemistry to flag risk and name the mechanism earlier,
-          using the same telemetry.
+          Zylectra sits above the existing battery data layer. We use the
+          telemetry your systems already generate to understand how batteries
+          are behaving over time, identify emerging degradation, explain what
+          is driving it, and help your team decide what to do next.
           <br />
           <br />
-          By the time it alarms, the damage is already priced into your warranty reserve.
+          Think of your BMS as the system that keeps the battery operating.
+          Zylectra is the intelligence layer that helps you make better
+          decisions about the battery over its lifetime.
         </>
       ),
     },
     {
-      q: "Do you need hardware installed or changes to our existing setup?",
+      q: "Do we need to install new hardware or change our existing setup?",
       a: (
         <>
-          No hardware, no firmware changes, no new sensors.
+          No new battery hardware is required for the standard deployment.
           <br />
           <br />
-          We use the data you already log: voltage, current, temperature, and timestamps, via your existing data pipe.
+          Zylectra works with the data your battery systems already collect,
+          such as voltage, current, temperature, timestamps, and other
+          available telemetry. Data can be provided through an existing API,
+          data pipeline, or secure file transfer, depending on your setup.
+          <br />
+          <br />
+          The exact data requirements depend on the use case and the level of
+          intelligence you want to build.
         </>
       ),
     },
     {
-      q: "We don't own the BMS data on our fleet. The OEM does.",
+      q: "What does Zylectra actually tell us?",
       a: (
         <>
-          If you do not control the telemetry, the OEM (or financier) needs to be involved.
+          Zylectra is designed to answer four questions:
           <br />
           <br />
-          <a href="/pilot" className="text-emerald-400 hover:text-emerald-300 underline-offset-2 hover:underline font-semibold">
-            Book a 20-minute call
-          </a>{" "}
-          and we'll walk you through it — including a short one-pager you can forward internally to get the right people in the room.
+          <strong className="text-[var(--text)]">
+            What is changing?
+          </strong>{" "}
+          Which batteries or assets are showing signs of changing behavior or
+          degradation.
+          <br />
+          <br />
+          <strong className="text-[var(--text)]">
+            Why is it changing?
+          </strong>{" "}
+          What underlying degradation mechanisms may be driving that behavior.
+          <br />
+          <br />
+          <strong className="text-[var(--text)]">
+            What should we do next?
+          </strong>{" "}
+          Whether an asset should continue operating, be moved to a different
+          duty cycle, be serviced, derated, or retired.
+          <br />
+          <br />
+          <strong className="text-[var(--text)]">
+            What does it mean for the business?
+          </strong>{" "}
+          How those decisions can affect battery life, availability, asset
+          utilization, and economic value.
         </>
       ),
     },
     {
-      q: "Our BMS vendor says they'll build this themselves.",
+      q: "We don't control all of the battery data. Can we still use Zylectra?",
       a: (
         <>
-          Some will try. Most will not, because this is closer to applied research than a firmware feature.
+          Potentially, yes. The key requirement is access to the telemetry
+          needed for the specific use case.
           <br />
           <br />
-          If they do build it, the hard part is validation, root cause attribution, and auditability, not dashboards.
+          If the data is controlled by an OEM, BMS provider, battery
+          manufacturer, or financing partner, they may need to be involved.
+          <br />
+          <br />
+          We can work with you to identify exactly what data is available and
+          who needs to be involved before starting a deployment.
         </>
       ),
     },
     {
-      q: "Does this work for BESS and non-EV applications?",
+      q: "Can Zylectra work with different battery chemistries and applications?",
       a: (
         <>
-          Yes. The physics-informed models work on any Li-ion chemistry.
+          Zylectra is built for lithium-ion batteries across different
+          applications.
           <br />
           <br />
-          We've validated on LFP and NMC. If you're running Li-ion and failures cost you money, the conversation is worth having.
+          The specific intelligence and outputs depend on the chemistry,
+          operating conditions, available telemetry, and use case. Our work
+          spans applications where battery degradation and asset value matter,
+          including EVs, fleets, swapping networks, and energy storage.
+          <br />
+          <br />
+          We evaluate each deployment based on the data and operating
+          environment available.
         </>
       ),
     },
     {
-      q: "Will Zylectra see our IP if we send you our telemetry?",
+      q: "Will Zylectra see our proprietary battery IP?",
       a: (
         <>
-          We only need operational telemetry: voltage, current, temperature, and timestamps.
+          Zylectra's standard data requirements are focused on operational
+          telemetry rather than your proprietary battery designs.
           <br />
           <br />
-          We do not need cell chemistry, pack design, or BMS source code. NDA and data ownership terms are standard.
+          We generally work with data such as voltage, current, temperature,
+          timestamps, and other operational signals. We do not need your BMS
+          source code or proprietary pack design to provide the core
+          intelligence layer.
+          <br />
+          <br />
+          Data access, ownership, confidentiality, and retention are defined
+          upfront as part of the engagement and can be covered under an NDA.
         </>
       ),
     },
     {
-      q: "What happens to the data after the pilot?",
+      q: "How do we know Zylectra will work for our batteries?",
       a: (
         <>
-          Your raw telemetry stays yours.
+          We start with the data and the business problem, not a one-size-fits-
+          all deployment.
           <br />
           <br />
-          We keep model learnings, and can support deletion terms for any copies we store within an agreed window.
+          During an initial engagement, we assess the available telemetry,
+          operating conditions, battery population, and the decision you want
+          to improve. From there, we define a focused validation or pilot
+          around a measurable outcome.
+          <br />
+          <br />
+          The goal is to demonstrate value on your own battery data before
+          moving toward a broader deployment.
+        </>
+      ),
+    },
+    {
+      q: "What happens to our data after the engagement?",
+      a: (
+        <>
+          Your raw battery telemetry remains yours.
+          <br />
+          <br />
+          Data access, storage, retention, and deletion terms are agreed as
+          part of the engagement. We can also define how derived insights and
+          model learnings are handled based on the specific deployment.
+          <br />
+          <br />
+          Our objective is to give you useful battery intelligence without
+          requiring you to give up ownership of your underlying operational
+          data.
         </>
       ),
     },
   ];
+
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section
       id="faq"
-      className="relative py-24 md:py-28 bg-[#050508] text-white overflow-hidden border-t border-white/5"
+      className="relative py-20 md:py-28 bg-[var(--bg)] text-[var(--text)] overflow-hidden border-t border-[rgba(var(--fg-rgb),0.05)]"
     >
+      {/* Background glow */}
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-emerald-500/[0.04] blur-3xl rounded-full pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto px-6">
+        {/* Header */}
         <div className="mb-14">
           <div className="text-[10px] font-bold tracking-[0.3em] text-emerald-500 uppercase mb-4">
             Frequently Asked Questions
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight max-w-3xl leading-tight">
-            The questions you're probably <span className="text-emerald-400">already asking.</span>
+
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--text)] tracking-tight max-w-3xl leading-tight">
+            Before you put your{" "}
+            <span className="text-emerald-400">
+              battery data to work.
+            </span>
           </h2>
-          <p className="mt-5 text-white/55 max-w-2xl text-base md:text-lg leading-relaxed">
-            Written the way an actual buyer asks them. If a question's missing, write to{" "}
-            <a href="mailto:info@zylectra.com" className="text-emerald-400 hover:text-emerald-300 underline-offset-2 hover:underline">
-              info@zylectra.com
-            </a>{" "}
-            and we'll add it.
+
+          <p className="mt-5 text-[var(--text-muted)] max-w-2xl text-base md:text-lg leading-relaxed">
+            The practical questions teams ask before bringing Zylectra into
+            their battery operations.
           </p>
         </div>
 
+        {/* FAQ items */}
         <div className="space-y-3">
           {items.map((item, i) => {
             const isOpen = open === i;
+
             return (
               <div
                 key={i}
                 className={`rounded-2xl border transition-all duration-300 ${
                   isOpen
                     ? "border-emerald-500/30 bg-emerald-500/[0.03]"
-                    : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                    : "border-[rgba(var(--fg-rgb),0.1)] bg-[rgba(var(--fg-rgb),0.02)] hover:border-[rgba(var(--fg-rgb),0.2)]"
                 }`}
               >
                 <button
@@ -136,12 +222,14 @@ const FAQ: React.FC = () => {
                 >
                   <div className="flex items-start gap-4 flex-1 min-w-0">
                     <span className="font-mono text-[11px] tracking-widest text-emerald-400/70 uppercase mt-1 flex-shrink-0">
-                      Q{i + 1}
+                      Q{String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="text-base md:text-lg font-semibold text-white leading-snug">
+
+                    <h3 className="text-base md:text-lg font-semibold text-[var(--text)] leading-snug">
                       {item.q}
                     </h3>
                   </div>
+
                   <span
                     className={`flex-shrink-0 mt-1 transition-transform duration-300 ${
                       isOpen ? "rotate-180" : ""
@@ -150,17 +238,19 @@ const FAQ: React.FC = () => {
                     {isOpen ? (
                       <Minus className="w-5 h-5 text-emerald-400" />
                     ) : (
-                      <Plus className="w-5 h-5 text-white/40" />
+                      <Plus className="w-5 h-5 text-[rgba(var(--fg-rgb),0.4)]" />
                     )}
                   </span>
                 </button>
 
                 <div
                   className="grid transition-all duration-400 ease-out"
-                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+                  style={{
+                    gridTemplateRows: isOpen ? "1fr" : "0fr",
+                  }}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-6 md:px-7 pb-7 pt-0 md:pl-[5.25rem] text-white/65 text-sm md:text-[15px] leading-relaxed">
+                    <div className="px-6 md:px-7 pb-7 pt-0 md:pl-[5.25rem] text-[var(--text-muted)] text-sm md:text-[15px] leading-relaxed">
                       {item.a}
                     </div>
                   </div>
@@ -171,15 +261,19 @@ const FAQ: React.FC = () => {
         </div>
 
         {/* CTA */}
-        <div className="mt-12 md:mt-14 flex justify-center">
+        <div className="mt-12 md:mt-14 flex flex-col items-center text-center">
+          <p className="text-[var(--text-faint)] text-sm mb-5">
+            Have a question about your battery data or use case?
+          </p>
+
           <a
-            href="/pilot"
-            title="Book a call"
-            aria-label="Book a call"
+            href="/contact"
+            title="Talk to the Zylectra team"
+            aria-label="Talk to the Zylectra team"
             className="group inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-emerald-400 text-black font-bold text-base md:text-lg shadow-lg shadow-emerald-400/10 transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_4px_40px_rgba(52,211,153,0.18)] focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
             style={{ letterSpacing: "0.015em", minWidth: 220 }}
           >
-            Book a call
+            Talk to us
           </a>
         </div>
       </div>

@@ -7,6 +7,15 @@
     <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
+    <script>
+      (function () {
+        var stored = localStorage.getItem('zylectra-theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      })();
+    </script>
+
     <title>Zylectra · Battery intelligence built on physics</title>
     <meta
       name="description"
