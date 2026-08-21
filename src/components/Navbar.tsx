@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,40 +15,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll to the correct section when navigating
-  // from another page such as /pilot back to the homepage.
-  useEffect(() => {
-    if (location.pathname === "/" && location.hash) {
-      const id = location.hash.replace("#", "");
-
-      const timer = setTimeout(() => {
-        const element = document.getElementById(id);
-
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-          setIsMobileMenuOpen(false);
-        }
-      }, 120);
-
-      return () => clearTimeout(timer);
-    }
-  }, [location.pathname, location.hash]);
-
   const navLinks = [
     ["The Intelligence", "product"],
-    ["How it works", "how-it-works"],
-    ["Who it's for", "customers"],
-    ["FAQ", "faq"],
+    ["Outcomes", "outcomes"],
+    ["About", "about"],
   ] as const;
 
   const scrollToSection = (sectionId: string) => {
-    // If the user is on another route, navigate back
-    // to the homepage and preserve the target section.
-    if (location.pathname !== "/") {
-      navigate(`/#${sectionId}`);
-      return;
-    }
-
     const element = document.getElementById(sectionId);
 
     if (element) {
@@ -63,17 +31,8 @@ const Navbar = () => {
   };
 
   const goHome = () => {
-    if (location.pathname !== "/") {
-      navigate("/");
-      return;
-    }
-
-    const element = document.getElementById("hero");
-
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -117,28 +76,19 @@ const Navbar = () => {
               </button>
             ))}
 
-            <Link
-              to="/poc"
-              className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-3 py-2 whitespace-nowrap"
-            >
-              PoC
-            </Link>
-
-            <ThemeToggle className="ml-2" />
-
-            <Link
-              to="/contact"
+            <button
+              type="button"
+              onClick={() => scrollToSection("contact")}
               className="group flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold ml-3 transition-all whitespace-nowrap"
             >
               <span>Contact us</span>
 
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Toggle */}
           <div className="lg:hidden flex items-center gap-1">
-          <ThemeToggle />
           <button
             type="button"
             className="p-2 text-[var(--text)]"
@@ -168,23 +118,15 @@ const Navbar = () => {
                 </button>
               ))}
 
-              <Link
-                to="/poc"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[var(--text-secondary)] hover:text-[var(--text)] py-3 text-base transition-colors"
-              >
-                PoC
-              </Link>
-
-              <Link
-                to="/contact"
-                onClick={() => setIsMobileMenuOpen(false)}
+              <button
+                type="button"
+                onClick={() => scrollToSection("contact")}
                 className="group flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black py-4 rounded-xl font-bold text-center transition-all mt-2"
               >
                 <span>Contact us</span>
 
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </button>
             </div>
           </div>
         )}

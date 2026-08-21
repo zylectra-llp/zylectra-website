@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Linkedin, Mail, MapPin, ArrowUp, ArrowRight } from "lucide-react";
 
 const Footer: React.FC = () => {
@@ -7,21 +6,12 @@ const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const scrollToSection = (id: string): void => {
+  const goToSection = (id: string): void => {
     const el = document.getElementById(id);
 
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const goToSection = (id: string): void => {
-    if (window.location.pathname !== "/") {
-      window.location.href = `/#${id}`;
-      return;
-    }
-
-    scrollToSection(id);
   };
 
   return (
@@ -105,27 +95,6 @@ const Footer: React.FC = () => {
               >
                 The Intelligence
               </button>
-
-              <button
-                onClick={() => goToSection("how-it-works")}
-                className="group flex items-center gap-2 hover:text-emerald-400 transition-colors text-left"
-              >
-                How it works
-              </button>
-
-              <button
-                onClick={() => goToSection("customers")}
-                className="group flex items-center gap-2 hover:text-emerald-400 transition-colors text-left"
-              >
-                Who it's for
-              </button>
-
-              <Link
-                to="/poc"
-                className="group flex items-center gap-2 hover:text-emerald-400 transition-colors text-left"
-              >
-                PoC
-              </Link>
             </div>
           </div>
 
@@ -194,13 +163,14 @@ const Footer: React.FC = () => {
                 Have battery data and a problem worth solving?
               </p>
 
-              <Link
-                to="/contact"
+              <button
+                type="button"
+                onClick={() => goToSection("contact")}
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
               >
                 Contact us
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              </button>
             </div>
           </div>
         </div>

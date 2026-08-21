@@ -1,409 +1,294 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  BatteryWarning,
-  IndianRupee,
-  Gauge,
-  ArrowDown,
-  ArrowRight,
-} from "lucide-react";
+import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 
-const SectionTwo: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
+const EASE = [0.16, 1, 0.3, 1] as const;
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      // threshold is a % of the whole section's own height, and this section
-      // is taller than the viewport on mobile/tablet — a ratio-based
-      // threshold can never be satisfied there. rootMargin fires as soon as
-      // the section's top edge nears the viewport instead, independent of
-      // how tall the section is.
-      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
-    );
+/* Quiet entrance for supporting content. */
+const enter = (reduce: boolean | null, delay = 0) => ({
+  initial: reduce ? { opacity: 1 } : { opacity: 0, y: 14 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.3 },
+  transition: { duration: 0.6, delay, ease: EASE },
+});
 
-    if (sectionRef.current) obs.observe(sectionRef.current);
+const PROBLEMS = [
+  {
+    title: 'Failures arrive too late',
+    text: 'Weak batteries often remain in service until they become failures, downtime, or warranty claims.',
+  },
+  {
+    title: 'Batteries are judged by the wrong signals',
+    text: 'A BMS reports one number for the whole pack, but the cells inside disagree under real load and heat.',
+  },
+  {
+    title: 'Every battery gets treated the same',
+    text: 'Without knowing which pack or cell is truly at risk, healthy batteries get replaced too early while weak ones stay in service too long.',
+  },
+];
 
-    return () => obs.disconnect();
-  }, []);
+/* The same pack, read at three depths. Illustrative values. */
+const DEPTHS = [
+  {
+    label: 'What the BMS reports',
+    value: '94%',
+    caption: 'Pack state of health',
+    note: 'No fault raised',
+    tone: 'hollow' as const,
+  },
+  {
+    label: 'What the cells actually say',
+    value: '41-93%',
+    caption: 'Spread across 24 cells',
+    note: 'Cell 14 sits alone at the bottom',
+    tone: 'solid' as const,
+  },
+  {
+    label: 'Why it is happening',
+    value: 'Plating',
+    caption: 'Lithium plating on cell 14',
+    note: 'Traced to sub-zero fast charging',
+    tone: 'accent' as const,
+  },
+];
 
-  const problems = [
-    {
-      icon: BatteryWarning,
-      title: "Unexpected Downtime",
-      text:
-        "Weak batteries often stay in service until they begin affecting vehicles and daily operations.",
-      color: "text-red-400",
-      bg: "bg-red-500/10",
-      border: "border-red-500/20",
-    },
-    {
-      icon: IndianRupee,
-      title: "Higher Battery Costs",
-      text:
-        "Healthy batteries are replaced too early while weaker ones continue running longer than they should.",
-      color: "text-yellow-400",
-      bg: "bg-yellow-500/10",
-      border: "border-yellow-500/20",
-    },
-    {
-      icon: Gauge,
-      title: "Lower Utilization",
-      text:
-        "Every battery is treated the same, even though every battery ages differently.",
-      color: "text-sky-400",
-      bg: "bg-sky-500/10",
-      border: "border-sky-500/20",
-    },
-  ];
+const CURRENT_APPROACH = ['Health scores', 'Voltage & temperature', 'Alerts', 'Dashboards', 'Manual decisions'];
+
+const WITH_ZYLECTRA = [
+  'Know true pack & cell health',
+  'Predict failures months ahead',
+  'Estimate remaining useful life',
+  'Identify root cause & responsibility',
+  'Know how confident the system is',
+];
+
+const Problem: React.FC = () => {
+  const reduce = useReducedMotion();
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden bg-[var(--bg)] py-20 md:py-28"
-    >
+    <section id="problem" className="relative overflow-hidden bg-[var(--bg)] pt-20 md:pt-28">
       {/* Background grid */}
       <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:42px_42px]" />
-
-      {/* Background glow */}
       <div
         className="absolute left-1/2 top-20 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%)",
-        }}
+        style={{ background: 'radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%)' }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-
-        {/* Header */}
-
-        <div
-          className={`max-w-4xl mx-auto text-center transition-all duration-700 ${
-            visible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-6"
-          }`}
-        >
-          <div className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-400 mb-6">
-            THE REAL PROBLEM
-          </div>
-
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight text-[var(--text)] tracking-tight">
-            Every wrong battery
-            <span className="block text-emerald-400 mt-2">
-              decision costs money.
-            </span>
+      {/* Intro */}
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
+        <motion.div {...enter(reduce)} className="max-w-3xl">
+          <h2
+            className="font-bold text-[var(--text)] tracking-tight"
+            style={{ fontSize: 'clamp(1.9rem, 4vw, 3rem)', lineHeight: 1.12 }}
+          >
+            Battery data is everywhere.
+            <br />
+            <span className="text-emerald-400">Battery certainty isn't.</span>
           </h2>
 
-          <p className="mt-8 text-lg text-[var(--text-muted)] leading-relaxed max-w-3xl mx-auto">
-            Every battery ages differently.
-            Without knowing which batteries need attention,
-            operators often replace healthy batteries too early,
-            keep weak batteries running too long,
-            or treat every battery the same.
+          <p
+            className="mt-6 text-[var(--text-muted)] leading-relaxed"
+            style={{ fontSize: 'clamp(14.5px, 1.3vw, 17px)' }}
+          >
+            Every battery ages differently, and real-world usage changes how
+            it behaves. BMS data and dashboards show you what the battery
+            reports, but they don't tell you its true condition, what will
+            happen next, or why.
           </p>
+        </motion.div>
 
-          <p className="mt-5 text-[var(--text)] font-semibold text-xl">
-            The result is higher operating costs and lower fleet availability.
-          </p>
-        </div>
-
-        {/* Problem Cards */}
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-16">
-
-          {problems.map((item, index) => {
-
-            const Icon = item.icon;
-
-            return (
-
-              <div
-                key={item.title}
-                className={`group rounded-3xl border ${item.border}
-                bg-[rgba(var(--fg-rgb),0.02)]
-                p-8 transition-all duration-700 hover:-translate-y-2 hover:border-emerald-500/30
-                ${
-                  visible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{
-                  transitionDelay: `${index * 120}ms`,
-                }}
+        {/* Problems: editorial rows, structure carried by type and rule */}
+        <div className="mt-16 divide-y" style={{ borderColor: 'var(--border)' }}>
+          {PROBLEMS.map((p, i) => (
+            <motion.div
+              key={p.title}
+              initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
+              className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-8 py-8 first:pt-0"
+            >
+              <h3
+                className="md:col-span-5 text-[var(--text)] font-semibold tracking-tight"
+                style={{ fontSize: 'clamp(1.05rem, 1.9vw, 1.35rem)', lineHeight: 1.25 }}
               >
+                {p.title}
+              </h3>
+              <p
+                className="md:col-span-7 text-[var(--text-muted)] leading-relaxed"
+                style={{ fontSize: 15.5 }}
+              >
+                {p.text}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* The authored moment: one pack, resolved at three depths */}
+      <div className="relative mt-20 md:mt-28" style={{ background: 'var(--surface)' }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-16 md:py-24">
+          <motion.div {...enter(reduce)} className="max-w-2xl">
+            <span
+              className="block uppercase text-emerald-400 mb-5"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.16em' }}
+            >
+              Example read &middot; Pack #482
+            </span>
+            <h3
+              className="font-bold text-[var(--text)] tracking-tight"
+              style={{ fontSize: 'clamp(1.6rem, 3.4vw, 2.5rem)', lineHeight: 1.14 }}
+            >
+              The pack looked fine.
+              <br />
+              One cell wasn't.
+            </h3>
+            <p className="mt-5 text-[var(--text-muted)] leading-relaxed" style={{ fontSize: 16 }}>
+              A pack-level average is a summary, not a diagnosis. Zylectra
+              reads every cell, then explains what it found.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 mt-14 md:mt-16">
+            {DEPTHS.map((d, i) => (
+              <motion.div
+                key={d.label}
+                initial={reduce ? { opacity: 1 } : { opacity: 0, y: 24, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.9, delay: i * 0.22, ease: EASE }}
+                className={`py-8 md:py-0 md:px-8 first:md:pl-0 last:md:pr-0 ${
+                  i === 0 ? '' : 'border-t md:border-t-0 md:border-l'
+                }`}
+                style={{ borderColor: 'var(--border)' }}
+              >
+                <span
+                  className="block uppercase text-[var(--text-faint)] mb-6"
+                  style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.14em' }}
+                >
+                  {d.label}
+                </span>
 
                 <div
-                  className={`w-14 h-14 rounded-2xl ${item.bg}
-                  flex items-center justify-center mb-6`}
+                  className="tnum tracking-tight"
+                  style={{
+                    fontSize: 'clamp(2.4rem, 5.2vw, 3.75rem)',
+                    lineHeight: 1,
+                    // Weight and color carry the hierarchy: the reported number
+                    // reads plainly, the measured one lands.
+                    ...(d.tone === 'hollow'
+                      ? { color: 'var(--text-faint)', fontWeight: 500 }
+                      : d.tone === 'accent'
+                      ? { color: 'var(--accent-green-text)', fontWeight: 700 }
+                      : { color: 'var(--text)', fontWeight: 700 }),
+                  }}
                 >
-                  <Icon className={`w-7 h-7 ${item.color}`} />
+                  {d.value}
                 </div>
 
-                <h3 className="text-[var(--text)] text-2xl font-bold mb-4">
-                  {item.title}
-                </h3>
-
-                <p className="text-[var(--text-muted)] leading-relaxed text-base">
-                  {item.text}
+                <p className="text-[var(--text-secondary)] mt-5" style={{ fontSize: 15 }}>
+                  {d.caption}
                 </p>
+                <p className="text-[var(--text-faint)] mt-1.5" style={{ fontSize: 13.5 }}>
+                  {d.note}
+                </p>
+              </motion.div>
+            ))}
+          </div>
 
-              </div>
-
-            );
-
-          })}
-
+          <motion.p
+            {...enter(reduce, 0.7)}
+            className="mt-14 md:mt-16 text-[var(--text-muted)] leading-relaxed max-w-2xl"
+            style={{ fontSize: 16 }}
+          >
+            Same pack. Same telemetry. The difference is how deep the model
+            is able to read, and whether it can tell you{' '}
+            <span className="text-[var(--text)] font-medium">why</span>.
+          </motion.p>
         </div>
+      </div>
 
-        {/* Divider */}
+      {/* Comparison: weighted, not a symmetric face-off */}
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-20 md:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
 
-        <div
-          className={`flex flex-col items-center mt-20 transition-all duration-700 delay-500 ${
-            visible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-5"
-          }`}
-        >
-          <ArrowDown className="w-6 h-6 text-emerald-400 mb-4 animate-bounce" />
-
-          <p className="uppercase tracking-[0.25em] text-xs font-bold text-emerald-400">
-            WHY DOES THIS HAPPEN?
-          </p>
-
-          <h3 className="mt-5 text-3xl md:text-4xl font-bold text-[var(--text)] text-center">
-            Most systems tell you
-            <span className="block text-emerald-400 mt-2">
-              what happened.
+          <motion.div {...enter(reduce)} className="lg:col-span-5">
+            <span
+              className="block uppercase text-[var(--text-faint)] mb-4"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.14em' }}
+            >
+              Current approach
             </span>
-          </h3>
 
-          <p className="mt-6 text-[var(--text-muted)] text-lg max-w-2xl text-center leading-relaxed">
-            Dashboards, health scores and alerts are useful,
-            but they still leave operators asking the same three questions:
-          </p>
+            <h3 className="text-xl font-semibold text-[var(--text-secondary)] mb-3">
+              Battery dashboards
+            </h3>
+            <p className="text-[var(--text-muted)] leading-relaxed mb-6" style={{ fontSize: 14.5 }}>
+              They monitor batteries, display health scores, trigger alerts,
+              and show trends.
+            </p>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {CURRENT_APPROACH.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full px-3 py-1.5 text-[12.5px] text-[var(--text-faint)]"
+                  style={{ border: '1px solid var(--border)' }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <p className="text-[var(--text-secondary)] leading-relaxed" style={{ fontSize: 14.5 }}>
+              You get the data. You're still left interpreting it.
+            </p>
+          </motion.div>
+
+          <motion.div
+            {...enter(reduce, 0.12)}
+            className="lg:col-span-7 lg:pl-16 lg:border-l lg:border-[var(--border)]"
+          >
+            <span
+              className="block uppercase text-emerald-400 mb-4"
+              style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.14em' }}
+            >
+              With Zylectra
+            </span>
+
+            <h3
+              className="font-bold text-[var(--text)] tracking-tight mb-4"
+              style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2rem)', lineHeight: 1.18 }}
+            >
+              Battery intelligence
+            </h3>
+            <p className="text-[var(--text-muted)] leading-relaxed mb-8" style={{ fontSize: 16 }}>
+              Zylectra uses Physical AI grounded in battery physics to turn
+              battery data into actionable intelligence.
+            </p>
+
+            <ul className="space-y-3.5 mb-8">
+              {WITH_ZYLECTRA.map((item) => (
+                <li key={item} className="flex items-baseline gap-3.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0 translate-y-[-2px]" />
+                  <span className="text-[var(--text)]" style={{ fontSize: 16.5 }}>
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <p
+              className="text-[var(--text)] font-semibold leading-relaxed"
+              style={{ fontSize: 'clamp(15px, 1.5vw, 17px)' }}
+            >
+              You don't just see what happened. You know what to expect next.
+            </p>
+          </motion.div>
+
         </div>
-
-        {/* PART 2 CONTINUES HERE */}
-
-                {/* Comparison */}
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16">
-
-{/* Current Approach */}
-
-<div
-  className={`rounded-3xl border border-[rgba(var(--fg-rgb),0.1)] bg-[rgba(var(--fg-rgb),0.02)] p-8 transition-all duration-700 ${
-    visible
-      ? "opacity-100 translate-x-0"
-      : "opacity-0 -translate-x-8"
-  }`}
->
-
-  <div className="inline-flex items-center rounded-full bg-[rgba(var(--fg-rgb),0.05)] border border-[rgba(var(--fg-rgb),0.1)] px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--text-muted)] font-semibold mb-6">
-    CURRENT APPROACH
-  </div>
-
-  <h3 className="text-3xl font-bold text-[var(--text)] mb-6">
-    Battery dashboards
-  </h3>
-
-  <p className="text-[var(--text-muted)] leading-relaxed mb-8">
-    Most systems monitor batteries well. They show health scores,
-    alerts and charts. But operators still have to decide what those
-    numbers actually mean.
-  </p>
-
-  <div className="space-y-4">
-
-    {[
-      "Health score",
-      "Voltage & temperature alerts",
-      "Battery dashboards",
-      "Manual decisions"
-    ].map((item) => (
-
-      <div
-        key={item}
-        className="rounded-2xl border border-[rgba(var(--fg-rgb),0.05)] bg-[rgba(var(--fg-rgb),0.02)] p-4 flex items-center gap-4"
-      >
-
-        <div className="w-2 h-2 rounded-full bg-[rgba(var(--fg-rgb),0.4)]" />
-
-        <span className="text-[var(--text)]">
-          {item}
-        </span>
-
       </div>
-
-    ))}
-
-  </div>
-
-  <div className="mt-8 rounded-2xl bg-red-500/10 border border-red-500/20 p-5">
-
-    <p className="text-red-300 font-semibold">
-      They tell you what happened.
-    </p>
-
-    <p className="text-[var(--text-muted)] text-sm mt-2 leading-relaxed">
-      You're still left figuring out which batteries need attention,
-      why they're changing and what action to take.
-    </p>
-
-  </div>
-
-</div>
-
-{/* Zylectra */}
-
-<div
-  className={`rounded-3xl border border-emerald-500/25 bg-emerald-500/[0.03] p-8 transition-all duration-700 delay-150 ${
-    visible
-      ? "opacity-100 translate-x-0"
-      : "opacity-0 translate-x-8"
-  }`}
->
-
-  <div className="inline-flex items-center rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs uppercase tracking-[0.18em] text-emerald-400 font-semibold mb-6">
-    WITH ZYLECTRA
-  </div>
-
-  <h3 className="text-3xl font-bold text-[var(--text)] mb-6">
-    Better battery decisions
-  </h3>
-
-  <p className="text-[var(--text-secondary)] leading-relaxed mb-8">
-    Zylectra combines battery data with AI grounded in battery
-    physics to help operators understand what is changing,
-    why it's changing and what to do next.
-  </p>
-
-  <div className="space-y-4">
-
-    {[
-      "Know which batteries need attention",
-      "Understand why they're changing",
-      "Prioritize the right batteries first",
-      "Decide what to do next"
-    ].map((item) => (
-
-      <div
-        key={item}
-        className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] p-4 flex items-center gap-4"
-      >
-
-        <div className="w-2 h-2 rounded-full bg-emerald-400" />
-
-        <span className="text-[var(--text)]">
-          {item}
-        </span>
-
-      </div>
-
-    ))}
-
-  </div>
-
-  <div className="mt-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-5">
-
-    <p className="text-emerald-300 font-semibold">
-      It helps you decide what to do next.
-    </p>
-
-    <p className="text-[var(--text-secondary)] text-sm mt-2 leading-relaxed">
-      Keep running. Monitor closely. Move to lighter duty.
-      Replace only when it actually makes sense.
-    </p>
-
-  </div>
-
-</div>
-
-</div>
-
-{/* Closing Statement */}
-
-<div
-className={`max-w-4xl mx-auto text-center mt-24 transition-all duration-700 delay-300 ${
-  visible
-    ? "opacity-100 translate-y-0"
-    : "opacity-0 translate-y-6"
-}`}
->
-
-<p className="text-3xl md:text-4xl font-bold leading-tight text-[var(--text)]">
-
-  Every battery decision
-
-  <span className="block text-emerald-400 mt-2">
-    is a money decision.
-  </span>
-
-</p>
-
-<div className="grid md:grid-cols-3 gap-5 mt-12">
-
-  <div className="rounded-2xl border border-[rgba(var(--fg-rgb),0.08)] bg-[rgba(var(--fg-rgb),0.02)] p-5">
-    <p className="text-[var(--text)] font-semibold">
-      Replace too early
-    </p>
-    <p className="text-[var(--text-muted)] mt-2 text-sm">
-      Lose useful battery life.
-    </p>
-  </div>
-
-  <div className="rounded-2xl border border-[rgba(var(--fg-rgb),0.08)] bg-[rgba(var(--fg-rgb),0.02)] p-5">
-    <p className="text-[var(--text)] font-semibold">
-      Replace too late
-    </p>
-    <p className="text-[var(--text-muted)] mt-2 text-sm">
-      Lose uptime and productivity.
-    </p>
-  </div>
-
-  <div className="rounded-2xl border border-[rgba(var(--fg-rgb),0.08)] bg-[rgba(var(--fg-rgb),0.02)] p-5">
-    <p className="text-[var(--text)] font-semibold">
-      Treat every battery the same
-    </p>
-    <p className="text-[var(--text-muted)] mt-2 text-sm">
-      Lose money without knowing it.
-    </p>
-  </div>
-
-</div>
-
-</div>
-
-{/* CTA */}
-
-<div
-className={`flex justify-center mt-16 transition-all duration-700 delay-500 ${
-  visible
-    ? "opacity-100 translate-y-0"
-    : "opacity-0 translate-y-6"
-}`}
->
-
-<a
-  href="/poc"
-  className="inline-flex items-center gap-3 rounded-2xl bg-emerald-400 px-8 py-4 text-black font-bold text-lg hover:bg-emerald-300 transition-all duration-300 shadow-lg shadow-emerald-400/10 hover:shadow-[0_4px_40px_rgba(52,211,153,0.2)]"
->
-  Start a PoC
-  <ArrowRight className="w-5 h-5" />
-</a>
-
-</div>
-
-</div>
-</section>
-);
+    </section>
+  );
 };
 
-export default SectionTwo;
+export default Problem;

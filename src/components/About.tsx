@@ -1,218 +1,280 @@
 import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Linkedin, ExternalLink } from "lucide-react";
 
-// ─── Team data ─────────────────────────────────────────────────────────────
-// NOTE: Update photo paths and prof-page URLs as real assets become available.
-// Photos default to initials avatars when image fails to load.
+const EASE = [0.16, 1, 0.3, 1] as const;
 
-type Person = {
-  name: string;
-  role: string;
-  blurb: string;
-  photo?: string;          // optional; falls back to initials
-  photoFit?: "cover" | "contain";
-  photoPosition?: string;  // CSS object-position
-  href: string;            // LinkedIn for founder; TIET prof page for advisors
-  hrefLabel: string;       // a11y label
-  initials: string;
+/* Quiet entrance, matching the other sections. */
+const enter = (reduce: boolean | null, delay = 0) => ({
+  initial: reduce ? { opacity: 1 } : { opacity: 0, y: 14 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.3 },
+  transition: { duration: 0.6, delay, ease: EASE },
+});
+
+// ─── Backing ───────────────────────────────────────────────────────────────
+
+type Backer = {
+  logo: string;
+  alt: string;
+  /* Explicit height, not max-height: the SVG marks carry no intrinsic
+     dimensions, so a flex item sized only by max-height collapses to 0.
+     Values are optically balanced, not equal, since each mark differs
+     in how much ink and how many text lines it holds. */
+  h: number;
+  claim: string;
 };
 
-const founder: Person = {
-  name: "Prabh Singh",
-  role: "Founder · CEO",
-  blurb: "Founder of Zylectra. Building Physical AI that helps businesses make better battery decisions.",
-  href: "https://www.linkedin.com/in/prabhsingh14",
-  hrefLabel: "Prabh Singh on LinkedIn",
-  initials: "PS",
-  photo: "/me.png",
-  // Keep the face readable inside the circle.
-  photoFit: "cover",
-  photoPosition: "50% 15%",
-};
-
-const advisors: Person[] = [
+const BACKERS: Backer[] = [
   {
-    name: "Dr. Ashish Kumar Gupta",
-    role: "Advisor · Deep learning",
-    blurb: "Deep learning researcher helping shape Zylectra's AI and machine learning systems.",
-    href: "https://eied.thapar.edu/facultydetails/MTUzMg==",
-    hrefLabel: "Dr. Ashish Kumar Gupta · TIET faculty profile",
-    initials: "AG",
-    photo: "/ashish-sir.jpg",
+    logo: "/venture-lab-logo.svg",
+    alt: "VentureLab Thapar",
+    h: 26,
+    claim: "Incubated",
   },
   {
-    name: "Dr. Krishna Kumar Gupta",
-    role: "Advisor · Power electronics",
-    blurb: "Power electronics expert advising on battery systems and real-world engineering.",
-    href: "https://www.thapar.edu/faculties/view/Dr.-Krishna-Kumar-Gupta/NTAx/Nw==",
-    hrefLabel: "Dr. Krishna Kumar Gupta · TIET faculty profile",
-    initials: "KG",
-    photo: "/krishna-sir.jpg",
+    logo: "/tie-silicon-logo.png",
+    alt: "TiE Chandigarh",
+    h: 36,
+    claim: "Awarded",
   },
   {
-    name: "Amit Aneja",
-    role: "Advisor · Growth · ex-KPMG",
-    blurb: "Former KPMG leader helping translate technical innovation into commercial strategy.",
-    href: "https://www.linkedin.com/in/amitaneja/",
-    hrefLabel: "Amit Aneja · advisor profile",
-    initials: "AA",
-    photo: "/amit.jpeg",
+    logo: "/battery360.svg",
+    alt: "Battery360 Alliance",
+    h: 34,
+    claim: "Industry alliance",
+  },
+  {
+    logo: "/meity.png",
+    alt: "MeitY",
+    h: 42,
+    claim: "Recognized",
   },
 ];
 
-// ─── Avatar with image-or-initials fallback ────────────────────────────────
+// ─── People ────────────────────────────────────────────────────────────────
 
-const Avatar: React.FC<{ person: Person; size?: number }> = ({ person, size = 64 }) => {
-  const [errored, setErrored] = React.useState(!person.photo);
+type Advisor = {
+  name: string;
+  role: string;
+  blurb: string;
+  photo: string;
+  /* Tuned per photo so the face lands in the crop. */
+  photoPosition: string;
+  href: string;
+  hrefLabel: string;
+  initials: string;
+};
+
+const ADVISORS: Advisor[] = [
+  {
+    name: "Dr. Ashish Kumar Gupta",
+    role: "Deep learning",
+    blurb:
+      "Deep learning expert helping shape Zylectra's AI and deep learning systems.",
+    photo: "/ashish-sir.jpg",
+    photoPosition: "51% 24%",
+    href: "https://eied.thapar.edu/facultydetails/MTUzMg==",
+    hrefLabel: "Dr. Ashish Kumar Gupta · TIET faculty profile",
+    initials: "AG",
+  },
+  {
+    name: "Dr. Krishna Kumar Gupta",
+    role: "Power electronics",
+    blurb:
+      "Power electronics expert advising on battery systems and real-world engineering.",
+    photo: "/krishna-sir.jpg",
+    photoPosition: "58% 36%",
+    href: "https://www.thapar.edu/faculties/view/Dr.-Krishna-Kumar-Gupta/NTAx/Nw==",
+    hrefLabel: "Dr. Krishna Kumar Gupta · TIET faculty profile",
+    initials: "KG",
+  },
+  {
+    name: "Amit Aneja",
+    role: "Growth & Strategy",
+    blurb:
+      "Former KPMG leader helping translate technical innovation into commercial strategy.",
+    photo: "/amit.jpeg",
+    photoPosition: "46% 20%",
+    href: "https://www.linkedin.com/in/amitaneja/",
+    hrefLabel: "Amit Aneja · advisor profile",
+    initials: "AA",
+  },
+];
+
+/* Portraits come from four different shoots with four different backdrops.
+   A tight crop plus a single tonal treatment is what makes them read as one set. */
+const AdvisorPortrait: React.FC<{ person: Advisor }> = ({ person }) => {
+  const [errored, setErrored] = React.useState(false);
+
   return (
     <div
-      className="relative rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden border border-emerald-500/25 bg-[var(--bg)]"
-      style={{
-        width: size,
-        height: size,
-        background:
-          "linear-gradient(135deg, rgba(52,211,153,0.18) 0%, rgba(52,211,153,0.06) 100%)",
-      }}
+      className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-[rgba(var(--fg-rgb),0.04)] ring-1 ring-[rgba(var(--fg-rgb),0.08)]"
       aria-hidden="true"
     >
-      {!errored && person.photo ? (
+      {errored ? (
+        <span className="absolute inset-0 grid place-items-center text-sm font-semibold text-[var(--text-muted)]">
+          {person.initials}
+        </span>
+      ) : (
         <img
           src={person.photo}
           alt=""
-          className="w-full h-full"
-          style={{
-            objectFit: person.photoFit ?? "cover",
-            objectPosition: person.photoPosition ?? "50% 30%",
-          }}
+          loading="lazy"
+          className="w-full h-full object-cover grayscale contrast-[1.05] transition-[filter] duration-500 ease-out group-hover:grayscale-0"
+          style={{ objectPosition: person.photoPosition }}
           onError={() => setErrored(true)}
         />
-      ) : (
-        <span
-          className="font-bold text-emerald-300"
-          style={{ fontSize: size * 0.36, letterSpacing: "0.02em" }}
-        >
-          {person.initials}
-        </span>
       )}
     </div>
   );
 };
 
-const PersonCard: React.FC<{ person: Person; isFounder?: boolean }> = ({ person, isFounder }) => (
-  <a
-    href={person.href}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label={person.hrefLabel}
-    className="group flex h-full items-start gap-4 rounded-2xl border border-[rgba(var(--fg-rgb),0.1)] bg-[rgba(var(--fg-rgb),0.02)] p-5 md:p-6 transition-all duration-300 hover:border-emerald-500/40 hover:bg-[rgba(var(--fg-rgb),0.04)] hover:-translate-y-0.5"
-  >
-    <Avatar person={person} size={56} />
-    <div className="min-w-0 flex-1">
-      <div className="flex items-center gap-2">
-        <h4 className="text-[var(--text)] font-semibold text-base md:text-[17px] tracking-tight">
-          {person.name}
-        </h4>
-        {isFounder ? (
-          <Linkedin className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400/70 group-hover:text-emerald-400 transition-colors" />
-        ) : (
-          <ExternalLink className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400/70 group-hover:text-emerald-400 transition-colors" />
-        )}
-      </div>
-      <p className="font-mono text-[10.5px] tracking-[0.16em] uppercase text-emerald-400/80 mt-0.5">
-        {person.role}
-      </p>
-      <p className="text-[var(--text-muted)] text-sm leading-relaxed mt-2">{person.blurb}</p>
-    </div>
-  </a>
-);
-
 // ─── About ─────────────────────────────────────────────────────────────────
 
 const About: React.FC = () => {
+  const reduce = useReducedMotion();
+
   return (
     <section
       id="about"
-      // Reduce top and bottom vertical padding to decrease gap to previous section
-      className="relative py-20 md:py-28 bg-[var(--bg)] text-[var(--text)] overflow-hidden"
+      className="relative bg-[var(--bg)] text-[var(--text)] py-20 md:py-28"
     >
-      <div className="absolute -top-44 -right-36 w-80 h-80 bg-emerald-500/[0.06] rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-44 -left-36 w-80 h-80 bg-emerald-400/[0.05] rounded-full blur-3xl pointer-events-none" />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
+        {/* ── Backing ─────────────────────────────────────────────────── */}
+        <motion.h2
+          {...enter(reduce)}
+          className="font-bold text-[var(--text)] max-w-2xl"
+          style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", lineHeight: 1.12 }}
+        >
+          Backed by people who{" "}
+          <span className="text-emerald-400">believe</span> in what we're
+          building.
+        </motion.h2>
 
-      <div className="relative max-w-7xl mx-auto px-6 z-10">
-        {/* Partners & Supporters */}
-        <div className="mb-8 md:mb-10">
-          <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-500 mb-3">
-            Partners &amp; Supporters
-          </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-[var(--text)] mb-6 tracking-tight">
-            Backed by people who <span className="text-emerald-400">believe</span> in what we're building.
-          </h2>
-     
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
-              <img
-                src="/venture-lab-logo.svg"
-                alt="VentureLab Thapar"
-                className="max-h-8 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
-              />
-              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
-                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">Incubated</p>
-                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">₹4L grant · TIET</p>
+        {/* One plane, divided by hairlines. The gap is the rule. */}
+        <motion.div
+          {...enter(reduce, 0.1)}
+          className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-px overflow-hidden rounded-2xl"
+          style={{ background: "var(--border)" }}
+        >
+          {BACKERS.map((b) => (
+            <div
+              key={b.alt}
+              className="flex flex-col items-center gap-4 bg-white px-5 py-7 text-center"
+            >
+              <div className="h-11 flex items-center">
+                <img
+                  src={b.logo}
+                  alt={b.alt}
+                  className="w-auto flex-shrink-0 object-contain"
+                  style={{ height: b.h }}
+                />
               </div>
-            </div>
-            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
-              <img
-                src="/tie-silicon-logo.png"
-                alt="TiE Chandigarh"
-                className="max-h-10 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
-              />
-              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
-                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">1st Runner Up · 2025</p>
-                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">TiE Global Startup Finale</p>
-              </div>
-            </div>
-            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
-              <img
-                src="/battery360.svg"
-                alt="Battery360 Alliance"
-                className="max-h-10 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
-              />
-              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
-                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">Industry Alliance</p>
-                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">Battery tech consortium</p>
-              </div>
-            </div>
-            <div className="group relative flex items-center justify-center rounded-xl bg-white/[0.92] p-5 h-24 overflow-hidden cursor-default">
-              <img
-                src="/meity.png"
-                alt="MeitY"
-                className="max-h-12 w-auto object-contain transition-transform duration-300 group-hover:-translate-y-2"
-              />
-              <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gray-900/90 px-3 py-2 text-center">
-                <p className="font-mono text-[8.5px] tracking-widest uppercase text-emerald-400 leading-tight">Recognized</p>
-                <p className="text-[9px] text-white/60 mt-0.5 leading-tight">Ministry of Electronics & IT</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Team */}
-        <div className="mb-6">
-          <div className="font-mono text-[10.5px] tracking-[0.3em] uppercase text-emerald-500 mb-3">
-            THE TEAM
-          </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)] mb-4 tracking-tight">
-            The people behind <span className="text-emerald-400">Zylectra</span>.
-          </h3>
-        </div>
-
-        {/* Team grid — founder + advisors */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <PersonCard person={founder} isFounder />
-          {advisors.map((p) => (
-            <PersonCard key={p.name} person={p} />
+              <p className="text-[13px] font-semibold text-[#0a0a0f] leading-snug">
+                {b.claim}
+              </p>
+            </div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* ── Team ────────────────────────────────────────────────────── */}
+        <motion.h2
+          {...enter(reduce)}
+          className="mt-24 md:mt-32 font-bold text-[var(--text)]"
+          style={{ fontSize: "clamp(1.9rem, 4vw, 3rem)", lineHeight: 1.12 }}
+        >
+          The people behind{" "}
+          <span className="text-emerald-400">Zylectra</span>.
+        </motion.h2>
+
+        {/* Founder — the portrait is the asset, so it gets the room. */}
+        <motion.div
+          {...enter(reduce, 0.1)}
+          className="mt-12 grid grid-cols-1 sm:grid-cols-12 gap-8 sm:gap-10 items-end"
+        >
+          {/* Cut out from its original green backdrop, so it sits on the page
+              rather than inside a frame. The base fades into the background. */}
+          <div className="sm:col-span-4 lg:col-span-3">
+            <img
+              src="/me-cutout.png"
+              alt="Prabh Singh"
+              width={326}
+              height={304}
+              draggable={false}
+              className="w-[190px] sm:w-full max-w-[260px] h-auto select-none"
+            />
+          </div>
+
+          <div className="sm:col-span-8 lg:col-span-9 sm:pb-2">
+            <h3
+              className="font-bold text-[var(--text)]"
+              style={{ fontSize: "clamp(1.5rem, 2.6vw, 2rem)", lineHeight: 1.15 }}
+            >
+              Prabh Singh
+            </h3>
+            <p className="text-emerald-400 font-medium text-[15px] mt-1.5">
+              Founder
+            </p>
+            <p className="text-[var(--text-muted)] leading-relaxed mt-4 max-w-xl text-[15px] md:text-base">
+              Founder of Zylectra. Building Physical AI to make batteries predictable, reliable, and more valuable.
+            </p>
+
+            <a
+              href="https://www.linkedin.com/in/prabhsingh14"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Prabh Singh on LinkedIn"
+              className="group inline-flex items-center gap-2 mt-6 text-[15px] font-medium text-[var(--text)] hover:text-emerald-400 transition-colors"
+            >
+              <Linkedin className="w-4 h-4" />
+              LinkedIn
+              <ExternalLink className="w-3.5 h-3.5 text-[var(--text-faint)] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Advisors — a roster, not a card wall. */}
+        <motion.div
+          {...enter(reduce, 0.15)}
+          className="mt-16 md:mt-20 pt-10 border-t"
+          style={{ borderColor: "var(--border)" }}
+        >
+          <h4 className="text-[13px] font-semibold text-[var(--text-faint)] mb-8">
+            Advisors
+          </h4>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-10 gap-y-10">
+            {ADVISORS.map((p) => (
+              <a
+                key={p.name}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={p.hrefLabel}
+                className="group flex items-start gap-4 rounded-xl -m-2 p-2 transition-colors hover:bg-[rgba(var(--fg-rgb),0.03)]"
+              >
+                <AdvisorPortrait person={p} />
+
+                <div className="min-w-0">
+                  <div className="flex items-start gap-1.5">
+                    <h5 className="font-semibold text-[var(--text)] text-[15px] leading-snug">
+                      {p.name}
+                    </h5>
+                    <ExternalLink className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-[var(--text-faint)] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                  <p className="text-emerald-400 text-[13px] font-medium mt-0.5">
+                    {p.role}
+                  </p>
+                  <p className="text-[var(--text-muted)] text-[13.5px] leading-relaxed mt-2">
+                    {p.blurb}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </motion.div>
 
         <script type="application/ld+json">
           {JSON.stringify({

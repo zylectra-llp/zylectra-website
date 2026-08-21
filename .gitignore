@@ -26,3 +26,8 @@ dist-ssr
 
 .claude
 .claude/launch.json
+.agents
+.agents/*
+.codex/*
+.cursor/*
+.impeccable/*
