@@ -95,6 +95,20 @@ const Footer: React.FC = () => {
               >
                 The Intelligence
               </button>
+
+              <button
+                onClick={() => goToSection("outcomes")}
+                className="group flex items-center gap-2 hover:text-emerald-400 transition-colors text-left"
+              >
+                Outcomes
+              </button>
+
+              <button
+                onClick={() => goToSection("about")}
+                className="group flex items-center gap-2 hover:text-emerald-400 transition-colors text-left"
+              >
+                About
+              </button>
             </div>
           </div>
 
