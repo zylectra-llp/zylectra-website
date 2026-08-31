@@ -36,7 +36,10 @@ function serveDist() {
 }
 
 const server = await serveDist();
-const browser = await puppeteer.launch({ headless: 'new' });
+const browser = await puppeteer.launch({
+  headless: 'new',
+  args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+});
 
 for (const page of PAGES) {
   const tab = await browser.newPage();
