@@ -7,7 +7,20 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import puppeteer from 'puppeteer';
+
+// Vercel's build image lacks the shared libraries (libnspr4, libnss3, ...)
+// that puppeteer's bundled Chromium needs, so on Vercel we launch a
+// statically-linked Chromium built for serverless/CI containers instead.
+// Locally, plain puppeteer's own Chromium download works fine.
+const launchOptions = process.env.VERCEL
+  ? await (async () => {
+      const { default: chromium } = await import('@sparticuz/chromium');
+      return { args: chromium.args, executablePath: await chromium.executablePath(), headless: true };
+    })()
+  : { headless: 'new' };
+const puppeteer = process.env.VERCEL
+  ? (await import('puppeteer-core')).default
+  : (await import('puppeteer')).default;
 
 const DIST = fileURLToPath(new URL('../dist', import.meta.url));
 const PAGES = ['index.html', 'benchmarks.html'];
@@ -36,10 +49,7 @@ function serveDist() {
 }
 
 const server = await serveDist();
-const browser = await puppeteer.launch({
-  headless: 'new',
-  args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-});
+const browser = await puppeteer.launch(launchOptions);
 
 for (const page of PAGES) {
   const tab = await browser.newPage();
