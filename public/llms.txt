@@ -10,7 +10,7 @@
 ## Pages
 
 - [Home](https://zylectra.com/): product overview, what Zylectra predicts, who it's for (EV fleets, OEMs, battery manufacturers, BaaS/swap networks, financiers), how it works without new hardware.
-- [Cell SoH Benchmarks](https://zylectra.com/benchmarks.html): benchmark of Zylectra's physics-informed Cell SoH model against five standard data-driven architectures (MLP, Attention/Transformer, GRU, LSTM, CNN), evaluated on identical held-out lithium-ion cycling data. Zylectra: 1.08% MAE, lowest error of six models, using 13-27x fewer parameters and a 10-23x smaller checkpoint than the baselines. Chemistry: LFP.
+- [Cell SoH Benchmarks](https://zylectra.com/benchmarks): benchmark of Zylectra's physics-informed Cell SoH model against five standard data-driven architectures (MLP, Attention/Transformer, GRU, LSTM, CNN), evaluated on identical held-out lithium-ion cycling data. Zylectra: 1.08% MAE, lowest error of six models, using 13-27x fewer parameters and a 10-23x smaller checkpoint than the baselines. Chemistry: LFP.
 
 ## Key facts
 

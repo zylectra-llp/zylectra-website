@@ -77,7 +77,7 @@ const Navbar = () => {
             ))}
 
             <a
-              href="/benchmarks.html"
+              href="/benchmarks"
               className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-3 py-2 whitespace-nowrap"
             >
               Benchmarks
@@ -126,7 +126,7 @@ const Navbar = () => {
               ))}
 
               <a
-                href="/benchmarks.html"
+                href="/benchmarks"
                 className="text-[var(--text-secondary)] hover:text-[var(--text)] py-3 text-base transition-colors"
               >
                 Benchmarks
