@@ -76,6 +76,13 @@ const Navbar = () => {
               </button>
             ))}
 
+            <a
+              href="/benchmarks.html"
+              className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-3 py-2 whitespace-nowrap"
+            >
+              Benchmarks
+            </a>
+
             <button
               type="button"
               onClick={() => scrollToSection("contact")}
@@ -117,6 +124,13 @@ const Navbar = () => {
                   {label}
                 </button>
               ))}
+
+              <a
+                href="/benchmarks.html"
+                className="text-[var(--text-secondary)] hover:text-[var(--text)] py-3 text-base transition-colors"
+              >
+                Benchmarks
+              </a>
 
               <button
                 type="button"

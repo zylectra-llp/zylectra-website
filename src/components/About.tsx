@@ -281,14 +281,25 @@ const About: React.FC = () => {
             "@context": "https://schema.org",
             "@type": "Organization",
             name: "Zylectra",
+            alternateName: "BattreeAI",
             description:
               "Physics-informed battery intelligence platform for Li-ion failure prediction, root cause attribution, and operational guidance.",
             url: "https://zylectra.com",
+            logo: "https://zylectra.com/image.jpg",
+            email: "info@zylectra.com",
             foundingLocation: "Patiala, India",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "VentureLab Thapar, TIET",
+              addressLocality: "Patiala",
+              addressRegion: "Punjab",
+              addressCountry: "IN",
+            },
             parentOrganization: {
               "@type": "Organization",
               name: "VentureLab Thapar, Thapar Institute of Engineering and Technology",
             },
+            sameAs: ["https://www.linkedin.com/company/zylectra"],
           })}
         </script>
       </div>

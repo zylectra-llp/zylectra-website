@@ -1,0 +1,24 @@
+# Zylectra
+
+> Zylectra (product: BattreeAI) is a physics-informed battery intelligence
+> platform for lithium-ion fleets, EVs first. It estimates battery State of
+> Health (SoH) and Remaining Useful Life (RUL), and attributes degradation to
+> physical mechanisms (SEI growth, LAM, lithium plating, LLI). Models are
+> constrained by electrochemical physics rather than fit purely to historical
+> data.
+
+## Pages
+
+- [Home](https://zylectra.com/): product overview, what Zylectra predicts, who it's for (EV fleets, OEMs, battery manufacturers, BaaS/swap networks, financiers), how it works without new hardware.
+- [Cell SoH Benchmarks](https://zylectra.com/benchmarks.html): benchmark of Zylectra's physics-informed Cell SoH model against five standard data-driven architectures (MLP, Attention/Transformer, GRU, LSTM, CNN), evaluated on identical held-out lithium-ion cycling data. Zylectra: 1.08% MAE, lowest error of six models, using 13-27x fewer parameters and a 10-23x smaller checkpoint than the baselines. Chemistry: LFP.
+
+## Key facts
+
+- Zylectra's Cell SoH model uses 14,202 parameters; baseline architectures tested range from 169,089 to 376,329 parameters.
+- Benchmark inputs: 5 raw signal types (voltage, current, temperature/time, state of charge, charge/discharge capacity), encoded into 19 engineered features per cycle, identical across all six models compared.
+- This benchmark does not compare Zylectra against proprietary commercial BMS firmware (Tesla, CATL, LG, BYD, etc.) — those algorithms are closed-source and no vendor publishes accuracy numbers.
+- Zylectra is built at VentureLab Thapar (TIET), Patiala, Punjab, India.
+
+## Contact
+
+info@zylectra.com
