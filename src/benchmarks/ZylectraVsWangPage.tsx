@@ -192,7 +192,7 @@ const ZylectraVsWangPage: React.FC = () => {
                     <th className="pb-3 font-medium">Model</th>
                     <th className="pb-3 font-medium">Type</th>
                     <th className="pb-3 font-medium text-right">Params</th>
-                    <th className="pb-3 font-medium">Training scope</th>
+                    <th className="pb-3 pl-6 font-medium">Training scope</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -200,19 +200,19 @@ const ZylectraVsWangPage: React.FC = () => {
                     <td className="py-3 font-semibold text-[var(--text)]">Zylectra Physics AI model</td>
                     <td className="py-3 text-[var(--text-muted)]">Physics-informed NN</td>
                     <td className="py-3 text-right tnum font-semibold text-emerald-400">{fmtParams(ZYLECTRA_PARAMS)}</td>
-                    <td className="py-3 text-[var(--text-muted)]">One model, both datasets</td>
+                    <td className="py-3 pl-6 text-[var(--text-muted)]">One model, both datasets</td>
                   </tr>
                   <tr style={{ borderTop: '1px solid var(--border)' }}>
                     <td className="py-3 text-[var(--text-muted)]">Wang PINN4SOH — MIT</td>
                     <td className="py-3 text-[var(--text-muted)]">Physics-informed NN</td>
                     <td className="py-3 text-right tnum text-[var(--text-muted)]">{fmtParams(WANG_PARAMS_EACH)}</td>
-                    <td className="py-3 text-[var(--text-muted)]">Specialized, MIT only</td>
+                    <td className="py-3 pl-6 text-[var(--text-muted)]">Specialized, MIT only</td>
                   </tr>
                   <tr style={{ borderTop: '1px solid var(--border)' }}>
                     <td className="py-3 text-[var(--text-muted)]">Wang PINN4SOH — HUST</td>
                     <td className="py-3 text-[var(--text-muted)]">Physics-informed NN</td>
                     <td className="py-3 text-right tnum text-[var(--text-muted)]">{fmtParams(WANG_PARAMS_EACH)}</td>
-                    <td className="py-3 text-[var(--text-muted)]">Specialized, HUST only</td>
+                    <td className="py-3 pl-6 text-[var(--text-muted)]">Specialized, HUST only</td>
                   </tr>
                 </tbody>
               </table>
