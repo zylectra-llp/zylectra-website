@@ -157,13 +157,13 @@ const DataBasedModelsPage: React.FC = () => {
             className="inline-block text-[var(--text-faint)] hover:text-[var(--text-muted)] transition-colors mb-3"
             style={{ fontSize: 12 }}
           >
-            Benchmarks / Cell SoH vs. Data-Driven Baselines
+            Benchmarks / True Electrochemical Health vs. Data-Driven Baselines
           </a>
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 mb-6"
             style={REPORT_BADGE_STYLE}
           >
-            Cell SoH Benchmark · LFP chemistry
+            True Electrochemical Health Benchmark · LFP chemistry
           </span>
           <h1
             className="font-bold text-[var(--text)] tracking-tight"
@@ -208,7 +208,7 @@ const DataBasedModelsPage: React.FC = () => {
             Zylectra's Physics AI Model for Cell Electrochemical Health was
             benchmarked against five deep-learning architectures representative
             of how the battery-analytics industry typically builds AI-based
-            SoH estimators: an MLP, a Transformer-style Attention model, a
+            health estimators: an MLP, a Transformer-style Attention model, a
             GRU, an LSTM, and a residual CNN. All six were evaluated on the
             exact same held-out cells, with the exact same scoring code.
             Zylectra's model ranked first, at{' '}
@@ -401,8 +401,8 @@ const DataBasedModelsPage: React.FC = () => {
                 No saturation cluster
               </h3>
               <p className="text-[var(--text-muted)] leading-relaxed" style={{ fontSize: 14 }}>
-                Zylectra's predictions track true SoH evenly across the full
-                range. The strongest baseline shows a visible cluster of
+                Zylectra's predictions track true electrochemical health
+                evenly across the full range. The strongest baseline shows a visible cluster of
                 predictions that floor out near a fixed value for a subset of
                 low-health cycles: a failure mode Zylectra's evaluation does
                 not show.
@@ -416,7 +416,7 @@ const DataBasedModelsPage: React.FC = () => {
                 Baseline models' error grows disproportionately in the steep
                 late-life fade region, where the signal gets noisier. A
                 physics prior built into Zylectra's training structurally
-                discourages predicting SoH increases cycle-over-cycle, exactly
+                discourages predicting health increases cycle-over-cycle, exactly
                 the kind of physically-impossible wobble a purely data-driven
                 model can produce late in life.
               </p>
@@ -655,7 +655,7 @@ const DataBasedModelsPage: React.FC = () => {
         </motion.div>
 
         <p className="mt-10 text-[var(--text-faint)]" style={{ fontSize: 12 }}>
-          Zylectra · Cell SoH benchmark · LFP chemistry
+          Zylectra · True electrochemical health benchmark · LFP chemistry
           <a href="/benchmarks" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors ml-3">
             ← All benchmark reports
           </a>

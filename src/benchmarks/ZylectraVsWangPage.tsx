@@ -114,13 +114,13 @@ const ZylectraVsWangPage: React.FC = () => {
             className="inline-block text-[var(--text-faint)] hover:text-[var(--text-muted)] transition-colors mb-3"
             style={{ fontSize: 12 }}
           >
-            Benchmarks / Cell SoH vs. Wang et al. 2024 PINN4SOH
+            Benchmarks / True Electrochemical Health vs. Wang et al. 2024 PINN4SOH
           </a>
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 mb-6"
             style={REPORT_BADGE_STYLE}
           >
-            Cell SoH Benchmark · vs. Wang et al. 2024 PINN4SOH
+            True Electrochemical Health Benchmark · vs. Wang et al. 2024 PINN4SOH
           </span>
           <h1
             className="font-bold text-[var(--text)] tracking-tight"
@@ -130,10 +130,10 @@ const ZylectraVsWangPage: React.FC = () => {
             <span className="text-emerald-400"> most cited physics-informed architecture.</span>
           </h1>
           <p className="mt-6 text-[var(--text-muted)] leading-relaxed" style={{ fontSize: 'clamp(14.5px, 1.3vw, 17px)' }}>
-            Zylectra's Physics AI model for cell electrochemical health,
-            scored against Wang et al. 2024's PINN4SOH — published in{' '}
+            Zylectra's Physics AI model for true electrochemical health,
+            scored against Wang et al. 2024's PINN4SOH, published in{' '}
             <em>Nature Communications</em> and one of the most cited
-            physics-informed SoH architectures in the literature — chosen as
+            physics-informed architectures in the literature, chosen as
             the toughest available comparison, not a convenient one.
           </p>
         </motion.div>
@@ -159,9 +159,9 @@ const ZylectraVsWangPage: React.FC = () => {
           </h2>
           <p className="text-[var(--text-muted)] leading-relaxed max-w-3xl" style={{ fontSize: 15.5 }}>
             Zylectra's Physics AI model was benchmarked directly against{' '}
-            <span className="text-[var(--text)] font-semibold">Wang et al. 2024's PINN4SOH</span>{' '}
-            — the architecture the research community treats as the
-            reference point for physics-informed SoH estimation. Both models
+            <span className="text-[var(--text)] font-semibold">Wang et al. 2024's PINN4SOH</span>,{' '}
+            the architecture the research community treats as the
+            reference point for physics-informed health estimation. Both models
             were scored on two public LFP cycling datasets, MIT and HUST,
             using each project's own held-out test split. Zylectra's single
             model beat Wang's dataset-specialized checkpoint on both
@@ -175,7 +175,7 @@ const ZylectraVsWangPage: React.FC = () => {
           <p className="text-[var(--text-muted)] leading-relaxed max-w-3xl" style={{ fontSize: 15.5 }}>
             Wang's PINN4SOH ships one specialized checkpoint per dataset.
             Zylectra trains one model across every dataset it supports, on
-            principle — a fleet is never one dataset. This report tests
+            principle: a fleet is never one dataset. This report tests
             whether that choice costs anything against a specialized
             alternative built by the reference implementation itself.
           </p>
@@ -203,13 +203,13 @@ const ZylectraVsWangPage: React.FC = () => {
                     <td className="py-3 pl-6 text-[var(--text-muted)]">One model, both datasets</td>
                   </tr>
                   <tr style={{ borderTop: '1px solid var(--border)' }}>
-                    <td className="py-3 text-[var(--text-muted)]">Wang PINN4SOH — MIT</td>
+                    <td className="py-3 text-[var(--text-muted)]">Wang PINN4SOH: MIT</td>
                     <td className="py-3 text-[var(--text-muted)]">Physics-informed NN</td>
                     <td className="py-3 text-right tnum text-[var(--text-muted)]">{fmtParams(WANG_PARAMS_EACH)}</td>
                     <td className="py-3 pl-6 text-[var(--text-muted)]">Specialized, MIT only</td>
                   </tr>
                   <tr style={{ borderTop: '1px solid var(--border)' }}>
-                    <td className="py-3 text-[var(--text-muted)]">Wang PINN4SOH — HUST</td>
+                    <td className="py-3 text-[var(--text-muted)]">Wang PINN4SOH: HUST</td>
                     <td className="py-3 text-[var(--text-muted)]">Physics-informed NN</td>
                     <td className="py-3 text-right tnum text-[var(--text-muted)]">{fmtParams(WANG_PARAMS_EACH)}</td>
                     <td className="py-3 pl-6 text-[var(--text-muted)]">Specialized, HUST only</td>
@@ -227,7 +227,7 @@ const ZylectraVsWangPage: React.FC = () => {
             Same architecture family, two different bets on generalization.
           </h2>
           <p className="text-[var(--text-faint)] mb-6" style={{ fontSize: 13 }}>
-            MAE and RMSE in SoH fraction (0–1 scale; 0.01 = 1 percentage point) · lower is better. R² · higher is better.
+            MAE and RMSE in health fraction (0–1 scale; 0.01 = 1 percentage point) · lower is better. R² · higher is better.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
             <HeadToHeadPanel dataset="MIT" />
@@ -237,7 +237,7 @@ const ZylectraVsWangPage: React.FC = () => {
 
         {/* 05 Pooled callout */}
         <motion.section {...enter(reduce)} className="mt-16">
-          <SectionLabel>05 · Pooled — one model vs. two specialized checkpoints</SectionLabel>
+          <SectionLabel>05 · Pooled: one model vs. two specialized checkpoints</SectionLabel>
           <Card>
             <div className="grid sm:grid-cols-2 gap-8">
               <div>
@@ -277,7 +277,7 @@ const ZylectraVsWangPage: React.FC = () => {
               </h3>
               <p className="text-[var(--text-muted)] leading-relaxed" style={{ fontSize: 14 }}>
                 Zylectra's single model matches or beats each of Wang's
-                specialized checkpoints on its own dataset — without
+                specialized checkpoints on its own dataset, without
                 retraining per source.
               </p>
             </Card>
@@ -329,7 +329,7 @@ const ZylectraVsWangPage: React.FC = () => {
               </table>
             </div>
             <p className="mt-5 text-[var(--text-faint)] leading-relaxed" style={{ fontSize: 12 }}>
-              Wang's network is marginally smaller per checkpoint — the gap
+              Wang's network is marginally smaller per checkpoint: the gap
               is Zylectra's wider input layer. But Wang's deployment needs to
               know which dataset a cell came from and load the matching
               checkpoint, or ship both. Zylectra ships one file, one code
@@ -350,7 +350,7 @@ const ZylectraVsWangPage: React.FC = () => {
             <li>
               Zylectra's number is the best of a multi-seed training sweep;
               Wang's figure is a single run, matching how the original paper
-              reports it — this asymmetry favors Zylectra's number being
+              reports it. This asymmetry favors Zylectra's number being
               closer to its ceiling.
             </li>
             <li>
@@ -365,7 +365,7 @@ const ZylectraVsWangPage: React.FC = () => {
           <p className="text-[var(--text-muted)] leading-relaxed max-w-3xl" style={{ fontSize: 15.5 }}>
             Benchmarked directly against the architecture the field treats
             as its physics-informed reference, Zylectra's Physics AI model
-            wins on both public datasets, on every metric — and does it with
+            wins on both public datasets, on every metric, and does it with
             one unified checkpoint against Wang's two specialized ones.
             Physics-informed modeling built for a fleet, not a single
             dataset, doesn't cost accuracy to get there.
@@ -396,7 +396,7 @@ const ZylectraVsWangPage: React.FC = () => {
         </motion.div>
 
         <p className="mt-10 text-[var(--text-faint)]" style={{ fontSize: 12 }}>
-          Zylectra · Cell SoH benchmark · vs. Wang et al. 2024 PINN4SOH
+          Zylectra · True electrochemical health benchmark · vs. Wang et al. 2024 PINN4SOH
           <a href="/benchmarks" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors ml-3">
             ← All benchmark reports
           </a>

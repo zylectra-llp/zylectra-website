@@ -16,20 +16,20 @@ type Report = {
 const REPORTS: Report[] = [
   {
     href: '/benchmarks/data-based-models',
-    eyebrow: 'Cell SoH · LFP chemistry',
+    eyebrow: 'True Electrochemical Health · LFP chemistry',
     title: 'vs. five data-driven architectures',
-    hook: "Zylectra's Physics AI model ranked against an MLP, a Transformer-style Attention model, a GRU, an LSTM, and a residual CNN — same data, same held-out cells, same evaluation code.",
-    stat: '1.08%',
-    statLabel: 'error rate (MAE), lowest of six models',
+    hook: "Zylectra's Physics AI model ranked against an MLP, a Transformer-style Attention model, a GRU, an LSTM, and a residual CNN: same data, same held-out cells, same evaluation code.",
+    stat: '13–27×',
+    statLabel: 'fewer parameters, and still the most accurate model tested',
     date: 'Published 2026-08-31',
   },
   {
     href: '/benchmarks/zylectra-vs-wang',
-    eyebrow: 'Cell SoH · LFP chemistry',
+    eyebrow: 'True Electrochemical Health · LFP chemistry',
     title: 'vs. Wang et al. 2024 (PINN4SOH)',
-    hook: "Zylectra's Physics AI model benchmarked against the most cited physics-informed architecture for Li-ion SoH estimation, published in Nature Communications.",
-    stat: '0.478%',
-    statLabel: 'pooled error rate (MAE), vs. 0.819% for the two-checkpoint comparison',
+    hook: "Zylectra's Physics AI model benchmarked against the most cited physics-informed architecture for Li-ion health estimation, published in Nature Communications.",
+    stat: '51%',
+    statLabel: "fewer errors than the field's own reference architecture, on its hardest dataset",
     date: 'Published 2026-09-03',
   },
 ];
