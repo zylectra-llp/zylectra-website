@@ -48,7 +48,7 @@ const BACKERS: Backer[] = [
     logo: "/meity.png",
     alt: "MeitY",
     h: 42,
-    claim: "Recognized",
+    claim: "Recognized & Funded",
   },
 ];
 

@@ -103,6 +103,13 @@ const Footer: React.FC = () => {
                 Outcomes
               </button>
 
+              <a
+                href="/benchmarks"
+                className="group flex items-center gap-2 hover:text-emerald-400 transition-colors"
+              >
+                Benchmarks
+              </a>
+
               <button
                 onClick={() => goToSection("about")}
                 className="group flex items-center gap-2 hover:text-emerald-400 transition-colors text-left"
