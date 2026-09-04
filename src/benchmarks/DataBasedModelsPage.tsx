@@ -8,15 +8,7 @@ import {
   Database,
   Gauge,
 } from 'lucide-react';
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-const enter = (reduce: boolean | null, delay = 0) => ({
-  initial: reduce ? { opacity: 1 } : { opacity: 0, y: 14 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
-  transition: { duration: 0.6, delay, ease: EASE },
-});
+import { Card, SectionLabel, LeaderboardRow, enter, EASE, REPORT_BADGE_STYLE, fmtParams, fmtCkpt, type Model } from './shared';
 
 /* ─── Data ────────────────────────────────────────────────────────────────
    Every number traces to the internal Cell SoH benchmark report
@@ -25,21 +17,6 @@ const enter = (reduce: boolean | null, delay = 0) => ({
    only Zylectra's own architecture and training lineage stay unnamed.
    Array order is fixed by error rank (MAE ascending) so identity stays
    consistent across every chart on this page. */
-
-type Model = {
-  id: string;
-  label: string;
-  type: string;
-  hero: boolean;
-  params: number;
-  checkpointKb: number;
-  mae: number;
-  rmse: number;
-  mape: number;
-  r2: number;
-  trainSeconds: number;
-  trainEstimated?: boolean;
-};
 
 const MODELS: Model[] = [
   { id: 'zylectra', label: 'Zylectra', type: 'Physics AI Model', hero: true, params: 14202, checkpointKb: 64, mae: 0.01080, rmse: 0.02153, mape: 0.01147, r2: 0.622, trainSeconds: 126, trainEstimated: true },
@@ -64,8 +41,6 @@ const VS_BEST_BASELINE = ((BEST_BASELINE_MAE - MODELS[0].mae) / BEST_BASELINE_MA
 const VS_WORST_BASELINE = MAX_REDUCTION;
 
 const fmtPct = (v: number) => `${(v * 100).toFixed(2)}%`;
-const fmtParams = (v: number) => v.toLocaleString('en-US');
-const fmtCkpt = (kb: number) => (kb >= 1000 ? `${(kb / 1024).toFixed(2)} MB` : `${kb} KB`);
 
 /* Same 19-dimensional engineered feature vector, built from 5 raw signal
    types, is fed to every model in this report. The gap below is in what
@@ -149,89 +124,7 @@ const STAKEHOLDERS: Stakeholder[] = [
   },
 ];
 
-const BAR_TRACK = 'rgba(var(--fg-rgb),0.05)';
-
-const SectionLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span
-    className="block uppercase text-[var(--text-faint)] mb-4"
-    style={{ fontFamily: 'var(--font-mono)', fontSize: 10.5, letterSpacing: '0.14em' }}
-  >
-    {children}
-  </span>
-);
-
-const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <div
-    className={`rounded-3xl p-6 sm:p-9 ${className}`}
-    style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
-  >
-    {children}
-  </div>
-);
-
-/* Leaderboard row, openrouter.ai/rankings-style: rank badge, name + type
-   tag, a headline number, and a relative bar. */
-const LeaderboardRow: React.FC<{
-  model: Model;
-  rank: number;
-  pct: number;
-  valueLabel: string;
-  subLabel?: string;
-  reduce: boolean | null;
-  delay: number;
-}> = ({ model, rank, pct, valueLabel, subLabel, reduce, delay }) => (
-  <div
-    className="flex items-center gap-4 sm:gap-6 py-4"
-    style={{ borderTop: rank === 1 ? 'none' : '1px solid var(--border)' }}
-  >
-    <span
-      className="tnum flex-shrink-0 text-center font-bold"
-      style={{
-        width: 28,
-        fontSize: model.hero ? 16 : 14,
-        color: model.hero ? 'var(--accent-green-text)' : 'var(--text-faint)',
-      }}
-    >
-      {rank}
-    </span>
-
-    <div className="flex-shrink-0" style={{ width: 168 }}>
-      <div className={`font-semibold ${model.hero ? 'text-[var(--text)]' : 'text-[var(--text-muted)]'}`} style={{ fontSize: 14.5 }}>
-        {model.label}
-      </div>
-      <div className="text-[var(--text-faint)] mt-0.5" style={{ fontSize: 11.5 }}>{model.type}</div>
-    </div>
-
-    <div className="flex-1 min-w-0">
-      <div className="relative rounded-full overflow-hidden" style={{ height: model.hero ? 12 : 8, background: BAR_TRACK }}>
-        <motion.div
-          className="absolute inset-y-0 left-0 rounded-full"
-          style={{ width: `${pct}%`, transformOrigin: 'left', background: model.hero ? '#34d399' : 'rgba(var(--fg-rgb),0.28)' }}
-          initial={reduce ? { scaleX: 1 } : { scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9, delay, ease: EASE }}
-        />
-      </div>
-    </div>
-
-    <div className="flex-shrink-0 text-right" style={{ width: 84 }}>
-      <div
-        className={`tnum font-bold ${model.hero ? 'text-emerald-400' : 'text-[var(--text-faint)]'}`}
-        style={{ fontSize: model.hero ? 16 : 14 }}
-      >
-        {valueLabel}
-      </div>
-      {subLabel && (
-        <div className="tnum text-[var(--text-faint)]" style={{ fontSize: 11 }}>
-          {subLabel}
-        </div>
-      )}
-    </div>
-  </div>
-);
-
-const BenchmarksPage: React.FC = () => {
+const DataBasedModelsPage: React.FC = () => {
   const reduce = useReducedMotion();
   const [active, setActive] = useState(0);
   const s = STAKEHOLDERS[active];
@@ -259,18 +152,18 @@ const BenchmarksPage: React.FC = () => {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-16 md:py-20">
         {/* Hero */}
         <motion.div {...enter(reduce)} className="max-w-3xl">
+          <a
+            href="/benchmarks"
+            className="inline-block text-[var(--text-faint)] hover:text-[var(--text-muted)] transition-colors mb-3"
+            style={{ fontSize: 12 }}
+          >
+            Benchmarks / True Electrochemical Health vs. Data-Driven Baselines
+          </a>
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 mb-6"
-            style={{
-              background: 'rgba(52,211,153,0.1)',
-              border: '1px solid rgba(52,211,153,0.28)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 10,
-              letterSpacing: '0.08em',
-              color: 'var(--accent-green-text)',
-            }}
+            style={REPORT_BADGE_STYLE}
           >
-            Cell SoH Benchmark · LFP chemistry
+            True Electrochemical Health Benchmark · LFP chemistry
           </span>
           <h1
             className="font-bold text-[var(--text)] tracking-tight"
@@ -315,7 +208,7 @@ const BenchmarksPage: React.FC = () => {
             Zylectra's Physics AI Model for Cell Electrochemical Health was
             benchmarked against five deep-learning architectures representative
             of how the battery-analytics industry typically builds AI-based
-            SoH estimators: an MLP, a Transformer-style Attention model, a
+            health estimators: an MLP, a Transformer-style Attention model, a
             GRU, an LSTM, and a residual CNN. All six were evaluated on the
             exact same held-out cells, with the exact same scoring code.
             Zylectra's model ranked first, at{' '}
@@ -508,8 +401,8 @@ const BenchmarksPage: React.FC = () => {
                 No saturation cluster
               </h3>
               <p className="text-[var(--text-muted)] leading-relaxed" style={{ fontSize: 14 }}>
-                Zylectra's predictions track true SoH evenly across the full
-                range. The strongest baseline shows a visible cluster of
+                Zylectra's predictions track true electrochemical health
+                evenly across the full range. The strongest baseline shows a visible cluster of
                 predictions that floor out near a fixed value for a subset of
                 low-health cycles: a failure mode Zylectra's evaluation does
                 not show.
@@ -523,7 +416,7 @@ const BenchmarksPage: React.FC = () => {
                 Baseline models' error grows disproportionately in the steep
                 late-life fade region, where the signal gets noisier. A
                 physics prior built into Zylectra's training structurally
-                discourages predicting SoH increases cycle-over-cycle, exactly
+                discourages predicting health increases cycle-over-cycle, exactly
                 the kind of physically-impossible wobble a purely data-driven
                 model can produce late in life.
               </p>
@@ -762,11 +655,14 @@ const BenchmarksPage: React.FC = () => {
         </motion.div>
 
         <p className="mt-10 text-[var(--text-faint)]" style={{ fontSize: 12 }}>
-          Zylectra · Cell SoH benchmark · LFP chemistry
+          Zylectra · True electrochemical health benchmark · LFP chemistry
+          <a href="/benchmarks" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors ml-3">
+            ← All benchmark reports
+          </a>
         </p>
       </main>
     </div>
   );
 };
 
-export default BenchmarksPage;
+export default DataBasedModelsPage;

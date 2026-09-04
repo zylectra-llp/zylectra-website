@@ -1,10 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import HubPage from './HubPage.tsx';
+import DataBasedModelsPage from './DataBasedModelsPage.tsx';
 import '../index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HubPage />
+    <DataBasedModelsPage />
   </StrictMode>
 );

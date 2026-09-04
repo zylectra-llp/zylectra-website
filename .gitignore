@@ -31,3 +31,5 @@ dist-ssr
 .codex/*
 .cursor/*
 .impeccable/*
+.docs/*
+docs/

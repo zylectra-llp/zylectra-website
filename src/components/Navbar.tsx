@@ -18,7 +18,6 @@ const Navbar = () => {
   const navLinks = [
     ["The Intelligence", "product"],
     ["Outcomes", "outcomes"],
-    ["About", "about"],
   ] as const;
 
   const scrollToSection = (sectionId: string) => {
@@ -85,6 +84,14 @@ const Navbar = () => {
 
             <button
               type="button"
+              onClick={() => scrollToSection("about")}
+              className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors px-3 py-2 whitespace-nowrap"
+            >
+              About
+            </button>
+
+            <button
+              type="button"
               onClick={() => scrollToSection("contact")}
               className="group flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl font-bold ml-3 transition-all whitespace-nowrap"
             >
@@ -131,6 +138,14 @@ const Navbar = () => {
               >
                 Benchmarks
               </a>
+
+              <button
+                type="button"
+                onClick={() => scrollToSection("about")}
+                className="text-[var(--text-secondary)] hover:text-[var(--text)] py-3 text-base transition-colors"
+              >
+                About
+              </button>
 
               <button
                 type="button"

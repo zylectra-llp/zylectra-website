@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+      (function () {
+        var stored = localStorage.getItem('zylectra-theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      })();
+    </script>
+
+    <title>True Electrochemical Health vs. Data-Driven Baselines · Zylectra Benchmarks</title>
+    <meta
+      name="description"
+      content="Zylectra's physics-informed true electrochemical health model benchmarked against standard data-driven approaches on identical data and evaluation cells: lowest error, 13-27x fewer parameters."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="True Electrochemical Health vs. Data-Driven Baselines · Zylectra Benchmarks" />
+    <meta
+      property="og:description"
+      content="How Zylectra's physics-informed true electrochemical health model compares to standard data-driven approaches: same data, same evaluation cells, lowest error at a fraction of the model size."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://zylectra.com/benchmarks/data-based-models" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="True Electrochemical Health vs. Data-Driven Baselines · Zylectra Benchmarks" />
+    <meta
+      name="twitter:description"
+      content="Physics-informed vs. standard data-driven health models: same data, same evaluation cells, lowest error at a fraction of the model size."
+    />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "True Electrochemical Health Benchmarks: Zylectra vs. Standard Data-Driven Models",
+      "description": "Zylectra's physics-informed true electrochemical health model benchmarked against five standard data-driven architectures (MLP, Attention, GRU, LSTM, CNN) on identical held-out lithium-ion cycling data.",
+      "datePublished": "2026-08-31",
+      "dateModified": "2026-08-31",
+      "author": { "@type": "Organization", "name": "Zylectra" },
+      "publisher": { "@type": "Organization", "name": "Zylectra", "logo": { "@type": "ImageObject", "url": "https://zylectra.com/image.jpg" } },
+      "about": "Lithium-ion battery true electrochemical health estimation model benchmarking",
+      "mainEntityOfPage": "https://zylectra.com/benchmarks/data-based-models"
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/benchmarks/data-based-models-main.tsx"></script>
+  </body>
+</html>

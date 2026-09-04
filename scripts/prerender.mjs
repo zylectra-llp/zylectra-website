@@ -23,7 +23,7 @@ const puppeteer = process.env.VERCEL
   : (await import('puppeteer')).default;
 
 const DIST = fileURLToPath(new URL('../dist', import.meta.url));
-const PAGES = ['index.html', 'benchmarks.html'];
+const PAGES = ['index.html', 'benchmarks.html', 'benchmarks/data-based-models.html', 'benchmarks/zylectra-vs-wang.html'];
 const PORT = 4173;
 
 const MIME = {
