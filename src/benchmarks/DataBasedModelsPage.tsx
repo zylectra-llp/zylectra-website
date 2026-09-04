@@ -124,7 +124,7 @@ const STAKEHOLDERS: Stakeholder[] = [
   },
 ];
 
-const BenchmarksPage: React.FC = () => {
+const DataBasedModelsPage: React.FC = () => {
   const reduce = useReducedMotion();
   const [active, setActive] = useState(0);
   const s = STAKEHOLDERS[active];
@@ -152,16 +152,16 @@ const BenchmarksPage: React.FC = () => {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-16 md:py-20">
         {/* Hero */}
         <motion.div {...enter(reduce)} className="max-w-3xl">
+          <a
+            href="/benchmarks"
+            className="inline-block text-[var(--text-faint)] hover:text-[var(--text-muted)] transition-colors mb-3"
+            style={{ fontSize: 12 }}
+          >
+            Benchmarks / Cell SoH vs. Data-Driven Baselines
+          </a>
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 mb-6"
-            style={{
-              background: 'rgba(52,211,153,0.1)',
-              border: '1px solid rgba(52,211,153,0.28)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 10,
-              letterSpacing: '0.08em',
-              color: 'var(--accent-green-text)',
-            }}
+            style={REPORT_BADGE_STYLE}
           >
             Cell SoH Benchmark · LFP chemistry
           </span>
@@ -656,10 +656,13 @@ const BenchmarksPage: React.FC = () => {
 
         <p className="mt-10 text-[var(--text-faint)]" style={{ fontSize: 12 }}>
           Zylectra · Cell SoH benchmark · LFP chemistry
+          <a href="/benchmarks" className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors ml-3">
+            ← All benchmark reports
+          </a>
         </p>
       </main>
     </div>
   );
 };
 
-export default BenchmarksPage;
+export default DataBasedModelsPage;
