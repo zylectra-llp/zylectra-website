@@ -14,6 +14,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         benchmarks: resolve(__dirname, 'benchmarks.html'),
         benchmarksDataBasedModels: resolve(__dirname, 'benchmarks/data-based-models.html'),
+        benchmarksZylectraVsWang: resolve(__dirname, 'benchmarks/zylectra-vs-wang.html'),
       },
     },
   },

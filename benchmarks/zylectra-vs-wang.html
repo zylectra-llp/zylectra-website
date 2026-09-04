@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+      (function () {
+        var stored = localStorage.getItem('zylectra-theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      })();
+    </script>
+
+    <title>Zylectra vs. Wang et al. 2024 PINN4SOH · Cell SoH Benchmark</title>
+    <meta
+      name="description"
+      content="Zylectra's physics-informed Cell SoH model benchmarked against Wang et al. 2024's PINN4SOH — one of the most cited physics-informed SoH architectures — on identical public datasets: Zylectra wins on every metric with one unified checkpoint vs. two specialized ones."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Zylectra vs. Wang et al. 2024 PINN4SOH · Cell SoH Benchmark" />
+    <meta
+      property="og:description"
+      content="Zylectra's physics-informed Cell SoH model benchmarked against Wang et al. 2024's PINN4SOH on identical public datasets: lowest error on every metric, one unified checkpoint vs. two specialized ones."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://zylectra.com/benchmarks/zylectra-vs-wang" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Zylectra vs. Wang et al. 2024 PINN4SOH · Cell SoH Benchmark" />
+    <meta
+      name="twitter:description"
+      content="Zylectra's physics-informed Cell SoH model vs. Wang et al. 2024's PINN4SOH: lowest error on every metric, one unified checkpoint vs. two specialized ones."
+    />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Cell SoH Benchmark: Zylectra vs. Wang et al. 2024 PINN4SOH",
+      "description": "Zylectra's physics-informed Cell SoH model benchmarked against Wang et al. 2024's PINN4SOH — one of the most cited physics-informed SoH architectures — on identical public datasets: Zylectra wins on every metric with one unified checkpoint vs. two specialized ones.",
+      "datePublished": "2026-09-04",
+      "dateModified": "2026-09-04",
+      "author": { "@type": "Organization", "name": "Zylectra" },
+      "publisher": { "@type": "Organization", "name": "Zylectra", "logo": { "@type": "ImageObject", "url": "https://zylectra.com/image.jpg" } },
+      "about": "Lithium-ion battery State of Health (SoH) estimation model benchmarking",
+      "mainEntityOfPage": "https://zylectra.com/benchmarks/zylectra-vs-wang"
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/benchmarks/zylectra-vs-wang-main.tsx"></script>
+  </body>
+</html>
